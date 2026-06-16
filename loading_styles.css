@@ -1,0 +1,299 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #111;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+.terminal {
+  width: 500px;
+  background: #0a0a0a;
+  border: 2px solid #444;
+  color: #d0d0d0;
+  position: relative;
+  overflow: hidden;
+}
+
+.scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px, transparent 2px,
+    rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px
+  );
+  pointer-events: none;
+  z-index: 100;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.6) 100%);
+  pointer-events: none;
+  z-index: 99;
+}
+
+/* ── Header ── */
+.terminal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #111;
+  border-bottom: 1px solid #444;
+  padding: 7px 12px;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #888;
+}
+
+.header-badge {
+  font-family: 'VT323', monospace;
+  font-size: 20px;
+  color: #fff;
+  letter-spacing: 2px;
+}
+
+.signal-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+.signal-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+}
+.signal-bars span {
+  display: inline-block;
+  width: 5px;
+  background: #ccc;
+}
+.signal-bars span:nth-child(1) { height: 5px; }
+.signal-bars span:nth-child(2) { height: 8px; }
+.signal-bars span:nth-child(3) { height: 11px; }
+.signal-bars span:nth-child(4) { height: 14px; opacity: 0.3; }
+
+/* ── Clock bar ── */
+.clock-bar {
+  background: #0d0d0d;
+  border-bottom: 1px solid #2a2a2a;
+  padding: 5px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #666;
+}
+
+#live-date { color: #aaa; }
+#live-time { color: #fff; font-family: 'VT323', monospace; font-size: 18px; letter-spacing: 3px; }
+
+/* ── Body ── */
+.terminal-body {
+  padding: 16px 16px 20px;
+}
+
+.top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.section-label {
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: #555;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.callsign {
+  font-family: 'VT323', monospace;
+  font-size: 42px;
+  letter-spacing: 3px;
+  color: #fff;
+  line-height: 1;
+}
+
+.access-block { text-align: right; }
+.access-label {
+  font-family: 'VT323', monospace;
+  font-size: 15px;
+  color: #555;
+  letter-spacing: 2px;
+}
+.access-stars {
+  font-family: 'VT323', monospace;
+  font-size: 15px;
+  color: #444;
+  letter-spacing: 2px;
+}
+
+.divider-bright {
+  border: none;
+  border-top: 1px solid #333;
+  margin: 10px 0;
+}
+
+.meta-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #555;
+  margin-bottom: 7px;
+}
+.meta-val { color: #bbb; }
+
+.status-dot {
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #d0d0d0;
+  margin-right: 5px;
+  vertical-align: middle;
+  animation: blink-dot 1.4s ease-in-out infinite;
+}
+
+/* ── Brief box ── */
+.brief-box {
+  border: 1px solid #2a2a2a;
+  padding: 13px;
+  margin-top: 14px;
+  background: #0d0d0d;
+  position: relative;
+  min-height: 200px;
+}
+
+.brief-box::before, .brief-box::after {
+  content: '';
+  position: absolute;
+  width: 7px; height: 7px;
+  border-color: #444;
+  border-style: solid;
+}
+.brief-box::before { top: -1px; left: -1px; border-width: 1px 0 0 1px; }
+.brief-box::after  { top: -1px; right: -1px; border-width: 1px 1px 0 0; }
+
+.brief-corners-bottom::before, .brief-corners-bottom::after {
+  content: '';
+  position: absolute;
+  width: 7px; height: 7px;
+  border-color: #444;
+  border-style: solid;
+  bottom: -1px;
+}
+.brief-corners-bottom::before { left: -1px; border-width: 0 0 1px 1px; }
+.brief-corners-bottom::after  { right: -1px; border-width: 0 1px 1px 0; }
+
+.brief-label {
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: #444;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+#brief-text {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: #d0d0d0;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* file lines */
+.file-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  letter-spacing: 1px;
+  margin: 2px 0;
+  color: #888;
+}
+.file-line .fname { color: #bbb; }
+.file-line .fstatus { color: #666; }
+.file-line .fstatus.ok { color: #d0d0d0; }
+
+.cursor {
+  display: inline-block;
+  width: 8px; height: 13px;
+  background: #d0d0d0;
+  vertical-align: middle;
+  margin-left: 1px;
+  animation: blink-cursor 0.8s step-end infinite;
+}
+
+/* ── Start button ── */
+#start-btn {
+  display: none;
+  margin-top: 18px;
+  width: 100%;
+  background: transparent;
+  border: 1px solid #555;
+  color: #d0d0d0;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 4px;
+  padding: 10px 0;
+  cursor: pointer;
+  text-transform: uppercase;
+  position: relative;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+#start-btn:hover {
+  background: #d0d0d0;
+  color: #0a0a0a;
+  border-color: #d0d0d0;
+}
+#start-btn::before, #start-btn::after {
+  content: '';
+  position: absolute;
+  width: 6px; height: 6px;
+  border-color: #888;
+  border-style: solid;
+}
+#start-btn::before { top: -1px; left: -1px; border-width: 1px 0 0 1px; }
+#start-btn::after  { bottom: -1px; right: -1px; border-width: 0 1px 1px 0; }
+
+/* ── Footer ── */
+.terminal-footer {
+  border-top: 1px solid #1e1e1e;
+  background: #0d0d0d;
+  padding: 7px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: #3a3a3a;
+}
+
+/* ── Animations ── */
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+@keyframes blink-dot {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.2; }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+#start-btn.show {
+  display: block;
+  animation: fadeIn 0.5s ease forwards;
+}

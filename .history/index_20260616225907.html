@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mission Brief</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #111;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: 'Share Tech Mono', monospace;
+    }
+
+    .terminal {
+      width: 500px;
+      background: #0a0a0a;
+      border: 2px solid #444;
+      color: #d0d0d0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scanlines {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px, transparent 2px,
+        rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px
+      );
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    .vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.6) 100%);
+      pointer-events: none;
+      z-index: 99;
+    }
+
+    /* ── Header ── */
+    .terminal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #111;
+      border-bottom: 1px solid #444;
+      padding: 7px 12px;
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: #888;
+    }
+
+    .header-badge {
+      font-family: 'VT323', monospace;
+      font-size: 20px;
+      color: #fff;
+      letter-spacing: 2px;
+    }
+
+    .signal-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 10px;
+      letter-spacing: 2px;
+    }
+
+    .signal-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+    }
+    .signal-bars span {
+      display: inline-block;
+      width: 5px;
+      background: #ccc;
+    }
+    .signal-bars span:nth-child(1) { height: 5px; }
+    .signal-bars span:nth-child(2) { height: 8px; }
+    .signal-bars span:nth-child(3) { height: 11px; }
+    .signal-bars span:nth-child(4) { height: 14px; opacity: 0.3; }
+
+    /* ── Clock bar ── */
+    .clock-bar {
+      background: #0d0d0d;
+      border-bottom: 1px solid #2a2a2a;
+      padding: 5px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: #666;
+    }
+
+    #live-date { color: #aaa; }
+    #live-time { color: #fff; font-family: 'VT323', monospace; font-size: 18px; letter-spacing: 3px; }
+
+    /* ── Body ── */
+    .terminal-body {
+      padding: 16px 16px 20px;
+    }
+
+    .top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: #555;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+
+    .callsign {
+      font-family: 'VT323', monospace;
+      font-size: 42px;
+      letter-spacing: 3px;
+      color: #fff;
+      line-height: 1;
+    }
+
+    .access-block { text-align: right; }
+    .access-label {
+      font-family: 'VT323', monospace;
+      font-size: 15px;
+      color: #555;
+      letter-spacing: 2px;
+    }
+    .access-stars {
+      font-family: 'VT323', monospace;
+      font-size: 15px;
+      color: #444;
+      letter-spacing: 2px;
+    }
+
+    .divider-bright {
+      border: none;
+      border-top: 1px solid #333;
+      margin: 10px 0;
+    }
+
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: #555;
+      margin-bottom: 7px;
+    }
+    .meta-val { color: #bbb; }
+
+    .status-dot {
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #d0d0d0;
+      margin-right: 5px;
+      vertical-align: middle;
+      animation: blink-dot 1.4s ease-in-out infinite;
+    }
+
+    /* ── Brief box ── */
+    .brief-box {
+      border: 1px solid #2a2a2a;
+      padding: 13px;
+      margin-top: 14px;
+      background: #0d0d0d;
+      position: relative;
+      min-height: 200px;
+    }
+
+    .brief-box::before, .brief-box::after {
+      content: '';
+      position: absolute;
+      width: 7px; height: 7px;
+      border-color: #444;
+      border-style: solid;
+    }
+    .brief-box::before { top: -1px; left: -1px; border-width: 1px 0 0 1px; }
+    .brief-box::after  { top: -1px; right: -1px; border-width: 1px 1px 0 0; }
+
+    .brief-corners-bottom::before, .brief-corners-bottom::after {
+      content: '';
+      position: absolute;
+      width: 7px; height: 7px;
+      border-color: #444;
+      border-style: solid;
+      bottom: -1px;
+    }
+    .brief-corners-bottom::before { left: -1px; border-width: 0 0 1px 1px; }
+    .brief-corners-bottom::after  { right: -1px; border-width: 0 1px 1px 0; }
+
+    .brief-label {
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: #444;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    #brief-text {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
+      color: #d0d0d0;
+      line-height: 1.8;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    /* file lines */
+    .file-line {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      letter-spacing: 1px;
+      margin: 2px 0;
+      color: #888;
+    }
+    .file-line .fname { color: #bbb; }
+    .file-line .fstatus { color: #666; }
+    .file-line .fstatus.ok { color: #d0d0d0; }
+
+    .cursor {
+      display: inline-block;
+      width: 8px; height: 13px;
+      background: #d0d0d0;
+      vertical-align: middle;
+      margin-left: 1px;
+      animation: blink-cursor 0.8s step-end infinite;
+    }
+
+    /* ── Start button ── */
+    #start-btn {
+      display: none;
+      margin-top: 18px;
+      width: 100%;
+      background: transparent;
+      border: 1px solid #555;
+      color: #d0d0d0;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 13px;
+      letter-spacing: 4px;
+      padding: 10px 0;
+      cursor: pointer;
+      text-transform: uppercase;
+      position: relative;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    #start-btn:hover {
+      background: #d0d0d0;
+      color: #0a0a0a;
+      border-color: #d0d0d0;
+    }
+    #start-btn::before, #start-btn::after {
+      content: '';
+      position: absolute;
+      width: 6px; height: 6px;
+      border-color: #888;
+      border-style: solid;
+    }
+    #start-btn::before { top: -1px; left: -1px; border-width: 1px 0 0 1px; }
+    #start-btn::after  { bottom: -1px; right: -1px; border-width: 0 1px 1px 0; }
+
+    /* ── Footer ── */
+    .terminal-footer {
+      border-top: 1px solid #1e1e1e;
+      background: #0d0d0d;
+      padding: 7px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: #3a3a3a;
+    }
+
+    /* ── Animations ── */
+    @keyframes blink-cursor {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+    @keyframes blink-dot {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.2; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    #start-btn.show {
+      display: block;
+      animation: fadeIn 0.5s ease forwards;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="terminal">
+    <div class="scanlines"></div>
+    <div class="vignette"></div>
+
+    <!-- Header -->
+    <div class="terminal-header">
+      <span class="header-badge">SYS // BRIEF</span>
+      <div class="signal-group">
+        <span>SIGNAL</span>
+        <div class="signal-bars">
+          <span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live clock bar -->
+    <div class="clock-bar">
+      <span id="live-date"></span>
+      <span id="live-time"></span>
+    </div>
+
+    <!-- Body -->
+    <div class="terminal-body">
+
+      <div class="top-row">
+        <div>
+          <div class="section-label">AGENT</div>
+          <div class="callsign">J D-001</div>
+        </div>
+        <div class="access-block">
+          <div class="access-label">ACCESS</div>
+          <div class="access-stars">* * * * * * * *</div>
+        </div>
+      </div>
+
+      <hr class="divider-bright">
+
+      <div class="meta-row">
+        <span>UNIT</span>
+        <span class="meta-val">CS // DEV OPS</span>
+      </div>
+      <div class="meta-row">
+        <span>SEC CODE</span>
+        <span class="meta-val">NIC-CS-051</span>
+      </div>
+      <div class="meta-row">
+        <span>STATUS</span>
+        <span class="meta-val"><span class="status-dot"></span>ACTIVE</span>
+      </div>
+
+      <!-- Brief Box -->
+      <div class="brief-box brief-corners-bottom">
+        <div class="brief-label">// MISSION BRIEF</div>
+        <div id="brief-text"></div><span class="cursor" id="cursor"></span>
+        <button id="start-btn" onclick="window.location.href='index.html'">[ INITIATE SEQUENCE ]</button>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="terminal-footer">
+      <span>&#9889;&#9889;</span>
+      <span>PROPERTY OF // PORTFOLIO UNIT</span>
+      <span>&#9889;&#9889;</span>
+    </div>
+  </div>
+
+  <script>
+    /* ── Live clock ── */
+    function updateClock() {
+      const now = new Date();
+
+      const days   = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+      const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+
+      const day  = days[now.getDay()];
+      const dd   = String(now.getDate()).padStart(2,'0');
+      const mon  = months[now.getMonth()];
+      const yyyy = now.getFullYear();
+
+      const hh   = String(now.getHours()).padStart(2,'0');
+      const mm   = String(now.getMinutes()).padStart(2,'0');
+      const ss   = String(now.getSeconds()).padStart(2,'0');
+
+      document.getElementById('live-date').textContent = `${day}  ${dd} ${mon} ${yyyy}`;
+      document.getElementById('live-time').textContent = `${hh}:${mm}:${ss}`;
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    /* ── Typewriter engine ── */
+    const out    = document.getElementById('brief-text');
+    const cursor = document.getElementById('cursor');
+    const btn    = document.getElementById('start-btn');
+
+    /* Files to "load" */
+    const FILES = [
+      'about.dat',
+      'skills.cfg',
+      'projects.log',
+      'experience.rec',
+      'contact.enc',
+    ];
+
+    /* Build the sequence as a list of actions */
+    /* Each action: { type, ... } */
+    const sequence = [];
+
+    /* Phase 1 — greeting */
+    sequence.push({ type: 'type', text: 'HELLO.\n\nWELCOME TO MY PORTFOLIO.\n\n' });
+
+    /* Phase 2 — loading header */
+    sequence.push({ type: 'type', text: 'LOADING FILES...\n' });
+
+    /* Phase 3 — each file appears one by one */
+    FILES.forEach(f => {
+      sequence.push({ type: 'file', name: f });
+    });
+
+    /* Phase 4 — done line */
+    sequence.push({ type: 'type', text: '\nALL SYSTEMS READY.' });
+
+    /* Phase 5 — show button */
+    sequence.push({ type: 'button' });
+
+    let stepIndex = 0;
+
+    function runStep() {
+      if (stepIndex >= sequence.length) return;
+      const step = sequence[stepIndex++];
+
+      if (step.type === 'type') {
+        typeText(step.text, runStep);
+      } else if (step.type === 'file') {
+        appendFileLine(step.name, runStep);
+      } else if (step.type === 'button') {
+        cursor.style.display = 'none';
+        btn.classList.add('show');
+      }
+    }
+
+    /* Typewriter: writes text char by char, calls done() when finished */
+    function typeText(text, done) {
+      let i = 0;
+      function tick() {
+        if (i < text.length) {
+          out.textContent += text[i];
+          i++;
+          const ch = text[i - 1];
+          const delay = ch === '\n' ? 180
+                      : ch === '.' ? 140
+                      : Math.random() * 40 + 22;
+          setTimeout(tick, delay);
+        } else {
+          done && done();
+        }
+      }
+      tick();
+    }
+
+    /* File line: show filename + animated dots then OK */
+    function appendFileLine(name, done) {
+      /* create a div for this file row */
+      const row = document.createElement('div');
+      row.className = 'file-line';
+
+      const fname   = document.createElement('span');
+      fname.className = 'fname';
+      fname.textContent = '  > ' + name;
+
+      const fstatus = document.createElement('span');
+      fstatus.className = 'fstatus';
+      fstatus.textContent = '......';
+
+      row.appendChild(fname);
+      row.appendChild(fstatus);
+      out.appendChild(row);
+
+      /* animate dots then flip to OK */
+      let dots = 0;
+      const dotFrames = ['......', '.....', '....', '...', '..', '.', '..', '...', '....'];
+      let frame = 0;
+      const iv = setInterval(() => {
+        fstatus.textContent = dotFrames[frame % dotFrames.length];
+        frame++;
+        if (frame >= 9) {
+          clearInterval(iv);
+          fstatus.textContent = '[ OK ]';
+          fstatus.classList.add('ok');
+          setTimeout(done, 120);
+        }
+      }, 60);
+    }
+
+    /* Kick off */
+    setTimeout(runStep, 700);
+  </script>
+
+</body>
+</html>

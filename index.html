@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mission Brief</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="loading_styles.css"/>
+</head>
+<body>
+
+  <div class="terminal">
+    <div class="scanlines"></div>
+    <div class="vignette"></div>
+
+    <!-- Header -->
+    <div class="terminal-header">
+      <span class="header-badge">SYS // BRIEF</span>
+      <div class="signal-group">
+        <span>SIGNAL</span>
+        <div class="signal-bars">
+          <span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live clock bar -->
+    <div class="clock-bar">
+      <span id="live-date"></span>
+      <span id="live-time"></span>
+    </div>
+
+    <!-- Body -->
+    <div class="terminal-body">
+
+      <div class="top-row">
+        <div>
+          <div class="section-label">AGENT</div>
+          <div class="callsign">J D-001</div>
+        </div>
+        <div class="access-block">
+          <div class="access-label">ACCESS</div>
+          <div class="access-stars">* * * * * * * *</div>
+        </div>
+      </div>
+
+      <hr class="divider-bright">
+
+      <div class="meta-row">
+        <span>UNIT</span>
+        <span class="meta-val">CS // DEV OPS</span>
+      </div>
+      <div class="meta-row">
+        <span>SEC CODE</span>
+        <span class="meta-val">NIC-CS-051</span>
+      </div>
+      <div class="meta-row">
+        <span>STATUS</span>
+        <span class="meta-val"><span class="status-dot"></span>ACTIVE</span>
+      </div>
+
+      <!-- Brief Box -->
+      <div class="brief-box brief-corners-bottom">
+        <div class="brief-label">// MISSION BRIEF</div>
+        <div id="brief-text"></div><span class="cursor" id="cursor"></span>
+        <button id="start-btn" onclick="window.location.href='index.html'">[ INITIATE SEQUENCE ]</button>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="terminal-footer">
+      <span>&#9889;&#9889;</span>
+      <span>PROPERTY OF // PORTFOLIO UNIT</span>
+      <span>&#9889;&#9889;</span>
+    </div>
+  </div>
+
+  <script src="loading.js"></script>
+
+</body>
+</html>

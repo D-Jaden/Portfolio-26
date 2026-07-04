@@ -1,0 +1,766 @@
+  :root{
+    --asphalt:#15120f;
+    --dusk:#241d18;
+    --signal-red:#d6412c;
+    --signal-red-dim:#42221d;
+    --signal-green:#3fae5c;
+    --bus-blue:#1f4d73;
+    --bus-blue-dark:#163a56;
+    --bus-gold:#e8b23d;
+    --bus-rust:#c1592b;
+    --paper:#f3ead8;
+    --paper-dim:#e8dcc2;
+    --ink:#201a14;
+    --nh-green:#1c5e39;
+    --nh-green-dark:#12432a;
+    --nh-yellow:#f4b400;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:auto;}
+  body{
+    margin:0;
+    background:var(--asphalt);
+    color:var(--paper);
+    font-family:'Inter',sans-serif;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--bus-rust);color:var(--paper);}
+
+  h1,h2,h3, .display{
+    font-family:'Rajdhani',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:0.02em;
+    margin:0;
+  }
+  .mono{font-family:'Space Mono',monospace;}
+
+  /* ---------- fixed plate chip ---------- */
+  .plate-chip{
+    position:fixed;
+    right:18px;
+    bottom:18px;
+    z-index:500;
+    background:var(--nh-yellow);
+    color:var(--ink);
+    font-family:'Space Mono',monospace;
+    font-weight:700;
+    font-size:13px;
+    padding:8px 12px;
+    border-radius:3px;
+    border:2px solid var(--ink);
+    text-decoration:none;
+    box-shadow:0 4px 0 rgba(0,0,0,.35);
+    transition:transform .2s ease;
+  }
+  .plate-chip:hover{transform:translateY(-2px);}
+  .plate-chip small{display:block;font-size:9px;letter-spacing:.08em;opacity:.75;}
+
+  /* =========================================================
+     SECTION A — GRID START (lights + door)
+     ========================================================= */
+  .start-lights{
+    position:relative;
+    height:200vh;
+  }
+  .lights-pin{
+    position:sticky;
+    top:0;
+    height:100vh;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:
+      radial-gradient(ellipse at 50% 30%, rgba(232,178,61,.06), transparent 60%),
+      var(--asphalt);
+  }
+
+  .scene-bg{
+    position:absolute;
+    inset:0;
+    background-image:url('bos_smit.png'); /* Set to your actual bus image */
+    background-size:cover;
+    background-position:center 62%;
+    filter:brightness(.28) saturate(.7);
+    transform:scale(1.05);
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+  }
+
+  /* SVG Map styling */
+  .map-container {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0; /* Hidden initially, shown after doors open */
+    background-color: var(--asphalt);
+  }
+  .map-container svg {
+    width: 60%;
+    max-width: 600px;
+    height: auto;
+  }
+  .map-text {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(24px, 5vw, 48px);
+    color: var(--paper);
+    margin-top: 20px;
+    opacity: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .map-point {
+    opacity: 0;
+  }
+
+
+  .scene-overlay{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg, rgba(21,18,15,.55), rgba(21,18,15,.92) 70%);
+  }
+
+  .lights-content{
+    position:relative;
+    z-index:5;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:clamp(18px,4vh,40px);
+    text-align:center;
+    padding:0 20px;
+  }
+  .wordmark .eyebrow{
+    font-family:'Space Mono',monospace;
+    font-size:12px;
+    letter-spacing:.25em;
+    color:var(--bus-gold);
+    margin-bottom:10px;
+  }
+  .wordmark h1{
+    font-size:clamp(38px,8vw,88px);
+    font-weight:700;
+    color:var(--paper);
+    line-height:.95;
+  }
+  .wordmark .sub{
+    margin-top:12px;
+    font-family:'Space Mono',monospace;
+    font-size:13px;
+    letter-spacing:.08em;
+    color:var(--paper-dim);
+    opacity:.8;
+  }
+
+  .rig{
+    display:flex;
+    gap:clamp(10px,2.2vw,22px);
+    padding:16px 22px;
+    background:rgba(0,0,0,.35);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:14px;
+  }
+  .light{
+    width:clamp(30px,5vw,54px);
+    height:clamp(30px,5vw,54px);
+    border-radius:50%;
+    background:var(--signal-red-dim);
+    box-shadow:inset 0 0 0 3px rgba(0,0,0,.4);
+    transition:background .25s ease, box-shadow .25s ease;
+  }
+  .light.is-green{
+    background:var(--signal-green);
+    box-shadow:0 0 22px 6px rgba(63,174,92,.65), inset 0 0 0 3px rgba(0,0,0,.25);
+  }
+  .light.is-red-hot{
+    background:var(--signal-red);
+    box-shadow:0 0 22px 6px rgba(214,65,44,.6), inset 0 0 0 3px rgba(0,0,0,.25);
+  }
+
+  .cue{
+    font-family:'Space Mono',monospace;
+    font-size:12px;
+    letter-spacing:.15em;
+    color:var(--paper-dim);
+    opacity:.7;
+    animation:bob 1.8s ease-in-out infinite;
+  }
+  @keyframes bob{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(6px);}
+  }
+
+  /* door panels */
+  .door{
+    position:absolute;
+    top:0;
+    bottom:0;
+    width:50%;
+    z-index:8;
+    background:linear-gradient(180deg, var(--bus-gold) 0%, var(--bus-gold) 34%, var(--bus-blue) 34%, var(--bus-blue-dark) 100%);
+    border: 6px solid #000; /* Comic outline */
+    box-shadow: inset 10px 10px 0 rgba(255,255,255,0.15), inset -10px -10px 0 rgba(0,0,0,0.2), 0 0 40px rgba(0,0,0,.5);
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+  .door::before{
+    content:'';
+    position:absolute;
+    left:50%;
+    top:25%;
+    width:45%;
+    height:30%;
+    transform:translateX(-50%);
+    background:rgba(200,240,255,.9); /* brighter comic window */
+    border:6px solid #000;
+    border-radius:12px;
+    box-shadow: inset -10px -10px 0 rgba(255,255,255,0.5), inset 10px 10px 0 rgba(0,0,0,0.1);
+  }
+  .door.left{left:0; border-right:10px solid #000;} /* comic center seal */
+  .door.right{right:0; border-left:10px solid #000;} /* comic center seal */
+
+  /* Graffiti on doors */
+  .graffiti {
+    position: absolute;
+    top: 60%;
+    font-family: 'Permanent Marker', cursive;
+    font-size: clamp(50px, 10vw, 120px);
+    color: #e50000;
+    text-shadow: 3px 3px 0 #fff, -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 2px 2px 0 #fff;
+    white-space: nowrap;
+    opacity: 0.9;
+    transform: rotate(-6deg);
+    z-index: 10;
+  }
+  .left-text {
+    right: 15px; /* position near the split */
+  }
+  .right-text {
+    left: 15px; /* position near the split */
+  }
+
+  /* =========================================================
+     SECTION B — THE ROUTE MAP (Experience)
+     ========================================================= */
+  .highway{
+    position:relative;
+    height: 100vh;
+    min-height: 700px;
+  }
+  .highway-pin {
+    position: relative;
+    height: 100vh;
+    min-height: 700px;
+    overflow: hidden;
+    background-color: #ffffff;
+    background-image: 
+      linear-gradient(rgba(39, 75, 155, 0.25) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(39, 75, 155, 0.25) 1px, transparent 1px);
+    background-size: 30px 30px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* --- Experience Badge --- */
+  .experience-badge {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    background: #ffffff;
+    color: #274b9b;
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 42px;
+    padding: 10px 24px;
+    border-radius: 8px;
+    z-index: 50;
+    letter-spacing: 0.05em;
+    box-shadow: 0 10px 25px rgba(39, 75, 155, 0.3);
+    transform: rotate(3deg);
+  }
+
+  /* --- Top Route Map --- */
+  .route-map-container {
+    position: relative;
+    width: 90%;
+    max-width: 1000px;
+    margin: 40px auto 0;
+    height: 90px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 15px 35px rgba(39, 75, 155, 0.25);
+    padding: 0 50px;
+    display: flex;
+    align-items: center;
+  }
+  .route-map-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  .route-line-bg {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: rgba(0,0,0,0.15);
+    transform: translateY(-50%);
+    border-radius: 2px;
+  }
+  .route-line-fill {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 0%;
+    height: 4px;
+    background: var(--nh-yellow);
+    transform: translateY(-50%);
+    border-radius: 2px;
+    transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  .route-stations {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .station {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    z-index: 2;
+  }
+  .station-dot {
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    border: 3px solid #274b9b; /* blue border */
+    border-radius: 50%;
+    transition: all 0.3s ease;
+  }
+  .station.is-active .station-dot {
+    background: var(--nh-yellow);
+    border-color: #274b9b;
+    transform: scale(1.3);
+    box-shadow: 0 0 12px rgba(244, 180, 0, 0.5);
+  }
+  .station-label {
+    position: absolute;
+    top: 24px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #274b9b;
+    text-align: center;
+    white-space: nowrap;
+    opacity: 0.6;
+    transition: opacity 0.3s, transform 0.3s;
+    transform: translateY(0);
+  }
+  .station.is-active .station-label {
+    opacity: 1;
+    transform: translateY(4px);
+    color: #1a3a80; /* Darker blue for active readability on white */
+  }
+
+  /* --- Main Content Area (Billboard) --- */
+  .main-content-area {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(10px, 3vw, 40px);
+    padding: 0 20px;
+    margin-bottom: 25vh; /* leave space for the road */
+  }
+
+  .nav-btn {
+    background: var(--paper);
+    border: 3px solid var(--ink);
+    border-radius: 8px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 var(--ink);
+    transition: all 0.1s ease;
+    color: var(--ink);
+  }
+  .nav-btn:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+  .nav-btn:active {
+    transform: translate(4px, 4px);
+    box-shadow: 0 0 0 var(--ink);
+  }
+  .nav-btn:disabled {
+    opacity: 0.3;
+    pointer-events: none;
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
+  }
+
+  .billboard-container {
+    width: min(100%, 700px);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .posts {
+    display: flex;
+    justify-content: space-between;
+    width: 86%;
+    margin: 0 auto;
+  }
+  .post {
+    width: 14px;
+    height: 40px; /* How much the posts stick out above/below */
+    background: linear-gradient(90deg, #8f8f8f, #5c5c5c);
+    border-radius: 4px 4px 0 0;
+  }
+  .board {
+    position: relative;
+    width: 100%;
+    min-height: 240px;
+    background: var(--nh-green);
+    border: 6px solid var(--paper);
+    border-radius: 12px;
+    padding: 30px 40px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    margin-top: -15px; /* Overlap the posts slightly */
+    z-index: 2;
+  }
+  .board::after {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border: 3px solid rgba(255,255,255,0.85);
+    border-radius: 6px;
+    pointer-events: none;
+  }
+  .board-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .15em;
+    color: var(--nh-yellow);
+    text-transform: uppercase;
+  }
+  .board-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: clamp(26px, 4.4vw, 36px);
+    color: var(--paper);
+    line-height: 1.02;
+    margin-top: 8px;
+  }
+  .board-meta {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--paper);
+    opacity: 0.85;
+    margin-top: 4px;
+    margin-bottom: 12px;
+  }
+  .board-desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: var(--paper);
+    opacity: 0.95;
+    line-height: 1.5;
+    max-width: 48ch;
+  }
+  .board-content {
+    position: absolute;
+    inset: 30px 40px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1), transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    pointer-events: none;
+  }
+  .board-content.is-active {
+    opacity: 1;
+    transform: translateY(0);
+    position: relative;
+    inset: auto;
+    pointer-events: auto;
+  }
+
+  .bus-figure {
+    position: absolute;
+    bottom: -40px; /* Pull the bus way down to compensate for the image's transparent shadow/padding */
+    left: 2%; /* Starts slightly further left */
+    height: 400px; /* Adjust size based on feedback */
+    width: auto;
+    z-index: 10;
+    will-change: transform;
+    filter: drop-shadow(0 15px 15px rgba(0,0,0,0.5));
+    transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .bus-figure img {
+    display: block;
+    height: 100%;
+    width: auto;
+  }
+
+  .comic-bubble {
+    position: absolute;
+    bottom: 115%;
+    right: 5%;
+    background: #ffffff;
+    border: 3px solid var(--ink);
+    border-radius: 20px;
+    padding: 12px 18px;
+    font-family: 'Space Mono', monospace;
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--ink);
+    box-shadow: 4px 4px 0 var(--ink);
+    opacity: 0;
+    transform: scale(0.5) translateY(20px);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    pointer-events: none;
+    z-index: 20;
+  }
+  .comic-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 20px;
+    border-width: 12px 12px 0 0;
+    border-style: solid;
+    border-color: #fff transparent transparent transparent;
+  }
+  .comic-bubble::before {
+    content: '';
+    position: absolute;
+    bottom: -16px;
+    left: 17px;
+    border-width: 16px 16px 0 0;
+    border-style: solid;
+    border-color: var(--ink) transparent transparent transparent;
+    z-index: -1;
+  }
+  .comic-bubble.show {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+
+  .bottom-info-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: var(--ink);
+    color: var(--paper-dim);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+  }
+
+  @media (max-width: 768px) {
+    .main-content-area {
+      flex-direction: column;
+      gap: 20px;
+      margin-bottom: 30vh;
+    }
+    .nav-btn {
+      width: 100%;
+      height: 40px;
+    }
+    .nav-btn svg {
+      transform: rotate(90deg);
+    }
+    .prev-btn svg {
+      transform: rotate(-90deg);
+    }
+    .board {
+      padding: 20px;
+      min-height: 280px;
+    }
+    .board-content {
+      inset: 20px;
+    }
+    .bus-figure {
+      height: 250px;
+      bottom: -25px; /* keep tires on the line */
+      left: 5%;
+    }
+    .comic-bubble {
+      font-size: 14px;
+      padding: 8px 12px;
+      bottom: 110%;
+    }
+    .route-map-container {
+      padding: 0 25px;
+      margin-top: 80px; /* Make room for badge */
+    }
+    .experience-badge {
+      font-size: 28px;
+      padding: 8px 18px;
+      top: 15px;
+      right: 15px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .highway, .highway-pin {
+      min-height: 600px;
+    }
+    .bus-figure {
+      height: 180px;
+      bottom: -15px;
+    }
+    .route-map-container {
+      padding: 0 10px;
+      margin-top: 70px;
+    }
+    .station-dot {
+      width: 12px;
+      height: 12px;
+      border-width: 2px;
+    }
+    .station-label {
+      font-size: 9px;
+      top: 20px;
+    }
+    .experience-badge {
+      font-size: 20px;
+      padding: 6px 14px;
+    }
+    .bottom-info-bar {
+      font-size: 8px;
+      padding: 0 10px;
+    }
+    .board-title {
+      font-size: 22px;
+    }
+    .board-desc {
+      font-size: 13px;
+    }
+  }
+
+  .destination{
+    position:relative;
+    padding:14vh 6vw 12vh;
+    background:var(--asphalt);
+    text-align:center;
+    overflow:hidden;
+  }
+  .destination::before{
+    content:'';
+    position:absolute;
+    top:0;left:0;right:0;
+    height:1px;
+    background:linear-gradient(90deg, transparent, rgba(232,178,61,.5), transparent);
+  }
+  .dest-eyebrow{
+    font-family:'Space Mono',monospace;
+    font-size:12px;
+    letter-spacing:.25em;
+    color:var(--bus-gold);
+  }
+  .dest-title{
+    font-size:clamp(34px,7vw,72px);
+    font-weight:700;
+    margin-top:14px;
+    color:var(--paper);
+  }
+  .dest-sub{
+    max-width:56ch;
+    margin:18px auto 0;
+    font-family:'Inter',sans-serif;
+    color:var(--paper-dim);
+    font-size:16px;
+    line-height:1.6;
+  }
+
+  .dest-links{
+    margin-top:44px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+    justify-content:center;
+  }
+  .dest-links a{
+    font-family:'Space Mono',monospace;
+    font-size:13px;
+    color:var(--ink);
+    background:var(--paper);
+    text-decoration:none;
+    padding:12px 18px;
+    border-radius:4px;
+    border:2px solid transparent;
+    transition:transform .2s ease, border-color .2s ease;
+  }
+  .dest-links a:hover{
+    transform:translateY(-3px);
+    border-color:var(--bus-rust);
+  }
+
+  .dest-projects{
+    margin-top:60px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:18px;
+    max-width:900px;
+    margin-left:auto;
+    margin-right:auto;
+    text-align:left;
+  }
+  .dest-projects .card{
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .dest-projects .card h3{
+    font-size:17px;
+    color:var(--bus-gold);
+    margin-bottom:6px;
+  }
+  .dest-projects .card p{
+    font-family:'Inter',sans-serif;
+    font-size:13px;
+    color:var(--paper-dim);
+    line-height:1.5;
+    margin:0;
+  }
+
+  .dest-footer{
+    margin-top:70px;
+    font-family:'Space Mono',monospace;
+    font-size:11px;
+    letter-spacing:.1em;
+    color:rgba(255,255,255,.35);
+  }
+
+  @media (max-width:640px){
+    .board-desc{max-width:34ch;}
+    .start-lights{height:180vh;}
+    .highway{height:620vh;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .cue{animation:none;}
+  }

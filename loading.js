@@ -1,18 +1,20 @@
+const { animate, scrambleText } = window.anime;
+
 /* ── Live clock ── */
 function updateClock() {
   const now = new Date();
 
-  const days   = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
-  const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+  const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
-  const day  = days[now.getDay()];
-  const dd   = String(now.getDate()).padStart(2,'0');
-  const mon  = months[now.getMonth()];
+  const day = days[now.getDay()];
+  const dd = String(now.getDate()).padStart(2, '0');
+  const mon = months[now.getMonth()];
   const yyyy = now.getFullYear();
 
-  const hh   = String(now.getHours()).padStart(2,'0');
-  const mm   = String(now.getMinutes()).padStart(2,'0');
-  const ss   = String(now.getSeconds()).padStart(2,'0');
+  const hh = String(now.getHours()).padStart(2, '0');
+  const mm = String(now.getMinutes()).padStart(2, '0');
+  const ss = String(now.getSeconds()).padStart(2, '0');
 
   document.getElementById('live-date').textContent = `${day}  ${dd} ${mon} ${yyyy}`;
   document.getElementById('live-time').textContent = `${hh}:${mm}:${ss}`;
@@ -21,13 +23,15 @@ updateClock();
 setInterval(updateClock, 1000);
 
 /* ── Typewriter engine ── */
-const out    = document.getElementById('brief-text');
+const out = document.getElementById('brief-text');
 const cursor = document.getElementById('cursor');
-const btn    = document.getElementById('start-btn');
+const btn = document.getElementById('start-btn');
 
 /* Files to "load" */
 const FILES = [
-  'about.dat',
+  'humor.txt',
+  'charisma.dat',
+  'about.html',
   'skills.cfg',
   'projects.log',
   'experience.rec',
@@ -74,14 +78,17 @@ function runStep() {
 /* Typewriter: writes text char by char, calls done() when finished */
 function typeText(text, done) {
   let i = 0;
+  const span = document.createElement('span');
+  out.appendChild(span);
+
   function tick() {
     if (i < text.length) {
-      out.textContent += text[i];
+      span.textContent += text[i];
       i++;
       const ch = text[i - 1];
       const delay = ch === '\n' ? 180
-                  : ch === '.' ? 140
-                  : Math.random() * 40 + 22;
+        : ch === '.' ? 140
+          : Math.random() * 40 + 22;
       setTimeout(tick, delay);
     } else {
       done && done();
@@ -96,7 +103,7 @@ function appendFileLine(name, done) {
   const row = document.createElement('div');
   row.className = 'file-line';
 
-  const fname   = document.createElement('span');
+  const fname = document.createElement('span');
   fname.className = 'fname';
   fname.textContent = '  > ' + name;
 
@@ -126,3 +133,15 @@ function appendFileLine(name, done) {
 
 /* Kick off */
 setTimeout(runStep, 700);
+
+/* Morph sequence based on time */
+function getGreeting() {
+  const hr = new Date().getHours();
+  if (hr < 12) return "GOOD MORNING";
+  if (hr < 18) return "GOOD AFTERNOON";
+  return "GOOD EVENING";
+}
+
+btn.addEventListener('click', () => {
+  window.location.href = './experience/experience.html';
+});

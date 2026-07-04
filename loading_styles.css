@@ -1,7 +1,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  background: #111;
+  background: #ffffff;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,10 +10,11 @@ body {
 }
 
 .terminal {
-  width: 500px;
-  background: #0a0a0a;
-  border: 2px solid #444;
-  color: #d0d0d0;
+  width: 90%;
+  max-width: 500px;
+  background: #ffffff;
+  border: 2px solid #000000;
+  color: #274b9b;
   position: relative;
   overflow: hidden;
 }
@@ -43,18 +44,18 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #111;
-  border-bottom: 1px solid #444;
+  background: #ffffff;
+  border-bottom: 2px solid #000;
   padding: 7px 12px;
   font-size: 11px;
   letter-spacing: 2px;
-  color: #888;
+  color: #274b9b;
 }
 
 .header-badge {
   font-family: 'VT323', monospace;
   font-size: 20px;
-  color: #fff;
+  color: #1a3a80;
   letter-spacing: 2px;
 }
 
@@ -74,7 +75,7 @@ body {
 .signal-bars span {
   display: inline-block;
   width: 5px;
-  background: #ccc;
+  background: #274b9b;
 }
 .signal-bars span:nth-child(1) { height: 5px; }
 .signal-bars span:nth-child(2) { height: 8px; }
@@ -83,19 +84,19 @@ body {
 
 /* ── Clock bar ── */
 .clock-bar {
-  background: #0d0d0d;
-  border-bottom: 1px solid #2a2a2a;
+  background: #ffffff;
+  border-bottom: 2px solid #000;
   padding: 5px 14px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 11px;
   letter-spacing: 2px;
-  color: #666;
+  color: #274b9b;
 }
 
-#live-date { color: #aaa; }
-#live-time { color: #fff; font-family: 'VT323', monospace; font-size: 18px; letter-spacing: 3px; }
+#live-date { color: #1a3a80; }
+#live-time { color: #1a3a80; font-family: 'VT323', monospace; font-size: 18px; letter-spacing: 3px; }
 
 /* ── Body ── */
 .terminal-body {
@@ -112,7 +113,7 @@ body {
 .section-label {
   font-size: 10px;
   letter-spacing: 3px;
-  color: #555;
+  color: #0055ff;
   text-transform: uppercase;
   margin-bottom: 3px;
 }
@@ -121,7 +122,7 @@ body {
   font-family: 'VT323', monospace;
   font-size: 42px;
   letter-spacing: 3px;
-  color: #fff;
+  color: #0044ff;
   line-height: 1;
 }
 
@@ -129,19 +130,19 @@ body {
 .access-label {
   font-family: 'VT323', monospace;
   font-size: 15px;
-  color: #555;
+  color: #0055ff;
   letter-spacing: 2px;
 }
 .access-stars {
   font-family: 'VT323', monospace;
   font-size: 15px;
-  color: #444;
+  color: #0055ff;
   letter-spacing: 2px;
 }
 
 .divider-bright {
   border: none;
-  border-top: 1px solid #333;
+  border-top: 2px solid #000;
   margin: 10px 0;
 }
 
@@ -150,16 +151,16 @@ body {
   justify-content: space-between;
   font-size: 11px;
   letter-spacing: 2px;
-  color: #555;
+  color: #0055ff;
   margin-bottom: 7px;
 }
-.meta-val { color: #bbb; }
+.meta-val { color: #0044ff; }
 
 .status-dot {
   display: inline-block;
   width: 6px; height: 6px;
   border-radius: 50%;
-  background: #d0d0d0;
+  background: #0055ff;
   margin-right: 5px;
   vertical-align: middle;
   animation: blink-dot 1.4s ease-in-out infinite;
@@ -167,10 +168,10 @@ body {
 
 /* ── Brief box ── */
 .brief-box {
-  border: 1px solid #2a2a2a;
+  border: 2px solid #000;
   padding: 13px;
   margin-top: 14px;
-  background: #0d0d0d;
+  background: #ffffff;
   position: relative;
   min-height: 200px;
 }
@@ -179,27 +180,27 @@ body {
   content: '';
   position: absolute;
   width: 7px; height: 7px;
-  border-color: #444;
+  border-color: #000;
   border-style: solid;
 }
-.brief-box::before { top: -1px; left: -1px; border-width: 1px 0 0 1px; }
-.brief-box::after  { top: -1px; right: -1px; border-width: 1px 1px 0 0; }
+.brief-box::before { top: -2px; left: -2px; border-width: 2px 0 0 2px; }
+.brief-box::after  { top: -2px; right: -2px; border-width: 2px 2px 0 0; }
 
 .brief-corners-bottom::before, .brief-corners-bottom::after {
   content: '';
   position: absolute;
   width: 7px; height: 7px;
-  border-color: #444;
+  border-color: #000;
   border-style: solid;
-  bottom: -1px;
+  bottom: -2px;
 }
-.brief-corners-bottom::before { left: -1px; border-width: 0 0 1px 1px; }
-.brief-corners-bottom::after  { right: -1px; border-width: 0 1px 1px 0; }
+.brief-corners-bottom::before { left: -2px; border-width: 0 0 2px 2px; }
+.brief-corners-bottom::after  { right: -2px; border-width: 0 2px 2px 0; }
 
 .brief-label {
   font-size: 9px;
   letter-spacing: 3px;
-  color: #444;
+  color: #0044ff;
   text-transform: uppercase;
   margin-bottom: 10px;
 }
@@ -207,7 +208,7 @@ body {
 #brief-text {
   font-family: 'Share Tech Mono', monospace;
   font-size: 12px;
-  color: #d0d0d0;
+  color: #0055ff;
   line-height: 1.8;
   white-space: pre-wrap;
   word-break: break-word;
@@ -220,16 +221,16 @@ body {
   font-size: 11px;
   letter-spacing: 1px;
   margin: 2px 0;
-  color: #888;
+  color: #0055ff;
 }
-.file-line .fname { color: #bbb; }
-.file-line .fstatus { color: #666; }
-.file-line .fstatus.ok { color: #d0d0d0; }
+.file-line .fname { color: #0044ff; }
+.file-line .fstatus { color: #0055ff; }
+.file-line .fstatus.ok { color: #0044ff; }
 
 .cursor {
   display: inline-block;
   width: 8px; height: 13px;
-  background: #d0d0d0;
+  background: #0055ff;
   vertical-align: middle;
   margin-left: 1px;
   animation: blink-cursor 0.8s step-end infinite;
@@ -240,9 +241,9 @@ body {
   display: none;
   margin-top: 18px;
   width: 100%;
-  background: transparent;
-  border: 1px solid #555;
-  color: #d0d0d0;
+  background: #ffffff;
+  border: 2px solid #000;
+  color: #0044ff;
   font-family: 'Share Tech Mono', monospace;
   font-size: 13px;
   letter-spacing: 4px;
@@ -253,31 +254,64 @@ body {
   transition: background 0.2s, color 0.2s, border-color 0.2s;
 }
 #start-btn:hover {
-  background: #d0d0d0;
-  color: #0a0a0a;
-  border-color: #d0d0d0;
+  background: #0055ff;
+  color: #ffffff;
+  border-color: #000;
 }
 #start-btn::before, #start-btn::after {
   content: '';
   position: absolute;
   width: 6px; height: 6px;
-  border-color: #888;
+  border-color: #000;
   border-style: solid;
 }
-#start-btn::before { top: -1px; left: -1px; border-width: 1px 0 0 1px; }
-#start-btn::after  { bottom: -1px; right: -1px; border-width: 0 1px 1px 0; }
+#start-btn::before { top: -2px; left: -2px; border-width: 2px 0 0 2px; }
+#start-btn::after  { bottom: -2px; right: -2px; border-width: 0 2px 2px 0; }
 
 /* ── Footer ── */
 .terminal-footer {
-  border-top: 1px solid #1e1e1e;
-  background: #0d0d0d;
+  border-top: 2px solid #000;
+  background: #ffffff;
   padding: 7px 14px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 9px;
   letter-spacing: 2px;
-  color: #3a3a3a;
+  color: #0044ff;
+}
+
+/* ── Responsive Mobile ── */
+@media (max-width: 480px) {
+  .terminal-header, .clock-bar, .terminal-footer {
+    padding: 5px 8px;
+    font-size: 9px;
+  }
+  .header-badge {
+    font-size: 16px;
+  }
+  .terminal-body {
+    padding: 12px 12px 16px;
+  }
+  .callsign {
+    font-size: 32px;
+  }
+  .access-label, .access-stars {
+    font-size: 13px;
+  }
+  .meta-row {
+    font-size: 10px;
+  }
+  .brief-box {
+    padding: 10px;
+  }
+  #brief-text {
+    font-size: 11px;
+  }
+  #start-btn {
+    font-size: 11px;
+    padding: 8px 0;
+  }
 }
 
 /* ── Animations ── */

@@ -2,94 +2,6 @@ const { onScroll, utils, animate, createTimeline, set } = window.anime;
 
 const clamp = (v, min = 0, max = 1) => Math.min(max, Math.max(min, v));
 
-/* ---------------- SECTION A: lights + door ---------------- */
-const lights = utils.$('.light');
-const doorLeft = document.getElementById('doorLeft');
-const doorRight = document.getElementById('doorRight');
-const overlay = document.querySelector('.scene-overlay');
-const wordmarkEl = document.getElementById('wordmarkEl');
-const sceneBg = document.querySelector('.scene-bg');
-const mapContainer = document.getElementById('mapContainer');
-const mapRoute = document.querySelector('.map-route');
-const mapPoints = utils.$('.map-point');
-const mapText = document.querySelector('.map-text');
-
-const dashoffsetStart = mapRoute.getTotalLength();
-mapRoute.style.strokeDasharray = dashoffsetStart;
-mapRoute.style.strokeDashoffset = dashoffsetStart;
-
-set(mapPoints, { opacity: 0, scale: 0 });
-set(mapText, { opacity: 0, translateY: 20 });
-
-onScroll({
-  target: '#lightsSection',
-  enter: 'top top',
-  leave: 'bottom bottom',
-  sync: true,
-  onUpdate: (self) => {
-    const p = self.progress;
-
-    // 1. Lights: 0 to 0.4
-    const lightsStep = 0.4 / 5;
-    lights.forEach((el, i) => {
-      const onAt = i * lightsStep;
-      const greenAt = onAt + lightsStep * 0.55;
-      if (p >= greenAt) {
-        el.classList.add('is-green');
-        el.classList.remove('is-red-hot');
-      } else if (p >= onAt) {
-        el.classList.add('is-red-hot');
-        el.classList.remove('is-green');
-      } else {
-        el.classList.remove('is-green', 'is-red-hot');
-      }
-    });
-
-    // 2. Wordmark fades: 0.4 to 0.5
-    const fadeP = clamp((p - 0.4) / 0.1);
-    wordmarkEl.style.opacity = 1 - fadeP;
-    wordmarkEl.style.transform = `translateY(${fadeP * -18}px)`;
-    if(fadeP === 1) {
-      wordmarkEl.style.pointerEvents = 'none';
-    } else {
-      wordmarkEl.style.pointerEvents = 'auto';
-    }
-
-    // 3. Doors open: 0.5 to 0.60
-    const doorP = clamp((p - 0.5) / 0.1);
-    const easedDoor = doorP * doorP * (3 - 2 * doorP); // smoothstep
-    doorLeft.style.transform = `translateX(${-easedDoor * 100}%)`;
-    doorRight.style.transform = `translateX(${easedDoor * 100}%)`;
-    overlay.style.opacity = 1 - easedDoor;
-
-    // 4. Map Reveal & Draw: 0.65 to 0.85
-    const mapP = clamp((p - 0.65) / 0.2);
-    if (mapP > 0) {
-      mapContainer.style.opacity = 1;
-    } else {
-      mapContainer.style.opacity = 0;
-    }
-
-    // Manual playback of map animations based on scroll mapP
-    // Stroke dashoffset for the route line
-    const dashoffsetStart = mapRoute.getTotalLength();
-    mapRoute.style.strokeDashoffset = dashoffsetStart * (1 - mapP);
-    
-    // Points & text fade in
-    const textFadeP = clamp((mapP - 0.5) / 0.5);
-    mapPoints.forEach(pt => {
-      pt.style.opacity = mapP > 0.1 ? textFadeP : 0;
-      pt.style.transform = `scale(${textFadeP})`;
-    });
-    mapText.style.opacity = textFadeP;
-    mapText.style.transform = `translateY(${(1 - textFadeP) * 20}px)`;
-
-    // 5. Fade to final bus image: 0.85 to 1.0
-    const busP = clamp((p - 0.85) / 0.15);
-    sceneBg.style.opacity = busP;
-  }
-});
-
 /* ---------------- SECTION B: the highway (Route Map) ---------------- */
 const busFigure = document.getElementById('busFigure');
 const routeProgress = document.getElementById('routeProgress');
@@ -118,7 +30,9 @@ function goToStop(index) {
   
   // Toggle comic bubble at end
   if (activeStop === STOPS - 1) {
-    comicBubble.classList.add('show');
+    setTimeout(() => {
+      if (activeStop === STOPS - 1) comicBubble.classList.add('show');
+    }, 800);
   } else {
     comicBubble.classList.remove('show');
   }
@@ -187,3 +101,28 @@ window.addEventListener('keydown', (e) => {
 
 // Initialize
 goToStop(0);
+
+// Add entry animation with the card
+const transOverlay = document.createElement('div');
+transOverlay.className = 'transition-overlay active';
+document.body.appendChild(transOverlay);
+
+const card = document.createElement('div');
+card.className = 'jack-card active';
+card.innerHTML = `
+  <div class="jack-card-inner">
+    <div class="jack-front" style="background-image: url('../jack_trimmed.png'); background-size: 100% 100%; border: none;"></div>
+    <div class="jack-back"></div>
+  </div>
+`;
+document.body.appendChild(card);
+
+setTimeout(() => {
+  transOverlay.classList.remove('active');
+  card.classList.remove('active');
+}, 50);
+
+setTimeout(() => {
+  if (transOverlay.parentNode) transOverlay.parentNode.removeChild(transOverlay);
+  if (card.parentNode) card.parentNode.removeChild(card);
+}, 900);

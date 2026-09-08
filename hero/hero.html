@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Jaden D. Syiem — Archive Vol.01</title>
+<link rel="stylesheet" href="hero.css?v=4">
+</head>
+<body>
+<div class="page-sweep-out" id="page-sweep-out"></div>
+<div class="page">
+
+<!-- META HEADER -->
+<header class="meta">
+  <div class="mc">
+    <span class="mk">Personal Archive</span>
+    <span class="mv">REF: JDS-2026-001</span>
+  </div>
+  <div class="mc c2">
+    <span class="mk">Location Data</span>
+    <span class="mv">Shillong, Meghalaya IN</span>
+  </div>
+  <div class="mc c3">
+    <span class="mk">System Status</span>
+    <span class="mv">Production Mode // Active</span>
+  </div>
+  <div class="mc c4">
+    <span class="mk">Last Updated</span>
+    <span class="mv">Jul.2026</span>
+  </div>
+</header>
+
+<!-- RULER -->
+<div class="ruler-row" id="ruler-row"></div>
+
+<!-- HERO OPEN FIELD -->
+<div class="hero-open" id="hero-open">
+  <canvas id="grid-canvas"></canvas>
+  <span class="field-lbl fl-tl" id="fl-tl" style="display:none">30° Angle_Ref</span>
+  <span class="field-lbl fl-tr">Scale 1:1.00</span>
+
+  <!-- STICKY NOTES — top right of hero -->
+  <div class="sticky-zone" id="sticky-zone">
+    <!-- Yellow: View Resume -->
+    <div class="sticky sticky-yellow" id="sticky-resume">
+      <div class="sticky-pin"></div>
+      <div class="sticky-label">View<br>Resume</div>
+      <div class="sticky-sub">↗ Open PDF</div>
+    </div>
+    <!-- Red: Contact Me -->
+    <div class="sticky sticky-green" id="sticky-contact">
+      <div class="sticky-pin"></div>
+      <div class="sticky-label">Contact<br>Me</div>
+      <div class="sticky-sub">jadedsyiem@gmail.com</div>
+    </div>
+  </div>
+
+  <div class="hero-name-row">
+    <div class="display-name">Jaden D. Syiem</div>
+    <span class="archive-tag">Archive_Vol.01</span>
+  </div>
+</div>
+
+<!-- GRID META STRIP -->
+<div class="grid-strip">
+  <span>Grid_Unit: 10MM</span>
+  <span>Material: Self-Healing_PVC</span>
+</div>
+
+<!-- BODY -->
+<div class="body">
+  <aside class="sidebar">
+    <p class="mission">Full-stack engineer and creative developer from Shillong. Measures twice, ships once. Precision-led work for systems that need edges — not soft corners.</p>
+    <div>
+      <p class="sb-lbl">Stack &amp; Apparatus</p>
+      <ul class="sb-list">
+        <li>Node.js / Express</li>
+        <li>PostgreSQL / JWT</li>
+        <li>React / Anime.js</li>
+        <li>Python / HuggingFace</li>
+        <li>Socket.io / WebSockets</li>
+      </ul>
+    </div>
+    <div>
+      <p class="sb-lbl">Contact</p>
+      <ul class="sb-list">
+        <li>jadedsyiem@gmail.com</li>
+        <li>github.com/D-Jaden</li>
+        <li>KCG College of Tech</li>
+      </ul>
+    </div>
+  </aside>
+
+  <div class="drawer-container">
+    <div class="drawer-label">* PERSONAL FUN PROJECTS</div>
+    
+    <a href="http://pokeguide-omega.vercel.app/" target="_blank" class="file-folder folder-1">
+      <div class="folder-tab">Poké Guide</div>
+      <div class="folder-content">
+        <p>A comprehensive, interactive web Pokédex built with external APIs. Catch 'em all with detailed stats and sprites.</p>
+      </div>
+    </a>
+    
+    <a href="https://stellar-death.vercel.app/" target="_blank" class="file-folder folder-2">
+      <div class="folder-tab">Stellar Death</div>
+      <div class="folder-content">
+        <p>An experimental physics simulation showcasing black holes and gravitational lensing effects.</p>
+      </div>
+    </a>
+    
+    <a href="https://meghyra-six.vercel.app/" target="_blank" class="file-folder folder-3">
+      <div class="folder-tab">Meghyra Web</div>
+      <div class="folder-content">
+        <p>A sleek, modern web platform built to showcase brand identity and interactive frontend components.</p>
+      </div>
+    </a>
+    
+    <a href="#" target="_blank" class="file-folder folder-4">
+      <div class="folder-tab">F1 Entropy</div>
+      <div class="folder-content">
+        <p>A data visualization and motion graphic project analyzing Formula 1 race entropy.</p>
+      </div>
+    </a>
+  </div>
+</div>
+
+<!-- SECTION 2: LIGHTS OUT DOORS -->
+<section class="start-lights" id="lightsSection">
+  <div class="lights-pin">
+    <div class="map-container" id="mapContainer">
+      <svg viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet">
+        <path class="map-route" id="mapRoute" d="M -50 350 C 100 300, 200 400, 350 200 C 450 50, 600 150, 850 50" fill="none" stroke="#1212B0" stroke-width="4" />
+        <circle class="map-point" cx="350" cy="200" r="8" fill="#1212B0" />
+        <circle class="map-point" cx="850" cy="50" r="8" fill="#1212B0" />
+      </svg>
+      <div class="map-text">LIGHTS OFF IN SHILLONG</div>
+    </div>
+    
+    <div class="scene-overlay"></div>
+    
+    <div class="lights-content" id="wordmarkEl">
+      <div class="wordmark">
+        <div class="eyebrow mono">NH 6 &middot; SHILLONG</div>
+        <h1>Lights out<br>at Shillong</h1>
+        <div class="sub">Driver: Jaden D. Syiem &middot; Full Stack Developer</div>
+      </div>
+      <div class="rig" id="rig">
+        <div class="light" data-i="0"></div>
+        <div class="light" data-i="1"></div>
+        <div class="light" data-i="2"></div>
+        <div class="light" data-i="3"></div>
+        <div class="light" data-i="4"></div>
+      </div>
+    </div>
+    
+    <div class="door left" id="doorLeft"><span class="grid-text left-text">ENTER<br>BOS SMIT</span></div>
+    <div class="door right" id="doorRight"><span class="grid-text right-text">ENTER<br>BOS SMIT</span></div>
+  </div>
+</section>
+
+<!-- SECTION 3: THE ROUTE MAP (Experience) -->
+<section class="highway" id="highwaySection">
+  <div class="highway-pin">
+    <div class="experience-badge">EXPERIENCE</div>
+    <div class="route-map-container">
+      <div class="route-map-inner">
+        <div class="route-line-bg"></div>
+        <div class="route-line-fill" id="routeProgress"></div>
+        <div class="route-stations" id="routeStations">
+        <div class="station" data-index="0">
+          <div class="station-dot"></div>
+          <div class="station-label mono">BSNL</div>
+        </div>
+        <div class="station" data-index="1">
+          <div class="station-dot"></div>
+          <div class="station-label mono">NIC</div>
+        </div>
+        <div class="station" data-index="2">
+          <div class="station-dot"></div>
+          <div class="station-label mono">DATAYUG</div>
+        </div>
+        <div class="station" data-index="3">
+          <div class="station-dot"></div>
+          <div class="station-label mono">NEHU</div>
+        </div>
+      </div>
+      </div>
+    </div>
+    <div class="main-content-area">
+      <button class="nav-btn prev-btn" id="prevBtn" aria-label="Previous Stop">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <div class="billboard-container">
+        <div class="posts"><div class="post"></div><div class="post"></div></div>
+        <div class="board" id="board">
+          <div class="board-content" data-stop="0">
+            <div class="board-eyebrow mono">NH 6 &middot; MILE 1</div>
+            <div class="board-title">BSNL</div>
+            <div class="board-meta mono">Internship &middot; mid-2024</div>
+            <div class="board-desc">First stop on the road: an early internship with BSNL, getting hands-on with real infrastructure and systems work.</div>
+          </div>
+          <div class="board-content" data-stop="1">
+            <div class="board-eyebrow mono">NH 6 &middot; MILE 2</div>
+            <div class="board-title">NIC Meghalaya</div>
+            <div class="board-meta mono">Internship &middot; mid-2025 — present</div>
+            <div class="board-desc">Full-stack development on the DAK Logbook, a government mail-tracking system — Node.js, PostgreSQL, JWT auth and real-time notifications over Socket.io.</div>
+          </div>
+          <div class="board-content" data-stop="2">
+            <div class="board-eyebrow mono">NH 6 &middot; MILE 3</div>
+            <div class="board-title">Datayug Society</div>
+            <div class="board-meta mono">Internship &middot; early 2026</div>
+            <div class="board-desc">A software development internship, adding more range to the toolkit alongside the ongoing NIC work.</div>
+          </div>
+          <div class="board-content" data-stop="3">
+            <div class="board-eyebrow mono">NH 6 &middot; MILE 4</div>
+            <div class="board-title">NEHU</div>
+            <div class="board-meta mono">Internship &middot; mid-2026</div>
+            <div class="board-desc">Working on web platforms and research implementations.</div>
+          </div>
+        </div>
+      </div>
+      <button class="nav-btn next-btn" id="nextBtn" aria-label="Next Stop">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+    </div>
+    <div class="bus-figure" id="busFigure">
+      <div class="comic-bubble" id="comicBubble">BOX BOX!</div>
+      <img src="../experience/bos_smit.png" alt="Illustrated bus, travelling National Highway 6">
+    </div>
+    <div class="bottom-info-bar mono">
+      <div>DRIVER: J. SYIEM</div>
+      <div>NH6 EXPRESS ROUTE</div>
+      <div>USE ARROW KEYS OR CLICK TO NAVIGATE</div>
+    </div>
+  </div>
+</section>
+
+</section>
+
+<!-- SECTION 4: ABOUT ME -->
+<section class="about-me" id="aboutSection">
+  <div class="about-layout-container">
+    <!-- Bio Box (Top Left) -->
+    <div class="about-bio-box">
+      <div class="about-sticker">ABOUT</div>
+      <img src="assets/pokemon_pfp.png?v=4" class="about-pfp" alt="Jaden as a Pokemon Trainer">
+      <div class="pfp-level-bar-container">
+        <div class="level-top-row">
+          <div class="level-badge">
+            <span class="lvl-num">2</span>
+            <span class="lvl-lbl">LEVEL</span>
+          </div>
+          <div class="level-bar-wrapper">
+            <div class="level-bar">
+              <div class="level-bar-fill"></div>
+            </div>
+          </div>
+          <div class="level-badge">
+            <span class="lvl-num">3</span>
+            <span class="lvl-lbl">LEVEL</span>
+          </div>
+        </div>
+        <div class="exp-text">5,000 / 10,000</div>
+      </div>
+      <div class="about-text-box">
+        <p class="about-text">
+          Hi, I'm Jaden! I'm a developer passionate about building immersive, interactive web experiences. 
+          I love turning complex ideas into clean, pixel-perfect reality. 
+          When I'm not coding, you can probably find me hunting for shiny Pokémon or building Gunpla!
+        </p>
+      </div>
+    </div>
+
+    <!-- Reverse L Shelves Platform -->
+    <div class="reverse-l-panel" id="pegboard">
+      <div class="reverse-l-bg"></div>
+      
+      <!-- Reverse L Shelves -->
+      <div class="shelf shelf-gohan"></div>
+      <div class="shelf shelf-gundam"></div>
+      <div class="shelf shelf-batman"></div>
+      <div class="shelf shelf-redbull"></div>
+      
+      <!-- Figurines -->
+      <div class="drag-item item-gohan">
+        <img src="assets/gohan_funko.png" alt="Teen Gohan">
+      </div>
+      <div class="drag-item item-gundam">
+        <img src="assets/gundam_toy.png" alt="Gundam">
+      </div>
+      <div class="drag-item item-batman">
+        <img src="assets/batman_toy.png" alt="Lego Batman">
+      </div>
+      <div class="drag-item item-redbull">
+        <img src="assets/redbull_car.png?v=5" alt="Red Bull Racing Car">
+      </div>
+    </div>
+  </div>
+  <div class="about-hint">Try Moving Things :)</div>
+</section>
+
+
+<!-- FOOTER -->
+<footer class="footer">
+  <span>© 2026 Jaden_D._Syiem</span>
+  <span>End_of_Index</span>
+</footer>
+
+</div>
+
+<!-- Glass Taskbar -->
+<nav class="glass-taskbar">
+  <a href="#hero-open" class="taskbar-item" title="Home">
+    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+  </a>
+  <a href="#highwaySection" class="taskbar-item" title="Experience">
+    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon><line x1="9" y1="3" x2="9" y2="18"></line><line x1="15" y1="6" x2="15" y2="21"></line></svg>
+  </a>
+  <a href="#" class="taskbar-item" title="Resume" id="resume-nav-link">
+    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+  </a>
+  <a href="#aboutSection" class="taskbar-item" title="About Me">
+    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+  </a>
+</nav>
+
+<span class="cursor-badge" id="cursor-badge">X:0000 Y:0000</span>
+
+<!-- Anime.js v4 from CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/4.0.0/anime.iife.min.js"></script>
+<script src="hero.js?v=3"></script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Luxurious+Script&family=Archivo+Black&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: #ffffff;
+  color: #1212B0;
+  min-height: 100vh;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.page {
+  width: 100%;
+  max-width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── META HEADER ── */
+.meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 9px 28px;
+  border-bottom: 1px solid rgba(18,18,176,0.28);
+  background: #ffffff;
+}
+.mc { display: flex; flex-direction: column; gap: 2px; }
+.mc.c2 { align-items: center; }
+.mc.c4 { align-items: flex-end; }
+.mk {
+  font-size: 8.5px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: #1212B0; opacity: 0.5;
+}
+.mv, .mv a {
+  font-size: 8.5px; letter-spacing: 0.11em;
+  text-transform: uppercase; color: #1212B0;
+  text-decoration: none;
+}
+.mv a:hover { text-decoration: underline; }
+
+/* ── RULER ── */
+.ruler-row {
+  position: relative; height: 26px;
+  background: #ffffff;
+  border-bottom: 1px solid rgba(18,18,176,0.28);
+  overflow: hidden;
+}
+
+/* ── CONTACT AREA ── */
+.contact-area {
+  flex: 1;
+  position: relative;
+  background-image: 
+    linear-gradient(rgba(18,18,176,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(18,18,176,0.05) 1px, transparent 1px);
+  background-size: 30px 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-header {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  padding: 40px 28px 20px;
+  border-bottom: 1px solid rgba(18,18,176,0.15);
+}
+.display-name {
+  font-family: 'Luxurious Script', cursive;
+  font-size: clamp(50px, 8vw, 100px);
+  line-height: 0.88; color: #1212B0;
+  letter-spacing: -0.01em; padding-bottom: 4px;
+}
+.archive-tag {
+  font-size: clamp(9px, 1vw, 13px); letter-spacing: 0.24em;
+  text-transform: uppercase; color: #1212B0; opacity: 0.6;
+  padding-bottom: 20px;
+}
+
+.contact-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.contact-box {
+  background: #ffffff;
+  border: 1px solid rgba(18,18,176,0.28);
+  padding: 40px;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 10px 10px 0 rgba(18,18,176,0.1);
+}
+
+.mission {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 14px; line-height: 1.8;
+  letter-spacing: 0.03em; text-transform: uppercase;
+  color: #1212B0; padding-bottom: 30px;
+  border-bottom: 1px solid rgba(18,18,176,0.15);
+  margin-bottom: 30px;
+}
+
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.link-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: rgba(18,18,176,0.03);
+  border: 1px solid rgba(18,18,176,0.15);
+  text-decoration: none;
+  color: #1212B0;
+  transition: all 0.2s ease;
+}
+
+.link-item:hover {
+  background: #1212B0;
+  color: #ffffff;
+  transform: translate(2px, -2px);
+  box-shadow: -4px 4px 0 rgba(18,18,176,0.2);
+}
+
+.link-item .lbl {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.link-item .val {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ── CURSOR BADGE ── */
+.cursor-badge {
+  position: fixed; top: 0; left: 0;
+  transform: translate(14px, -50%);
+  background: #1212B0; color: #fff;
+  font-size: 9px; letter-spacing: 0.1em;
+  padding: 3px 9px; white-space: nowrap;
+  pointer-events: none; z-index: 9999; opacity: 0;
+  transition: opacity 0.15s;
+}
+.cursor-badge.visible { opacity: 1; }

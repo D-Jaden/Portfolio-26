@@ -4,13 +4,26 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Mission Brief</title>
-  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap" rel="stylesheet"/>
-
-  <link rel="stylesheet" href="loading_styles.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&family=Mr+Dafoe&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="loading_styles.css?v=22"/>
 </head>
 <body>
 
-  <div class="terminal">
+  <!-- 3D Scene Containers -->
+  <div id="webgl-container"></div>
+  <div id="css3d-container"></div>
+
+  <!-- Boot Prompt Overlay -->
+  <div id="boot-prompt">
+    <div class="prompt-text">POWER OFF</div>
+    <div class="prompt-sub">Click the power button on the CPU tower to start.</div>
+  </div>
+  <!-- The Background Neon Sign -->
+  <div class="neon-sign-container" style="display: none;">
+    <h1 class="neon-sign">In The Lab</h1>
+  </div>
+
+  <div class="terminal off">
     <div class="scanlines"></div>
 
     <!-- Header -->
@@ -76,8 +89,13 @@
     </div>
   </div>
 
+  <!-- Three.js Dependencies -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/renderers/CSS3DRenderer.js"></script>
+  
   <script src="https://unpkg.com/animejs@4.4.1/dist/bundles/anime.umd.js"></script>
-  <script src="loading.js"></script>
+  <script src="loading.js?v=22"></script>
 
 </body>
 </html>

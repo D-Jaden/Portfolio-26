@@ -6,8 +6,8 @@
 <title>Shillong Express — Jaden D. Syiem</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&family=Black+Han+Sans&family=Permanent+Marker&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="experience.css">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;900&family=Black+Han+Sans&family=Permanent+Marker&family=Archivo+Black&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="experience.css?v=5">
 <script src="https://unpkg.com/animejs@4.4.1/dist/bundles/anime.umd.js"></script>
 </head>
 <body>
@@ -17,49 +17,10 @@
     <small>mail the driver</small>
   </a>
 
-  <!-- SECTION A: LIGHTS OUT -->
-  <section class="start-lights" id="lightsSection">
-    <div class="lights-pin">
-      <div class="scene-bg"></div>
-      
-      <!-- Added SVG Map for animejs line drawing after doors open -->
-      <div class="map-container" id="mapContainer">
-        <svg viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet">
-          <!-- A simple dashed/curved path representing a map route -->
-          <path class="map-route" d="M -50 350 C 100 300, 200 400, 350 200 C 450 50, 600 150, 850 50" fill="none" stroke="var(--bus-gold)" stroke-width="4" />
-          <circle class="map-point" cx="350" cy="200" r="8" fill="var(--signal-red)" />
-          <circle class="map-point" cx="850" cy="50" r="8" fill="var(--signal-green)" />
-        </svg>
-        <div class="map-text">LIGHTS OFF IN SHILLONG</div>
-      </div>
-      
-      <div class="scene-overlay"></div>
-      
-      <div class="lights-content" id="wordmarkEl">
-        <div class="wordmark">
-          <div class="eyebrow mono">NH 6 &middot; SHILLONG</div>
-          <h1>Lights out<br>at Shillong</h1>
-          <div class="sub">Driver: Jaden D. Syiem &middot; Full Stack Developer</div>
-        </div>
-        <div class="rig" id="rig">
-          <div class="light" data-i="0"></div>
-          <div class="light" data-i="1"></div>
-          <div class="light" data-i="2"></div>
-          <div class="light" data-i="3"></div>
-          <div class="light" data-i="4"></div>
-        </div>
-        <div class="cue">scroll to start engines ↓</div>
-      </div>
-      
-      <!-- door panels -->
-      <div class="door left" id="doorLeft">
-        <span class="graffiti left-text">ENTER</span>
-      </div>
-      <div class="door right" id="doorRight">
-        <span class="graffiti right-text">BOS SMIT</span>
-      </div>
-    </div>
-  </section>
+  <div class="top-nav">
+    <a href="../hero/hero.html" class="back-link">← Back to Hero</a>
+    <span class="nav-title mono">NH 6 &middot; SHILLONG EXPRESS</span>
+  </div>
 
   <!-- SECTION B: THE ROUTE MAP (Experience) -->
   <section class="highway" id="highwaySection">
@@ -84,11 +45,11 @@
           </div>
           <div class="station" data-index="2">
             <div class="station-dot"></div>
-            <div class="station-label mono">NEHU</div>
+            <div class="station-label mono">DATAYUG</div>
           </div>
           <div class="station" data-index="3">
             <div class="station-dot"></div>
-            <div class="station-label mono">KCG</div>
+            <div class="station-label mono">NEHU</div>
           </div>
         </div>
         </div>
@@ -112,24 +73,28 @@
               <div class="board-title">BSNL</div>
               <div class="board-meta mono">Internship &middot; mid-2024</div>
               <div class="board-desc">First stop on the road: an early internship with BSNL, getting hands-on with real infrastructure and systems work.</div>
+              <button onclick="window.open('https://www.linkedin.com/posts/jaden-dutta-syiem-b71aa9309_bsnl-internship-networking-activity-7249128807859634176-pRhb', '_blank')" style="display: inline-block !important; margin-top: 25px !important; background: #fdfdfd !important; color: #12432a !important; border: 3px solid #12432a !important; border-radius: 6px !important; padding: 8px 20px !important; font-family: 'Space Mono', monospace !important; font-size: 14px !important; font-weight: bold !important; cursor: pointer !important; position: relative !important; z-index: 99999 !important;">VIEW</button>
             </div>
             <div class="board-content" data-stop="1">
               <div class="board-eyebrow mono">NH 6 &middot; MILE 2</div>
               <div class="board-title">NIC Meghalaya</div>
               <div class="board-meta mono">Internship &middot; mid-2025 — present</div>
               <div class="board-desc">Full-stack development on the DAK Logbook, a government mail-tracking system — Node.js, PostgreSQL, JWT auth and real-time notifications over Socket.io.</div>
+              <button onclick="window.open('https://lnkd.in/p/dNEmq7Bf', '_blank')" style="display: inline-block !important; margin-top: 25px !important; background: #fdfdfd !important; color: #12432a !important; border: 3px solid #12432a !important; border-radius: 6px !important; padding: 8px 20px !important; font-family: 'Space Mono', monospace !important; font-size: 14px !important; font-weight: bold !important; cursor: pointer !important; position: relative !important; z-index: 99999 !important;">VIEW</button>
             </div>
             <div class="board-content" data-stop="2">
               <div class="board-eyebrow mono">NH 6 &middot; MILE 3</div>
-              <div class="board-title">NEHU &amp; Datayug Society</div>
+              <div class="board-title">Datayug Society</div>
               <div class="board-meta mono">Internship &middot; early 2026</div>
               <div class="board-desc">A software development internship, adding more range to the toolkit alongside the ongoing NIC work.</div>
+              <button onclick="window.open('https://www.linkedin.com/posts/jaden-dutta-syiem-b71aa9309_cybersecurity-internshipcomplete-webdevelopment-activity-7462370005582684160-W9kG/', '_blank')" style="display: inline-block !important; margin-top: 25px !important; background: #fdfdfd !important; color: #12432a !important; border: 3px solid #12432a !important; border-radius: 6px !important; padding: 8px 20px !important; font-family: 'Space Mono', monospace !important; font-size: 14px !important; font-weight: bold !important; cursor: pointer !important; position: relative !important; z-index: 99999 !important;">VIEW</button>
             </div>
             <div class="board-content" data-stop="3">
-              <div class="board-eyebrow mono">NH 6 &middot; MILE 4 — SHILLONG</div>
-              <div class="board-title">Currently</div>
-              <div class="board-meta mono">B.E. Computer Science &middot; KCG College &middot; 2022–2026</div>
-              <div class="board-desc">Wrapping up the degree while building Meghyra, a personal portfolio, and a handful of open-source side projects.</div>
+              <div class="board-eyebrow mono">NH 6 &middot; MILE 4</div>
+              <div class="board-title">NEHU</div>
+              <div class="board-meta mono">Internship &middot; mid-2026</div>
+              <div class="board-desc">Working on web platforms and research implementations.</div>
+              <button onclick="window.open('#', '_blank')" style="display: inline-block !important; margin-top: 25px !important; background: #fdfdfd !important; color: #12432a !important; border: 3px solid #12432a !important; border-radius: 6px !important; padding: 8px 20px !important; font-family: 'Space Mono', monospace !important; font-size: 14px !important; font-weight: bold !important; cursor: pointer !important; position: relative !important; z-index: 99999 !important;">VIEW</button>
             </div>
           </div>
         </div>

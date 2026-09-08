@@ -710,6 +710,7 @@ html, body {
   margin-bottom: 16px;
 }
 .board-desc {
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 14px;
   color: #f3ead8;
   line-height: 1.6;
@@ -1216,4 +1217,35 @@ html, body {
 }
 .page-sweep-out.active {
   bottom: 100%;
+}
+
+/* View Button */
+.view-btn {
+  display: inline-block !important;
+  background: #f3ead8 !important; /* paper */
+  border: 3px solid #12432a !important; /* nh-green-dark */
+  border-radius: 6px;
+  padding: 6px 16px !important;
+  font-family: 'Space Mono', monospace !important;
+  font-size: 13px !important;
+  font-weight: bold !important;
+  letter-spacing: 0.1em;
+  color: #12432a !important;
+  text-transform: uppercase;
+  text-decoration: none;
+  transform: rotate(-3deg);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 4px 4px 0 #12432a;
+  align-self: flex-start;
+  position: relative !important;
+  z-index: 9999 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  cursor: pointer !important;
+}
+.view-btn:hover {
+  transform: rotate(0deg) scale(1.05);
+  background: #12432a !important;
+  color: #f3ead8 !important;
+  box-shadow: 6px 6px 0 rgba(0,0,0,0.4);
 }

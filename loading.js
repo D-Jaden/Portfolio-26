@@ -575,12 +575,14 @@ btn.addEventListener('click', () => {
 
 function playGridIntro() {
   const overlay = document.getElementById('grid-overlay');
-  if (!overlay) return;
+  const pctText = document.getElementById('loading-pct');
+  if (!overlay || !pctText) return;
 
   const tl = anime.timeline({
     easing: 'easeOutExpo'
   });
 
+  // Draw HUD lines
   tl.add({
     targets: '.hud-draw',
     strokeDashoffset: [anime.setDashoffset, 0],
@@ -588,6 +590,7 @@ function playGridIntro() {
     delay: anime.stagger(50),
     easing: 'easeInOutSine'
   })
+  // Pop the dots
   .add({
     targets: '.hud-pop',
     r: [0, 3],
@@ -596,53 +599,25 @@ function playGridIntro() {
     delay: anime.stagger(30),
     easing: 'easeOutBack'
   }, '-=800')
+  // Animate Percentage
   .add({
-    targets: '#mask-tl',
-    x: ['50%', '10%'],
-    y: ['50%', '10%'],
-    width: ['0%', '40%'],
-    height: ['0%', '40%'],
-    duration: 1400,
-    easing: 'easeInOutQuart'
+    targets: { val: 0 },
+    val: 100,
+    round: 1,
+    duration: 1500,
+    easing: 'linear',
+    update: function(a) {
+      pctText.innerHTML = a.animations[0].currentValue + '%';
+    }
+  }, '+=100')
+  // Fade out entire overlay to reveal 3D scene
+  .add({
+    targets: overlay,
+    opacity: 0,
+    duration: 800,
+    easing: 'easeInOutQuad'
   }, '+=400')
-  .add({
-    targets: '#mask-tr',
-    x: ['50%', '50%'],
-    y: ['50%', '10%'],
-    width: ['0%', '40%'],
-    height: ['0%', '40%'],
-    duration: 1400,
-    easing: 'easeInOutQuart'
-  }, '-=1400')
-  .add({
-    targets: '#mask-bl',
-    x: ['50%', '10%'],
-    y: ['50%', '50%'],
-    width: ['0%', '40%'],
-    height: ['0%', '40%'],
-    duration: 1400,
-    easing: 'easeInOutQuart'
-  }, '-=1400')
-  .add({
-    targets: '#mask-br',
-    x: ['50%', '50%'],
-    y: ['50%', '50%'],
-    width: ['0%', '40%'],
-    height: ['0%', '40%'],
-    duration: 1400,
-    easing: 'easeInOutQuart'
-  }, '-=1400')
-  .add({
-    targets: '#frame-rect',
-    x: ['50%', '10%'],
-    y: ['50%', '10%'],
-    width: ['0%', '80%'],
-    height: ['0%', '80%'],
-    opacity: [0, 1],
-    duration: 1400,
-    easing: 'easeInOutQuart'
-  }, '-=1400')
   .finished.then(() => {
-    overlay.style.pointerEvents = 'none';
+    overlay.style.display = 'none';
   });
 }

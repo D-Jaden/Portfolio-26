@@ -13,16 +13,6 @@
   <div id="grid-overlay">
     <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <mask id="quarter-mask">
-          <!-- Solid white = solid background -->
-          <rect width="100%" height="100%" fill="white" />
-          <!-- 4 quarters that will turn black (transparent hole) to reveal 3D computer -->
-          <rect id="mask-tl" fill="black" />
-          <rect id="mask-tr" fill="black" />
-          <rect id="mask-bl" fill="black" />
-          <rect id="mask-br" fill="black" />
-        </mask>
-        
         <!-- Faint grid pattern -->
         <pattern id="faint-grid" width="40" height="40" patternUnits="userSpaceOnUse">
           <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(18, 18, 176, 0.1)" stroke-width="1" />
@@ -30,9 +20,9 @@
       </defs>
       
       <!-- The Background Cover -->
-      <rect width="100%" height="100%" fill="#ffffff" mask="url(#quarter-mask)" />
+      <rect width="100%" height="100%" fill="#ffffff" />
       <!-- Grid Overlay Cover -->
-      <rect width="100%" height="100%" fill="url(#faint-grid)" mask="url(#quarter-mask)" />
+      <rect width="100%" height="100%" fill="url(#faint-grid)" />
 
       <!-- HUD Reticle Group -->
       <g id="hud-group" stroke="#1212B0" fill="none" stroke-width="1.5">
@@ -77,10 +67,8 @@
         <circle cx="50%" cy="50%" r="3" fill="#1212B0" class="hud-pop" />
       </g>
       
-      <!-- Final Frame Cut Border (Starts hidden/small, grows with mask) -->
-      <rect id="frame-rect" stroke="#1212B0" stroke-width="2" fill="none" opacity="0" />
-      <!-- Frame corners -->
-      <path id="frame-corners" stroke="#1212B0" stroke-width="4" fill="none" opacity="0" />
+      <!-- Loading Percentage Text -->
+      <text id="loading-pct" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="'Share Tech Mono', monospace" font-size="24" fill="#1212B0">0%</text>
     </svg>
   </div>  <!-- 3D Scene Containers -->
   <div id="webgl-container"></div>

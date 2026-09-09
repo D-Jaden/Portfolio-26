@@ -290,7 +290,7 @@ html, body {
 }
 
 .file-folder:hover {
-  transform: translateY(-60px);
+  transform: translateY(-15px);
   z-index: 10;
   box-shadow: 0 -5px 25px rgba(18,18,176,0.2);
 }
@@ -1256,7 +1256,7 @@ html, body {
 /* Personal Fun Projects View Button */
 .project-view-btn-container {
   text-align: right;
-  margin-top: 15px;
+  margin-top: 8px;
 }
 
 .project-view-btn {

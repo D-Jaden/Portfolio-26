@@ -340,6 +340,7 @@
     position: relative;
     inset: auto;
     pointer-events: auto;
+    z-index: 10;
   }
 
   .bus-figure {
@@ -692,21 +693,21 @@
 /* View Button */
 .view-btn {
   display: inline-block !important;
-  background: var(--paper) !important;
-  border: 3px solid var(--nh-green-dark) !important;
+  background-color: #f4b400 !important;
+  border: 3px solid #f4b400 !important;
   border-radius: 6px;
   padding: 8px 20px;
   font-family: 'Space Mono', monospace;
   font-size: 14px;
   font-weight: bold;
   letter-spacing: 0.1em;
-  color: var(--nh-green-dark) !important;
+  color: #ffffff !important;
   text-transform: uppercase;
   text-decoration: none;
   margin-top: 25px;
   transform: rotate(-3deg);
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 4px 4px 0 var(--nh-green-dark);
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
   align-self: flex-start;
   position: relative !important;
   z-index: 9999 !important;
@@ -716,7 +717,8 @@
 }
 .view-btn:hover {
   transform: rotate(0deg) scale(1.05);
-  background: var(--nh-green-dark) !important;
-  color: var(--paper) !important;
+  background-color: #cc9900 !important;
+  border-color: #cc9900 !important;
+  color: #ffffff !important;
   box-shadow: 6px 6px 0 rgba(0,0,0,0.4);
 }

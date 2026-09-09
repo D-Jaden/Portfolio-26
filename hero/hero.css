@@ -1255,8 +1255,9 @@ html, body {
 
 /* Personal Fun Projects View Button */
 .project-view-btn-container {
-  text-align: right;
+  text-align: left;
   margin-top: 8px;
+  position: relative;
 }
 
 .project-view-btn {
@@ -1285,4 +1286,20 @@ html, body {
   background-color: #1212B0;
   color: #ffffff;
   box-shadow: 6px 6px 0 rgba(18, 18, 176, 0.4);
+}
+
+.wiggly-arrow {
+  position: absolute;
+  top: -15px;
+  left: 90px;
+  width: 60px;
+  height: 40px;
+  pointer-events: none;
+  opacity: 0.8;
+  animation: floatArrow 3s ease-in-out infinite;
+}
+
+@keyframes floatArrow {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(4px) rotate(-3deg); }
 }

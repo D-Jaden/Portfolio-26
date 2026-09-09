@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Mission Brief</title>
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&family=Mr+Dafoe&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="loading_styles.css?v=23"/>
+  <link rel="stylesheet" href="loading_styles.css?v=24"/>
 </head>
 <body>
 
@@ -30,22 +30,22 @@
         <path d="M 50% 0 L 50% 100%" stroke="rgba(18, 18, 176, 0.2)" stroke-dasharray="2 4" class="hud-draw" />
         <path d="M 0 50% L 100% 50%" stroke="rgba(18, 18, 176, 0.2)" stroke-dasharray="2 4" class="hud-draw" />
         
-        <!-- Outer Circle -->
-        <circle cx="50%" cy="50%" r="200" stroke-dasharray="4 6" class="hud-draw" />
-        <!-- Inner Circle -->
-        <circle cx="50%" cy="50%" r="80" stroke-dasharray="4 6" class="hud-draw" />
+        <!-- Outer Box -->
+        <rect x="calc(50% - 200px)" y="calc(50% - 150px)" width="400" height="300" fill="none" stroke-dasharray="4 6" class="hud-draw" />
+        <!-- Inner Box -->
+        <rect x="calc(50% - 80px)" y="calc(50% - 60px)" width="160" height="120" fill="none" stroke-dasharray="4 6" class="hud-draw" />
         
         <!-- Crosshairs with nodes -->
         <g class="hud-lines">
           <!-- Top -->
-          <path d="M calc(50% - 30px) calc(50% - 200px) L calc(50% + 30px) calc(50% - 200px)" class="hud-draw" />
-          <circle cx="50%" cy="calc(50% - 200px)" r="3" fill="#1212B0" class="hud-pop" />
-          <path d="M 50% calc(50% - 200px) L 50% calc(50% - 220px)" class="hud-draw" />
+          <path d="M calc(50% - 30px) calc(50% - 150px) L calc(50% + 30px) calc(50% - 150px)" class="hud-draw" />
+          <circle cx="50%" cy="calc(50% - 150px)" r="3" fill="#1212B0" class="hud-pop" />
+          <path d="M 50% calc(50% - 150px) L 50% calc(50% - 170px)" class="hud-draw" />
           
           <!-- Bottom -->
-          <path d="M calc(50% - 30px) calc(50% + 200px) L calc(50% + 30px) calc(50% + 200px)" class="hud-draw" />
-          <circle cx="50%" cy="calc(50% + 200px)" r="3" fill="#1212B0" class="hud-pop" />
-          <path d="M 50% calc(50% + 200px) L 50% calc(50% + 220px)" class="hud-draw" />
+          <path d="M calc(50% - 30px) calc(50% + 150px) L calc(50% + 30px) calc(50% + 150px)" class="hud-draw" />
+          <circle cx="50%" cy="calc(50% + 150px)" r="3" fill="#1212B0" class="hud-pop" />
+          <path d="M 50% calc(50% + 150px) L 50% calc(50% + 170px)" class="hud-draw" />
           
           <!-- Left -->
           <path d="M calc(50% - 200px) calc(50% - 30px) L calc(50% - 200px) calc(50% + 30px)" class="hud-draw" />
@@ -58,8 +58,8 @@
           <path d="M calc(50% + 200px) 50% L calc(50% + 220px) 50%" class="hud-draw" />
 
           <!-- Inner bounds -->
-          <path d="M calc(50% - 15px) calc(50% - 80px) L calc(50% + 15px) calc(50% - 80px)" class="hud-draw" />
-          <path d="M calc(50% - 15px) calc(50% + 80px) L calc(50% + 15px) calc(50% + 80px)" class="hud-draw" />
+          <path d="M calc(50% - 15px) calc(50% - 60px) L calc(50% + 15px) calc(50% - 60px)" class="hud-draw" />
+          <path d="M calc(50% - 15px) calc(50% + 60px) L calc(50% + 15px) calc(50% + 60px)" class="hud-draw" />
           <path d="M calc(50% - 80px) calc(50% - 15px) L calc(50% - 80px) calc(50% + 15px)" class="hud-draw" />
           <path d="M calc(50% + 80px) calc(50% - 15px) L calc(50% + 80px) calc(50% + 15px)" class="hud-draw" />
         </g>
@@ -75,7 +75,7 @@
   <div id="css3d-container"></div>
 
   <!-- Boot Prompt Overlay -->
-  <div id="boot-prompt">
+  <div id="boot-prompt" class="hidden">
     <div class="prompt-text">POWER OFF</div>
     <div class="prompt-sub">Click the power button on the CPU tower to start.</div>
   </div>
@@ -156,7 +156,7 @@
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/renderers/CSS3DRenderer.js"></script>
   
   <script src="https://unpkg.com/animejs@4.4.1/dist/bundles/anime.umd.js"></script>
-  <script src="loading.js?v=23"></script>
+  <script src="loading.js?v=24"></script>
 
 </body>
 </html>

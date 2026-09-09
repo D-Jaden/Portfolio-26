@@ -619,5 +619,7 @@ function playGridIntro() {
   }, '+=400')
   .finished.then(() => {
     overlay.style.display = 'none';
+    const bootPrompt = document.getElementById('boot-prompt');
+    if (bootPrompt) bootPrompt.classList.remove('hidden');
   });
 }

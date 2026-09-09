@@ -134,6 +134,7 @@ html, body {
 
 .sticky-yellow { background: #F5A800; }
 .sticky-green  { background: #3DAA6A; }
+.sticky-red    { background: #FF4B4B; color: #fff; }
 
 .sticky-pin {
   width: 8px; height: 8px;
@@ -1250,4 +1251,38 @@ html, body {
   border-color: #cc9900 !important;
   color: #ffffff !important;
   box-shadow: 6px 6px 0 rgba(0,0,0,0.4);
+}
+
+/* Personal Fun Projects View Button */
+.project-view-btn-container {
+  text-align: right;
+  margin-top: 15px;
+}
+
+.project-view-btn {
+  display: inline-block;
+  background-color: #ffffff;
+  border: 2px solid #1212B0;
+  border-radius: 6px;
+  padding: 6px 16px;
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  color: #1212B0;
+  text-transform: uppercase;
+  text-decoration: none;
+  transform: rotate(-3deg);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 4px 4px 0 rgba(18, 18, 176, 0.2);
+  cursor: pointer;
+  position: relative;
+  z-index: 10;
+}
+
+.project-view-btn:hover {
+  transform: rotate(0deg) scale(1.05);
+  background-color: #1212B0;
+  color: #ffffff;
+  box-shadow: 6px 6px 0 rgba(18, 18, 176, 0.4);
 }

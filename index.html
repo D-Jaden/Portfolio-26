@@ -5,11 +5,84 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Mission Brief</title>
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&family=Mr+Dafoe&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="loading_styles.css?v=22"/>
+  <link rel="stylesheet" href="loading_styles.css?v=23"/>
 </head>
 <body>
 
-  <!-- 3D Scene Containers -->
+  <!-- Grid Loading Overlay -->
+  <div id="grid-overlay">
+    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <mask id="quarter-mask">
+          <!-- Solid white = solid background -->
+          <rect width="100%" height="100%" fill="white" />
+          <!-- 4 quarters that will turn black (transparent hole) to reveal 3D computer -->
+          <rect id="mask-tl" fill="black" />
+          <rect id="mask-tr" fill="black" />
+          <rect id="mask-bl" fill="black" />
+          <rect id="mask-br" fill="black" />
+        </mask>
+        
+        <!-- Faint grid pattern -->
+        <pattern id="faint-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(18, 18, 176, 0.1)" stroke-width="1" />
+        </pattern>
+      </defs>
+      
+      <!-- The Background Cover -->
+      <rect width="100%" height="100%" fill="#ffffff" mask="url(#quarter-mask)" />
+      <!-- Grid Overlay Cover -->
+      <rect width="100%" height="100%" fill="url(#faint-grid)" mask="url(#quarter-mask)" />
+
+      <!-- HUD Reticle Group -->
+      <g id="hud-group" stroke="#1212B0" fill="none" stroke-width="1.5">
+        <!-- Center crosshairs (guide) -->
+        <path d="M 50% 0 L 50% 100%" stroke="rgba(18, 18, 176, 0.2)" stroke-dasharray="2 4" class="hud-draw" />
+        <path d="M 0 50% L 100% 50%" stroke="rgba(18, 18, 176, 0.2)" stroke-dasharray="2 4" class="hud-draw" />
+        
+        <!-- Outer Circle -->
+        <circle cx="50%" cy="50%" r="200" stroke-dasharray="4 6" class="hud-draw" />
+        <!-- Inner Circle -->
+        <circle cx="50%" cy="50%" r="80" stroke-dasharray="4 6" class="hud-draw" />
+        
+        <!-- Crosshairs with nodes -->
+        <g class="hud-lines">
+          <!-- Top -->
+          <path d="M calc(50% - 30px) calc(50% - 200px) L calc(50% + 30px) calc(50% - 200px)" class="hud-draw" />
+          <circle cx="50%" cy="calc(50% - 200px)" r="3" fill="#1212B0" class="hud-pop" />
+          <path d="M 50% calc(50% - 200px) L 50% calc(50% - 220px)" class="hud-draw" />
+          
+          <!-- Bottom -->
+          <path d="M calc(50% - 30px) calc(50% + 200px) L calc(50% + 30px) calc(50% + 200px)" class="hud-draw" />
+          <circle cx="50%" cy="calc(50% + 200px)" r="3" fill="#1212B0" class="hud-pop" />
+          <path d="M 50% calc(50% + 200px) L 50% calc(50% + 220px)" class="hud-draw" />
+          
+          <!-- Left -->
+          <path d="M calc(50% - 200px) calc(50% - 30px) L calc(50% - 200px) calc(50% + 30px)" class="hud-draw" />
+          <circle cx="calc(50% - 200px)" cy="50%" r="3" fill="#1212B0" class="hud-pop" />
+          <path d="M calc(50% - 200px) 50% L calc(50% - 220px) 50%" class="hud-draw" />
+          
+          <!-- Right -->
+          <path d="M calc(50% + 200px) calc(50% - 30px) L calc(50% + 200px) calc(50% + 30px)" class="hud-draw" />
+          <circle cx="calc(50% + 200px)" cy="50%" r="3" fill="#1212B0" class="hud-pop" />
+          <path d="M calc(50% + 200px) 50% L calc(50% + 220px) 50%" class="hud-draw" />
+
+          <!-- Inner bounds -->
+          <path d="M calc(50% - 15px) calc(50% - 80px) L calc(50% + 15px) calc(50% - 80px)" class="hud-draw" />
+          <path d="M calc(50% - 15px) calc(50% + 80px) L calc(50% + 15px) calc(50% + 80px)" class="hud-draw" />
+          <path d="M calc(50% - 80px) calc(50% - 15px) L calc(50% - 80px) calc(50% + 15px)" class="hud-draw" />
+          <path d="M calc(50% + 80px) calc(50% - 15px) L calc(50% + 80px) calc(50% + 15px)" class="hud-draw" />
+        </g>
+        
+        <circle cx="50%" cy="50%" r="3" fill="#1212B0" class="hud-pop" />
+      </g>
+      
+      <!-- Final Frame Cut Border (Starts hidden/small, grows with mask) -->
+      <rect id="frame-rect" stroke="#1212B0" stroke-width="2" fill="none" opacity="0" />
+      <!-- Frame corners -->
+      <path id="frame-corners" stroke="#1212B0" stroke-width="4" fill="none" opacity="0" />
+    </svg>
+  </div>  <!-- 3D Scene Containers -->
   <div id="webgl-container"></div>
   <div id="css3d-container"></div>
 
@@ -95,7 +168,7 @@
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/renderers/CSS3DRenderer.js"></script>
   
   <script src="https://unpkg.com/animejs@4.4.1/dist/bundles/anime.umd.js"></script>
-  <script src="loading.js?v=22"></script>
+  <script src="loading.js?v=23"></script>
 
 </body>
 </html>

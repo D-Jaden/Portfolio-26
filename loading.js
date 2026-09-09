@@ -539,6 +539,9 @@ function initThreeScene() {
   });
 
   animateScene();
+  
+  // Play the intro grid animation
+  playGridIntro();
 }
 
 function onWindowResize() {
@@ -569,3 +572,77 @@ btn.addEventListener('click', () => {
     window.location.href = './hero/hero.html';
   }, 850);
 });
+
+function playGridIntro() {
+  const overlay = document.getElementById('grid-overlay');
+  if (!overlay) return;
+
+  const tl = anime.timeline({
+    easing: 'easeOutExpo'
+  });
+
+  tl.add({
+    targets: '.hud-draw',
+    strokeDashoffset: [anime.setDashoffset, 0],
+    duration: 1500,
+    delay: anime.stagger(50),
+    easing: 'easeInOutSine'
+  })
+  .add({
+    targets: '.hud-pop',
+    r: [0, 3],
+    opacity: [0, 1],
+    duration: 600,
+    delay: anime.stagger(30),
+    easing: 'easeOutBack'
+  }, '-=800')
+  .add({
+    targets: '#mask-tl',
+    x: ['50%', '10%'],
+    y: ['50%', '10%'],
+    width: ['0%', '40%'],
+    height: ['0%', '40%'],
+    duration: 1400,
+    easing: 'easeInOutQuart'
+  }, '+=400')
+  .add({
+    targets: '#mask-tr',
+    x: ['50%', '50%'],
+    y: ['50%', '10%'],
+    width: ['0%', '40%'],
+    height: ['0%', '40%'],
+    duration: 1400,
+    easing: 'easeInOutQuart'
+  }, '-=1400')
+  .add({
+    targets: '#mask-bl',
+    x: ['50%', '10%'],
+    y: ['50%', '50%'],
+    width: ['0%', '40%'],
+    height: ['0%', '40%'],
+    duration: 1400,
+    easing: 'easeInOutQuart'
+  }, '-=1400')
+  .add({
+    targets: '#mask-br',
+    x: ['50%', '50%'],
+    y: ['50%', '50%'],
+    width: ['0%', '40%'],
+    height: ['0%', '40%'],
+    duration: 1400,
+    easing: 'easeInOutQuart'
+  }, '-=1400')
+  .add({
+    targets: '#frame-rect',
+    x: ['50%', '10%'],
+    y: ['50%', '10%'],
+    width: ['0%', '80%'],
+    height: ['0%', '80%'],
+    opacity: [0, 1],
+    duration: 1400,
+    easing: 'easeInOutQuart'
+  }, '-=1400')
+  .finished.then(() => {
+    overlay.style.pointerEvents = 'none';
+  });
+}

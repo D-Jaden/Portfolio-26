@@ -3,21 +3,43 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Contact — Jaden D. Syiem</title>
-<link rel="stylesheet" href="contact.css">
+<title>Contact Protocol — Jaden D. Syiem</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Black+Han+Sans&family=Luxurious+Script&family=Permanent+Marker&family=Sedgwick+Ave&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="contact.css?v=19">
 </head>
 <body>
+
+<!-- ENTRANCE TRANSITION: SVG SHAPE OVERLAYS (Codepen qBedXpg Reference) -->
+<div class="shape-overlays-transition contact-page-enter-overlay" id="contactPageEnterOverlay">
+  <svg class="shape-overlays" viewBox="0 0 100 100" preserveAspectRatio="none" id="contactPageSvg">
+    <path class="shape-overlays__path p1" id="contactPagePath1" fill="#1212B0"></path>
+    <path class="shape-overlays__path p2" id="contactPagePath2" fill="#60a5fa"></path>
+    <path class="shape-overlays__path p3" id="contactPagePath3" fill="#ffffff"></path>
+  </svg>
+  <div class="shape-overlays-caption" id="contactPageCaption">
+    <div class="shape-caption-inner mono">
+      <span class="shape-caption-tag">COMMUNICATION PROTOCOL // VOL.01</span>
+      <h3 class="shape-caption-title">ENTERING CONTACT PROTOCOL</h3>
+    </div>
+  </div>
+</div>
 
 <div class="page">
   <!-- META HEADER -->
   <header class="meta">
     <div class="mc">
       <span class="mk">Contact Protocol</span>
-      <span class="mv">REF: JDS-COMM-001</span>
+      <span class="mv">REF: JDS-COMM-2026</span>
     </div>
     <div class="mc c2">
       <span class="mk">Location Data</span>
       <span class="mv">Shillong, Meghalaya IN</span>
+    </div>
+    <div class="mc c3">
+      <span class="mk">Channel Status</span>
+      <span class="mv"><span class="status-dot"></span>Active // Open</span>
     </div>
     <div class="mc c4">
       <span class="mk">Navigation</span>
@@ -25,41 +47,170 @@
     </div>
   </header>
 
-  <!-- RULER -->
+  <!-- ARCHITECTURAL RULER ROW -->
   <div class="ruler-row" id="ruler-row"></div>
 
-  <!-- CONTACT AREA -->
-  <div class="contact-area">
+  <!-- MAIN CONTACT HERO & CONSOLE -->
+  <main class="contact-area">
+    
+    <!-- HEADER TITLE BANNER -->
     <div class="contact-header">
-      <h1 class="display-name">Get In Touch</h1>
-      <span class="archive-tag">Comm_Channel.Open</span>
+      <div class="title-wrap">
+        <h1 class="display-name">
+          <span class="script-title">Don't Be A Stranger</span>
+          <span class="sans-title">Let's Build Together</span>
+        </h1>
+        <div class="subtitle-tag">Direct Communication Console // Archive Vol.01</div>
+      </div>
+      <div class="archive-tag">COMM_CHANNEL // OPEN</div>
     </div>
 
-    <div class="contact-content">
-      <div class="contact-box">
-        <p class="mission">Have a project in mind, want to collaborate, or just saying hi? Reach out through the channels below. Responses are usually within 24-48 hours.</p>
+    <!-- MAIN TWO-COLUMN GRID CONTENT -->
+    <div class="contact-grid">
+      
+      <!-- LEFT COLUMN: DIRECT CHANNELS & CARDS -->
+      <div class="channels-column">
         
-        <div class="contact-links">
-          <a href="mailto:jadedsyiem@gmail.com" class="link-item">
-            <span class="lbl">Email</span>
-            <span class="val">jadedsyiem@gmail.com ↗</span>
-          </a>
-          <a href="https://github.com/D-Jaden" class="link-item" target="_blank" rel="noopener">
-            <span class="lbl">GitHub</span>
-            <span class="val">github.com/D-Jaden ↗</span>
-          </a>
-          <a href="https://ieeexplore.ieee.org/10894448" class="link-item" target="_blank" rel="noopener">
-            <span class="lbl">IEEE</span>
-            <span class="val">Published Research ↗</span>
-          </a>
+        <div class="channel-card card-primary">
+          <div class="card-header">
+            <span class="card-type">PRIMARY EMAIL</span>
+          </div>
+          <div class="card-val" id="email-text">jadedsyiem@gmail.com</div>
+          <div class="card-actions">
+            <a href="mailto:jadedsyiem@gmail.com" class="btn btn-filled">Send Mail ↗</a>
+            <button class="btn btn-outline" id="copy-email-btn">Copy Email</button>
+          </div>
+        </div>
+
+        <div class="channel-card">
+          <div class="card-header">
+            <span class="card-type">GITHUB CODE ARCHIVE</span>
+          </div>
+          <div class="card-val">github.com/D-Jaden</div>
+          <div class="card-actions">
+            <a href="https://github.com/D-Jaden" target="_blank" rel="noopener" class="btn btn-outline">Explore Repos ↗</a>
+          </div>
+        </div>
+
+        <div class="channel-card">
+          <div class="card-header">
+            <span class="card-type">LINKEDIN PROFESSIONAL NETWORK</span>
+          </div>
+          <div class="card-val">linkedin.com/in/jaden-dutta-syiem</div>
+          <div class="card-actions">
+            <a href="https://www.linkedin.com/in/jaden-dutta-syiem-b71aa9309" target="_blank" rel="noopener" class="btn btn-outline">Connect ↗</a>
+          </div>
+        </div>
+
+        <div class="channel-card">
+          <div class="card-header">
+            <span class="card-type">CURRENT BASE</span>
+          </div>
+          <div class="card-val">Shillong, Meghalaya, India</div>
+          <div class="card-sub">Available for Full-time & Remote Engineering Roles</div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN: HANGING ID BADGE WITH YELLOW LANYARD BAND -->
+      <div class="id-column">
+        <div class="hanging-id-container">
+          <!-- Yellow Lanyard Band -->
+          <div class="yellow-lanyard-band"></div>
+          
+          <!-- Metallic Clip -->
+          <div class="lanyard-clip">
+            <div class="clip-loop"></div>
+            <div class="clip-hook"></div>
+          </div>
+
+          <!-- ID Card Holder & Badge -->
+          <div class="id-card-holder">
+            <div class="id-card-hole"></div>
+            <div class="id-card">
+              <div class="id-card-top-bar">
+                <span class="id-agency">JDS ARCHIVE SYSTEM</span>
+                <span class="id-badge-no">PASS #2026-01</span>
+              </div>
+              <div class="id-card-body">
+                <div class="id-photo-box">
+                  <img src="assets/lego_batman.png" alt="Lego Batman Avatar" class="id-photo-img" />
+                  <span class="id-photo-lbl">VERIFIED</span>
+                </div>
+                <div class="id-info-box">
+                  <div class="id-name">JADEN D. SYIEM</div>
+                  <div class="id-role">FULL STACK DEVELOPER</div>
+                  <div class="id-meta">
+                    <div><span>DEPT:</span> CSE</div>
+                    <div><span>CLEARANCE:</span> LEVEL 01</div>
+                    <div><span>STATUS:</span> ACTIVE // OPEN</div>
+                  </div>
+                </div>
+              </div>
+              <div class="id-card-footer">
+                <div class="barcode">
+                  <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                </div>
+                <div class="barcode-num">98234-JDS-2026</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+
     </div>
-  </div>
+
+  </main>
+
+  <!-- FOOTER WITH GREENSOCK BOUNCE (bGeZvpO) -->
+  <footer class="footer footer-bounce-wrap" id="footerBounce">
+    <div class="footer-bounce-curve-box">
+      <svg class="footer-bounce-curve" viewBox="0 0 1000 120" preserveAspectRatio="none" aria-hidden="true">
+        <path class="footer-bounce-path" d="M 0 120 Q 500 40 1000 120 L 1000 120 L 0 120 Z"></path>
+      </svg>
+    </div>
+    <div class="footer-content">
+      <div class="footer-left">
+        <span class="brand">JADEN D. SYIEM</span>
+        <span class="sub">REF: 2026-PORTFOLIO // CONTACT PROTOCOL</span>
+      </div>
+      <div class="footer-center">
+        <button class="footer-bounce-trigger-btn" id="footerBounceBtn" type="button" title="Test GreenSock Elastic Bounce">
+          <span>⚡ GREENSOCK BOUNCE</span>
+        </button>
+      </div>
+      <div class="footer-right">
+        <a href="#top" class="footer-top-btn" id="contactTopBtn">▲ TOP</a>
+      </div>
+    </div>
+  </footer>
 </div>
 
+<!-- Glass Taskbar (macOS Dock physics) -->
+<nav class="glass-taskbar">
+  <a href="../hero/hero.html#hero-open" class="taskbar-item" title="Home">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+  </a>
+  <a href="../hero/hero.html#highwaySection" class="taskbar-item" title="Experience">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon><line x1="9" y1="3" x2="9" y2="18"></line><line x1="15" y1="6" x2="15" y2="21"></line></svg>
+  </a>
+  <a href="../hero/hero.html#aboutSection" class="taskbar-item" title="About Me / Studio">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+  </a>
+  <a href="contact.html" class="taskbar-item is-active" title="Contact Me">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+  </a>
+  <a href="../CV.pdf" target="_blank" class="taskbar-item" title="Resume PDF" id="resume-nav-link">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+  </a>
+</nav>
+
+<!-- CURSOR TRACKING BADGE -->
 <span class="cursor-badge" id="cursor-badge">X:0000 Y:0000</span>
 
-<script src="contact.js"></script>
+<!-- GSAP Animation Engine & ScrollTrigger Plugin -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="contact.js?v=19"></script>
 </body>
 </html>

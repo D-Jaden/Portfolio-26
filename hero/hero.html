@@ -4,7 +4,10 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Jaden D. Syiem — Archive Vol.01</title>
-<link rel="stylesheet" href="hero.css?v=11">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Black+Han+Sans&family=Permanent+Marker&family=Sedgwick+Ave&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="hero.css?v=34">
 </head>
 <body>
 <div class="page-sweep-out" id="page-sweep-out"></div>
@@ -41,17 +44,13 @@
 
   <!-- STICKY NOTES — top right of hero -->
   <div class="sticky-zone" id="sticky-zone">
-    <!-- Yellow: View Resume -->
-    <div class="sticky sticky-red" id="sticky-resume">
-      <div class="sticky-pin"></div>
-      <div class="sticky-label">View<br>Resume</div>
-      <div class="sticky-sub">↗ Open PDF</div>
+    <!-- Red: View Resume -->
+    <div class="sticky sticky-red" id="sticky-resume" onclick="window.open('CV.pdf', '_blank')">
+      <div class="sticky-sub">VIEW RESUME</div>
     </div>
-    <!-- Red: Contact Me -->
-    <div class="sticky sticky-green" id="sticky-contact">
-      <div class="sticky-pin"></div>
-      <div class="sticky-label">Contact<br>Me</div>
-      <div class="sticky-sub">jadedsyiem@gmail.com</div>
+    <!-- Yellow: Contact Me -->
+    <div class="sticky sticky-yellow" id="sticky-contact">
+      <div class="sticky-sub">CONTACT ME</div>
     </div>
   </div>
 
@@ -70,7 +69,7 @@
 <!-- BODY -->
 <div class="body">
   <aside class="sidebar">
-    <p class="mission">Full-stack engineer and creative developer from Shillong. Measures twice, ships once. Precision-led work for systems that need edges — not soft corners.</p>
+    <p class="mission">Full-stack engineer and creative developer from Shillong.</p>
     <div>
       <p class="sb-lbl">Stack &amp; Apparatus</p>
       <ul class="sb-list">
@@ -91,64 +90,258 @@
     </div>
   </aside>
 
-  <div class="drawer-container">
-    <div class="drawer-label">* PERSONAL FUN PROJECTS</div>
+  <div class="drawer-container" id="heroDrawerContainer">
+    <div class="drawer-header">
+      <div class="drawer-label">* PERSONAL FUN PROJECTS</div>
+      <div class="drawer-hint">✦ SCROLL TO OPEN EACH FILE</div>
+    </div>
     
-    <a href="http://pokeguide-omega.vercel.app/" target="_blank" class="file-folder folder-1">
-      <div class="folder-tab">Poké Guide</div>
-      <div class="folder-content">
-        <p>A comprehensive, interactive web Pokédex built with external APIs. Catch 'em all with detailed stats and sprites.</p>
-        <div class="project-view-btn-container">
-          <div class="project-view-btn">VIEW</div>
-          <svg class="wiggly-arrow" viewBox="0 0 100 50" fill="none" stroke="#1212B0" stroke-width="2.5" stroke-dasharray="4 4" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M 80,0 C 60,10 40,30 20,25" />
-            <polyline points="28,18 20,25 30,30" />
-          </svg>
+    <div class="drawer-box" id="drawerBox">
+      <div class="file-folder folder-1" data-index="0">
+        <div class="folder-tab">POKÉ GUIDE</div>
+        <div class="folder-content">
+          <div class="folder-meta mono">WEB APP // API INTEGRATION &middot; 2025 - 2026</div>
+          <h3 class="folder-title">Poké Guide</h3>
+          <p>A comprehensive, interactive Web Pokédex engineered with external APIs. Features real-time stat comparison radar charts, animated sprites, and type effectiveness calculators.</p>
+          <div class="folder-action-row">
+            <div class="folder-specs mono">
+              <span>TECH: React + Vite</span>
+              <span>API: PokéAPI v2</span>
+              <span>HOST: Vercel</span>
+            </div>
+            <div class="project-view-btn-container">
+              <a href="http://pokeguide-omega.vercel.app/" target="_blank" rel="noopener" class="project-view-btn">VIEW PROJECT ↗</a>
+            </div>
+          </div>
+
+          <!-- MULTIPLE PHONE MOCKUPS (POKÉ GUIDE) -->
+          <div class="project-phone-showcase">
+            <div class="phone-mockup-item">
+              <a href="http://pokeguide-omega.vercel.app/" target="_blank" rel="noopener" class="phone-mockup-link" title="Open Poké Guide Live ↗">
+                <div class="phone-chassis">
+                  <div class="phone-volume-btn left-up"></div>
+                  <div class="phone-volume-btn left-down"></div>
+                  <div class="phone-power-btn right"></div>
+                  <div class="phone-screen">
+                    <div class="phone-island"><span class="island-lens"></span></div>
+                    <img src="../Images/PokeGuide/Pasted%20image.png" alt="Poké Guide Home Screen" class="phone-screen-img" loading="lazy">
+                    <div class="phone-home-indicator"></div>
+                  </div>
+                </div>
+              </a>
+              <span class="phone-caption">HOME // SEARCH</span>
+            </div>
+
+            <div class="phone-mockup-item">
+              <a href="http://pokeguide-omega.vercel.app/" target="_blank" rel="noopener" class="phone-mockup-link" title="Open Poké Guide Live ↗">
+                <div class="phone-chassis">
+                  <div class="phone-volume-btn left-up"></div>
+                  <div class="phone-volume-btn left-down"></div>
+                  <div class="phone-power-btn right"></div>
+                  <div class="phone-screen">
+                    <div class="phone-island"><span class="island-lens"></span></div>
+                    <img src="../Images/PokeGuide/Pasted%20image%20(2).png" alt="Poké Guide Regions Screen" class="phone-screen-img" loading="lazy">
+                    <div class="phone-home-indicator"></div>
+                  </div>
+                </div>
+              </a>
+              <span class="phone-caption">REGIONS DEX</span>
+            </div>
+
+            <div class="phone-mockup-item">
+              <a href="http://pokeguide-omega.vercel.app/" target="_blank" rel="noopener" class="phone-mockup-link" title="Open Poké Guide Live ↗">
+                <div class="phone-chassis">
+                  <div class="phone-volume-btn left-up"></div>
+                  <div class="phone-volume-btn left-down"></div>
+                  <div class="phone-power-btn right"></div>
+                  <div class="phone-screen">
+                    <div class="phone-island"><span class="island-lens"></span></div>
+                    <img src="../Images/PokeGuide/Pasted%20image%20(3).png" alt="Poké Guide Detail Screen" class="phone-screen-img" loading="lazy">
+                    <div class="phone-home-indicator"></div>
+                  </div>
+                </div>
+              </a>
+              <span class="phone-caption">STATS &amp; RADAR</span>
+            </div>
+
+            <div class="phone-mockup-item">
+              <a href="http://pokeguide-omega.vercel.app/" target="_blank" rel="noopener" class="phone-mockup-link" title="Open Poké Guide Live ↗">
+                <div class="phone-chassis">
+                  <div class="phone-volume-btn left-up"></div>
+                  <div class="phone-volume-btn left-down"></div>
+                  <div class="phone-power-btn right"></div>
+                  <div class="phone-screen">
+                    <div class="phone-island"><span class="island-lens"></span></div>
+                    <img src="../Images/PokeGuide/Pasted%20image%20(4).png" alt="Poké Guide Dex Grid Screen" class="phone-screen-img" loading="lazy">
+                    <div class="phone-home-indicator"></div>
+                  </div>
+                </div>
+              </a>
+              <span class="phone-caption">NATIONAL DEX</span>
+            </div>
+          </div>
         </div>
       </div>
-    </a>
-    
-    <a href="https://stellar-death.vercel.app/" target="_blank" class="file-folder folder-2">
-      <div class="folder-tab">Stellar Death</div>
-      <div class="folder-content">
-        <p>An experimental physics simulation showcasing black holes and gravitational lensing effects.</p>
-        <div class="project-view-btn-container">
-          <div class="project-view-btn">VIEW</div>
-          <svg class="wiggly-arrow" viewBox="0 0 100 50" fill="none" stroke="#1212B0" stroke-width="2.5" stroke-dasharray="4 4" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M 80,0 C 60,10 40,30 20,25" />
-            <polyline points="28,18 20,25 30,30" />
-          </svg>
+      
+      <div class="file-folder folder-2" data-index="1">
+        <div class="folder-tab">STELLAR DEATH</div>
+        <div class="folder-content">
+          <div class="folder-meta mono">PHYSICS SIMULATION // SHADERS &middot; 2025 - 2026</div>
+          <h3 class="folder-title">Stellar Death</h3>
+          <p>An experimental real-time physics simulation showcasing black hole event horizons, gravitational light lensing, particle accretion disk dynamics, and Hawking radiation in WebGL.</p>
+          <div class="folder-action-row">
+            <div class="folder-specs mono">
+              <span>GRAPHICS: Three.js</span>
+              <span>PHYSICS: GLSL Shaders</span>
+              <span>HOST: Vercel</span>
+            </div>
+            <div class="project-view-btn-container">
+              <a href="https://stellar-death.vercel.app/" target="_blank" rel="noopener" class="project-view-btn">VIEW PROJECT ↗</a>
+            </div>
+          </div>
+
+          <!-- MULTIPLE PHONE MOCKUPS (STELLAR DEATH) -->
+          <div class="project-phone-showcase">
+            <div class="phone-mockup-item">
+              <a href="https://stellar-death.vercel.app/" target="_blank" rel="noopener" class="phone-mockup-link" title="Open Stellar Death Live ↗">
+                <div class="phone-chassis">
+                  <div class="phone-volume-btn left-up"></div>
+                  <div class="phone-volume-btn left-down"></div>
+                  <div class="phone-power-btn right"></div>
+                  <div class="phone-screen">
+                    <div class="phone-island"><span class="island-lens"></span></div>
+                    <img src="../Images/StellarDeath/Pasted%20image.png" alt="Stellar Death Simulation Screen" class="phone-screen-img" loading="lazy">
+                    <div class="phone-home-indicator"></div>
+                  </div>
+                </div>
+              </a>
+              <span class="phone-caption">HORIZON SIM</span>
+            </div>
+
+            <div class="phone-mockup-item">
+              <a href="https://stellar-death.vercel.app/" target="_blank" rel="noopener" class="phone-mockup-link" title="Open Stellar Death Live ↗">
+                <div class="phone-chassis">
+                  <div class="phone-volume-btn left-up"></div>
+                  <div class="phone-volume-btn left-down"></div>
+                  <div class="phone-power-btn right"></div>
+                  <div class="phone-screen">
+                    <div class="phone-island"><span class="island-lens"></span></div>
+                    <img src="../Images/StellarDeath/Pasted%20image%20(2).png" alt="Stellar Death Controls Screen" class="phone-screen-img" loading="lazy">
+                    <div class="phone-home-indicator"></div>
+                  </div>
+                </div>
+              </a>
+              <span class="phone-caption">GLSL CONTROLS</span>
+            </div>
+
+            <div class="phone-mockup-item">
+              <a href="https://stellar-death.vercel.app/" target="_blank" rel="noopener" class="phone-mockup-link" title="Open Stellar Death Live ↗">
+                <div class="phone-chassis">
+                  <div class="phone-volume-btn left-up"></div>
+                  <div class="phone-volume-btn left-down"></div>
+                  <div class="phone-power-btn right"></div>
+                  <div class="phone-screen">
+                    <div class="phone-island"><span class="island-lens"></span></div>
+                    <img src="../Images/StellarDeath/Pasted%20image%20(3).png" alt="Stellar Death Particle Dynamics Screen" class="phone-screen-img" loading="lazy">
+                    <div class="phone-home-indicator"></div>
+                  </div>
+                </div>
+              </a>
+              <span class="phone-caption">PARTICLES SIM</span>
+            </div>
+          </div>
         </div>
       </div>
-    </a>
-    
-    <a href="https://meghyra-six.vercel.app/" target="_blank" class="file-folder folder-3">
-      <div class="folder-tab">Meghyra Web</div>
-      <div class="folder-content">
-        <p>A sleek, modern web platform built to showcase brand identity and interactive frontend components.</p>
-        <div class="project-view-btn-container">
-          <div class="project-view-btn">VIEW</div>
-          <svg class="wiggly-arrow" viewBox="0 0 100 50" fill="none" stroke="#1212B0" stroke-width="2.5" stroke-dasharray="4 4" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M 80,0 C 60,10 40,30 20,25" />
-            <polyline points="28,18 20,25 30,30" />
-          </svg>
+      
+      <div class="file-folder folder-3" data-index="2">
+        <div class="folder-tab">MEGHYRA WEB</div>
+        <div class="folder-content">
+          <div class="folder-meta mono">FRONTEND ARCHITECTURE // UI &middot; 2026</div>
+          <h3 class="folder-title">Meghyra Web</h3>
+          <p>A sleek, modern web platform engineered to showcase brand identity, custom micro-interactions, responsive grid layouts, and high-performance UI components.</p>
+          <div class="folder-action-row">
+            <div class="folder-specs mono">
+              <span>DESIGN: System Tokens</span>
+              <span>PERF: 100/100</span>
+              <span>HOST: Vercel</span>
+            </div>
+            <div class="project-view-btn-container">
+              <a href="https://meghyra-six.vercel.app/" target="_blank" rel="noopener" class="project-view-btn">VIEW PROJECT ↗</a>
+            </div>
+          </div>
+
+          <!-- MULTIPLE PHONE MOCKUPS (MEGHYRA WEB) -->
+          <div class="project-phone-showcase">
+            <div class="phone-mockup-item">
+              <a href="https://meghyra-six.vercel.app/" target="_blank" rel="noopener" class="phone-mockup-link" title="Open Meghyra Live ↗">
+                <div class="phone-chassis">
+                  <div class="phone-volume-btn left-up"></div>
+                  <div class="phone-volume-btn left-down"></div>
+                  <div class="phone-power-btn right"></div>
+                  <div class="phone-screen">
+                    <div class="phone-island"><span class="island-lens"></span></div>
+                    <img src="../Images/Meghyra/Pasted%20image.png" alt="Meghyra Web Landing" class="phone-screen-img" loading="lazy">
+                    <div class="phone-home-indicator"></div>
+                  </div>
+                </div>
+              </a>
+              <span class="phone-caption">BRAND LANDING</span>
+            </div>
+
+            <div class="phone-mockup-item">
+              <a href="https://meghyra-six.vercel.app/" target="_blank" rel="noopener" class="phone-mockup-link" title="Open Meghyra Live ↗">
+                <div class="phone-chassis">
+                  <div class="phone-volume-btn left-up"></div>
+                  <div class="phone-volume-btn left-down"></div>
+                  <div class="phone-power-btn right"></div>
+                  <div class="phone-screen">
+                    <div class="phone-island"><span class="island-lens"></span></div>
+                    <img src="../Images/Meghyra/Pasted%20image%20(3).png" alt="Meghyra Web Collection" class="phone-screen-img" loading="lazy">
+                    <div class="phone-home-indicator"></div>
+                  </div>
+                </div>
+              </a>
+              <span class="phone-caption">SHOP CATALOG</span>
+            </div>
+
+            <div class="phone-mockup-item">
+              <a href="https://meghyra-six.vercel.app/" target="_blank" rel="noopener" class="phone-mockup-link" title="Open Meghyra Live ↗">
+                <div class="phone-chassis">
+                  <div class="phone-volume-btn left-up"></div>
+                  <div class="phone-volume-btn left-down"></div>
+                  <div class="phone-power-btn right"></div>
+                  <div class="phone-screen">
+                    <div class="phone-island"><span class="island-lens"></span></div>
+                    <img src="../Images/Meghyra/Pasted%20image%20(2).png" alt="Meghyra Web Journey" class="phone-screen-img" loading="lazy">
+                    <div class="phone-home-indicator"></div>
+                  </div>
+                </div>
+              </a>
+              <span class="phone-caption">ORIGIN STORY</span>
+            </div>
+          </div>
         </div>
       </div>
-    </a>
-    
-    <a href="#" target="_blank" class="file-folder folder-4">
-      <div class="folder-tab">F1 Entropy</div>
-      <div class="folder-content">
-        <p>A data visualization and motion graphic project analyzing Formula 1 race entropy.</p>
-        <div class="project-view-btn-container">
-          <div class="project-view-btn">VIEW</div>
-          <svg class="wiggly-arrow" viewBox="0 0 100 50" fill="none" stroke="#1212B0" stroke-width="2.5" stroke-dasharray="4 4" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M 80,0 C 60,10 40,30 20,25" />
-            <polyline points="28,18 20,25 30,30" />
-          </svg>
+      
+      <div class="file-folder folder-4" data-index="3">
+        <div class="folder-tab">F1 ENTROPY</div>
+        <div class="folder-content">
+          <div class="folder-meta mono">DATA VISUALIZATION // TELEMETRY &middot; 2026</div>
+          <h3 class="folder-title">F1 Entropy</h3>
+          <p>A data visualization and motion graphic telemetry platform analyzing Formula 1 race entropy, pit stop strategy deltas, and lap time variance across Grand Prix circuits.</p>
+          <div class="folder-action-row">
+            <div class="folder-specs mono">
+              <span>DATA: FastF1 API</span>
+              <span>VISUALS: D3.js</span>
+              <span>HOST: Vercel</span>
+            </div>
+            <div class="project-view-btn-container">
+              <a href="https://f1entropy.vercel.app/" target="_blank" rel="noopener" class="project-view-btn">VIEW PROJECT ↗</a>
+            </div>
+          </div>
         </div>
       </div>
-    </a>
+    </div>
   </div>
 </div>
 
@@ -195,23 +388,23 @@
         <div class="route-line-bg"></div>
         <div class="route-line-fill" id="routeProgress"></div>
         <div class="route-stations" id="routeStations">
-        <div class="station" data-index="0">
-          <div class="station-dot"></div>
-          <div class="station-label mono">BSNL</div>
+          <div class="station" data-index="0">
+            <div class="station-dot"></div>
+            <div class="station-label mono">BSNL</div>
+          </div>
+          <div class="station" data-index="1">
+            <div class="station-dot"></div>
+            <div class="station-label mono">NIC</div>
+          </div>
+          <div class="station" data-index="2">
+            <div class="station-dot"></div>
+            <div class="station-label mono">DATAYUG</div>
+          </div>
+          <div class="station" data-index="3">
+            <div class="station-dot"></div>
+            <div class="station-label mono">NEHU</div>
+          </div>
         </div>
-        <div class="station" data-index="1">
-          <div class="station-dot"></div>
-          <div class="station-label mono">NIC</div>
-        </div>
-        <div class="station" data-index="2">
-          <div class="station-dot"></div>
-          <div class="station-label mono">DATAYUG</div>
-        </div>
-        <div class="station" data-index="3">
-          <div class="station-dot"></div>
-          <div class="station-label mono">NEHU</div>
-        </div>
-      </div>
       </div>
     </div>
     <div class="main-content-area">
@@ -235,7 +428,7 @@
           <div class="board-content" data-stop="1">
             <div class="board-eyebrow mono">NH 6 &middot; MILE 2</div>
             <div class="board-title">NIC Meghalaya</div>
-            <div class="board-meta mono">Internship &middot; mid-2025 — present</div>
+            <div class="board-meta mono">Internship &middot; mid 2025 to early 2026</div>
             <div class="board-desc">
               Full-stack development on the DAK Logbook, a government mail-tracking system — Node.js, PostgreSQL, JWT auth and real-time notifications over Socket.io.
               <div style="text-align: right; margin-top: 15px;">
@@ -248,7 +441,7 @@
             <div class="board-title">Datayug Society</div>
             <div class="board-meta mono">Internship &middot; early 2026</div>
             <div class="board-desc">
-              A software development internship, adding more range to the toolkit alongside the ongoing NIC work.
+              Developing their official website and appearing on DD News Meghalaya to talk about cybersecurity awareness.
               <div style="text-align: right; margin-top: 15px;">
                 <div onclick="window.open('https://www.linkedin.com/posts/jaden-dutta-syiem-b71aa9309_cybersecurity-internshipcomplete-webdevelopment-activity-7462370005582684160-W9kG/', '_blank')" class="view-btn">VIEW</div>
               </div>
@@ -257,9 +450,9 @@
           <div class="board-content" data-stop="3">
             <div class="board-eyebrow mono">NH 6 &middot; MILE 4</div>
             <div class="board-title">NEHU</div>
-            <div class="board-meta mono">Internship &middot; mid-2026</div>
+            <div class="board-meta mono">Internship &middot; early 2026</div>
             <div class="board-desc">
-              Working on web platforms and research implementations.
+              Integrating blockchain and creating an e-commerce platform for Meghalaya.
               <div style="text-align: right; margin-top: 15px;">
                 <div onclick="window.open('#', '_blank')" class="view-btn">VIEW</div>
               </div>
@@ -280,102 +473,228 @@
       <div>NH6 EXPRESS ROUTE</div>
       <div>USE ARROW KEYS OR CLICK TO NAVIGATE</div>
     </div>
+</section>
+
+<!-- SECTION TRANSITION: SVG SHAPE OVERLAYS (Codepen qBedXpg Reference) -->
+<div class="shape-overlays-transition" id="shapeOverlaysTransition">
+  <svg class="shape-overlays" viewBox="0 0 100 100" preserveAspectRatio="none" id="shapeOverlaysSvg">
+    <path class="shape-overlays__path p1" id="shapePath1" fill="#1212B0"></path>
+    <path class="shape-overlays__path p2" id="shapePath2" fill="#60a5fa"></path>
+    <path class="shape-overlays__path p3" id="shapePath3" fill="#ffffff"></path>
+  </svg>
+  <div class="shape-overlays-caption" id="shapeOverlaysCaption">
+    <div class="shape-caption-inner mono">
+      <span class="shape-caption-tag">SYSTEM SHIFT // ARCHIVE VOL.01</span>
+      <h3 class="shape-caption-title">ENTERING 3D STUDIO DESKTOP</h3>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 4: ABOUT ME (3D WebGL Desktop Studio & Interactive Figurines) -->
+<section class="about-me" id="aboutSection">
+  <div class="about-viewport">
+
+
+    <!-- 3D WebGL Three.js Canvas Container -->
+    <div id="about-webgl-container"></div>
+    <div class="about-hint" id="aboutHint">✦ INTERACTIVE DESKTOP &middot; CLICK OBJECTS TO INSPECT &middot; DRAG PROPS FREELY AROUND THE STUDIO</div>
   </div>
 </section>
 
-</section>
+<!-- SECTION TRANSITION: SVG SHAPE OVERLAYS TO CONTACT (Codepen qBedXpg Reference) -->
+<div class="shape-overlays-transition" id="contactShapeOverlaysTransition">
+  <svg class="shape-overlays" viewBox="0 0 100 100" preserveAspectRatio="none" id="contactShapeOverlaysSvg">
+    <path class="shape-overlays__path p1" id="contactShapePath1" fill="#1212B0"></path>
+    <path class="shape-overlays__path p2" id="contactShapePath2" fill="#60a5fa"></path>
+    <path class="shape-overlays__path p3" id="contactShapePath3" fill="#ffffff"></path>
+  </svg>
+  <div class="shape-overlays-caption" id="contactShapeOverlaysCaption">
+    <div class="shape-caption-inner mono">
+      <span class="shape-caption-tag">COMMUNICATION PROTOCOL // ARCHIVE VOL.01</span>
+      <h3 class="shape-caption-title">ENTERING CONTACT CONSOLE</h3>
+    </div>
+  </div>
+</div>
 
-<!-- SECTION 4: ABOUT ME -->
-<section class="about-me" id="aboutSection">
-  <div class="about-layout-container">
-    <!-- Bio Box (Top Left) -->
-    <div class="about-bio-box">
-      <div class="about-sticker">ABOUT</div>
-      <img src="assets/pokemon_pfp.png?v=4" class="about-pfp" alt="Jaden as a Pokemon Trainer">
-      <div class="pfp-level-bar-container">
-        <div class="level-top-row">
-          <div class="level-badge">
-            <span class="lvl-num">2</span>
-            <span class="lvl-lbl">LEVEL</span>
+<!-- SECTION 5: CONTACT ME (Interactive Communication Cards & Hanging Yellow Lanyard ID Badge) -->
+<section class="contact-section" id="contactSection">
+  <div class="contact-area">
+    <div class="contact-header">
+      <div class="title-wrap">
+        <h2 class="display-name">
+          <span class="script-title">Don't Be A Stranger</span>
+          <span class="sans-title">Let's Build Together</span>
+        </h2>
+        <div class="subtitle-tag">Direct Communication Console // Archive Vol.01</div>
+      </div>
+      <div class="archive-tag">COMM_CHANNEL // OPEN</div>
+    </div>
+
+    <div class="contact-grid">
+      <!-- LEFT COLUMN: DIRECT CHANNELS -->
+      <div class="channels-column">
+        <div class="channel-card card-primary">
+          <div class="card-header">
+            <span class="card-type">PRIMARY EMAIL</span>
           </div>
-          <div class="level-bar-wrapper">
-            <div class="level-bar">
-              <div class="level-bar-fill"></div>
-            </div>
-          </div>
-          <div class="level-badge">
-            <span class="lvl-num">3</span>
-            <span class="lvl-lbl">LEVEL</span>
+          <div class="card-val" id="hero-email-text">jadedsyiem@gmail.com</div>
+          <div class="card-actions">
+            <a href="mailto:jadedsyiem@gmail.com" class="btn btn-filled">Send Mail ↗</a>
+            <button class="btn btn-outline" id="hero-copy-email-btn">Copy Email</button>
           </div>
         </div>
-        <div class="exp-text">5,000 / 10,000</div>
-      </div>
-      <div class="about-text-box">
-        <p class="about-text">
-          Hi, I'm Jaden! I'm a developer passionate about building immersive, interactive web experiences. 
-          I love turning complex ideas into clean, pixel-perfect reality. 
-          When I'm not coding, you can probably find me hunting for shiny Pokémon or building Gunpla!
-        </p>
-      </div>
-    </div>
 
-    <!-- Reverse L Shelves Platform -->
-    <div class="reverse-l-panel" id="pegboard">
-      <div class="reverse-l-bg"></div>
-      
-      <!-- Reverse L Shelves -->
-      <div class="shelf shelf-gohan"></div>
-      <div class="shelf shelf-gundam"></div>
-      <div class="shelf shelf-batman"></div>
-      <div class="shelf shelf-redbull"></div>
-      
-      <!-- Figurines -->
-      <div class="drag-item item-gohan">
-        <img src="assets/gohan_funko.png" alt="Teen Gohan">
+        <div class="channel-card">
+          <div class="card-header">
+            <span class="card-type">GITHUB CODE ARCHIVE</span>
+          </div>
+          <div class="card-val">github.com/D-Jaden</div>
+          <div class="card-actions">
+            <a href="https://github.com/D-Jaden" target="_blank" rel="noopener" class="btn btn-outline">Explore Repos ↗</a>
+          </div>
+        </div>
+
+        <div class="channel-card">
+          <div class="card-header">
+            <span class="card-type">LINKEDIN PROFESSIONAL NETWORK</span>
+          </div>
+          <div class="card-val">linkedin.com/in/jaden-dutta-syiem</div>
+          <div class="card-actions">
+            <a href="https://www.linkedin.com/in/jaden-dutta-syiem-b71aa9309" target="_blank" rel="noopener" class="btn btn-outline">Connect ↗</a>
+          </div>
+        </div>
+
+        <div class="channel-card">
+          <div class="card-header">
+            <span class="card-type">CURRENT BASE</span>
+          </div>
+          <div class="card-val">Shillong, Meghalaya, India</div>
+          <div class="card-sub">Available for Full-time & Remote Engineering Roles</div>
+        </div>
       </div>
-      <div class="drag-item item-gundam">
-        <img src="assets/gundam_toy.png" alt="Gundam">
-      </div>
-      <div class="drag-item item-batman">
-        <img src="assets/batman_toy.png" alt="Lego Batman">
-      </div>
-      <div class="drag-item item-redbull">
-        <img src="assets/redbull_car.png?v=5" alt="Red Bull Racing Car">
+
+      <!-- RIGHT COLUMN: HANGING ID BADGE WITH YELLOW LANYARD BAND -->
+      <div class="id-column">
+        <div class="hanging-id-container">
+          <!-- Yellow Lanyard Band -->
+          <div class="yellow-lanyard-band"></div>
+          
+          <!-- Metallic Clip -->
+          <div class="lanyard-clip">
+            <div class="clip-loop"></div>
+            <div class="clip-hook"></div>
+          </div>
+
+          <!-- ID Card Holder & Badge -->
+          <div class="id-card-holder">
+            <div class="id-card-hole"></div>
+            <div class="id-card">
+              <div class="id-card-top-bar">
+                <span class="id-agency">JDS ARCHIVE SYSTEM</span>
+                <span class="id-badge-no">PASS #2026-01</span>
+              </div>
+              <div class="id-card-body">
+                <div class="id-photo-box">
+                  <img src="assets/lego_batman.png" alt="Lego Batman Avatar" class="id-photo-img" />
+                  <span class="id-photo-lbl">VERIFIED</span>
+                </div>
+                <div class="id-info-box">
+                  <div class="id-name">JADEN D. SYIEM</div>
+                  <div class="id-role">FULL STACK DEVELOPER</div>
+                  <div class="id-meta">
+                    <div><span>DEPT:</span> CSE</div>
+                    <div><span>CLEARANCE:</span> LEVEL 01</div>
+                    <div><span>STATUS:</span> ACTIVE // OPEN</div>
+                  </div>
+                </div>
+              </div>
+              <div class="id-card-footer">
+                <div class="barcode">
+                  <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                </div>
+                <div class="barcode-num">98234-JDS-2026</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="about-hint">Try Moving Things :)</div>
 </section>
 
-
-<!-- FOOTER -->
-<footer class="footer">
-  <span>© 2026 Jaden_D._Syiem</span>
-  <span>End_of_Index</span>
+<!-- FOOTER WITH GREENSOCK BOUNCE (bGeZvpO) -->
+<footer class="footer footer-bounce-wrap" id="footerBounce">
+  <div class="footer-bounce-curve-box">
+    <svg class="footer-bounce-curve" viewBox="0 0 1000 120" preserveAspectRatio="none" aria-hidden="true">
+      <path class="footer-bounce-path" d="M 0 120 Q 500 40 1000 120 L 1000 120 L 0 120 Z"></path>
+    </svg>
+  </div>
+  <div class="footer-content">
+    <div class="footer-left">
+      <span class="brand">JADEN D. SYIEM</span>
+      <span class="sub">REF: 2026-PORTFOLIO // ALL RIGHTS RESERVED</span>
+    </div>
+    <div class="footer-center">
+      <button class="footer-bounce-trigger-btn" id="footerBounceBtn" type="button" title="Test GreenSock Elastic Bounce">
+        <span>⚡ GREENSOCK BOUNCE</span>
+      </button>
+    </div>
+    <div class="footer-right">
+      <a href="#hero-open" class="footer-top-btn">▲ TOP</a>
+    </div>
+  </div>
 </footer>
 
+</div>
+
+<!-- HEADPHONES AUDIO: Jordan Ward - FAMJAM4000 -->
+<audio id="headphonesAudio" preload="auto">
+  <source src="assets/famjam4000.m4a" type="audio/mp4">
+  <source src="https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/7d/d3/11/7dd311ca-caa4-2df4-d876-a7ba7230ae08/mzaf_8645569516973728569.plus.aac.p.m4a" type="audio/mp4">
+</audio>
+
+<!-- NOW PLAYING INDICATOR PILL -->
+<div class="now-playing-pill" id="nowPlayingPill">
+  <div class="now-playing-bars">
+    <div class="now-playing-bar"></div>
+    <div class="now-playing-bar"></div>
+    <div class="now-playing-bar"></div>
+    <div class="now-playing-bar"></div>
+  </div>
+  <span>NOW PLAYING: JORDAN WARD — FAMJAM4000</span>
 </div>
 
 <!-- Glass Taskbar -->
 <nav class="glass-taskbar">
   <a href="#hero-open" class="taskbar-item" title="Home">
-    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
   </a>
   <a href="#highwaySection" class="taskbar-item" title="Experience">
-    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon><line x1="9" y1="3" x2="9" y2="18"></line><line x1="15" y1="6" x2="15" y2="21"></line></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon><line x1="9" y1="3" x2="9" y2="18"></line><line x1="15" y1="6" x2="15" y2="21"></line></svg>
   </a>
-  <a href="#" class="taskbar-item" title="Resume" id="resume-nav-link">
-    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+  <a href="#aboutSection" class="taskbar-item" title="About Me / Studio">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
   </a>
-  <a href="#aboutSection" class="taskbar-item" title="About Me">
-    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+  <a href="#contactSection" class="taskbar-item" title="Contact Me">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+  </a>
+  <a href="CV.pdf" target="_blank" class="taskbar-item" title="Resume PDF" id="resume-nav-link">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
   </a>
 </nav>
 
 <span class="cursor-badge" id="cursor-badge">X:0000 Y:0000</span>
 
+<!-- Three.js 3D Engine & Renderer CDN scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <!-- Anime.js v4 from CDN -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/4.0.0/anime.iife.min.js"></script>
-<script src="hero.js?v=3"></script>
+<!-- GSAP & ScrollTrigger Engine -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<!-- High-Res Studio WebGL Assets -->
+<script src="hero_assets.js"></script>
+<script src="hero.js?v=77"></script>
 </body>
 </html>

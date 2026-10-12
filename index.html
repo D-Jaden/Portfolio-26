@@ -4,72 +4,35 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Mission Brief</title>
-  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&family=Mr+Dafoe&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="loading_styles.css?v=24"/>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&family=VT323&family=Mr+Dafoe&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="loading_styles.css?v=28"/>
 </head>
 <body>
 
-  <!-- Grid Loading Overlay -->
+  <!-- Retro Pixel Loading Screen Overlay (Reference OS '96 Style) -->
   <div id="grid-overlay">
-    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <!-- Faint grid pattern -->
-        <pattern id="faint-grid" width="40" height="40" patternUnits="userSpaceOnUse">
-          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(18, 18, 176, 0.1)" stroke-width="1" />
-        </pattern>
-      </defs>
+    <div id="pixel-loader-container">
+      <h1 class="pixel-title">Portfolio <span class="pixel-version">v1'26</span></h1>
+      <div class="pixel-subtitle">Computer Science & Full Stack Developer • Rebuilt for 2026</div>
       
-      <!-- The Background Cover -->
-      <rect width="100%" height="100%" fill="#ffffff" />
-      <!-- Grid Overlay Cover -->
-      <rect width="100%" height="100%" fill="url(#faint-grid)" />
-
-      <!-- HUD Reticle Group -->
-      <g id="hud-group" stroke="#1212B0" fill="none" stroke-width="1.5">
-        <!-- Center crosshairs (guide) -->
-        <path d="M 50% 0 L 50% 100%" stroke="rgba(18, 18, 176, 0.2)" stroke-dasharray="2 4" class="hud-draw" />
-        <path d="M 0 50% L 100% 50%" stroke="rgba(18, 18, 176, 0.2)" stroke-dasharray="2 4" class="hud-draw" />
-        
-        <!-- Outer Box -->
-        <rect x="calc(50% - 200px)" y="calc(50% - 150px)" width="400" height="300" fill="none" stroke-dasharray="4 6" class="hud-draw" />
-        <!-- Inner Box -->
-        <rect x="calc(50% - 80px)" y="calc(50% - 60px)" width="160" height="120" fill="none" stroke-dasharray="4 6" class="hud-draw" />
-        
-        <!-- Crosshairs with nodes -->
-        <g class="hud-lines">
-          <!-- Top -->
-          <path d="M calc(50% - 30px) calc(50% - 150px) L calc(50% + 30px) calc(50% - 150px)" class="hud-draw" />
-          <circle cx="50%" cy="calc(50% - 150px)" r="3" fill="#1212B0" class="hud-pop" />
-          <path d="M 50% calc(50% - 150px) L 50% calc(50% - 170px)" class="hud-draw" />
-          
-          <!-- Bottom -->
-          <path d="M calc(50% - 30px) calc(50% + 150px) L calc(50% + 30px) calc(50% + 150px)" class="hud-draw" />
-          <circle cx="50%" cy="calc(50% + 150px)" r="3" fill="#1212B0" class="hud-pop" />
-          <path d="M 50% calc(50% + 150px) L 50% calc(50% + 170px)" class="hud-draw" />
-          
-          <!-- Left -->
-          <path d="M calc(50% - 200px) calc(50% - 30px) L calc(50% - 200px) calc(50% + 30px)" class="hud-draw" />
-          <circle cx="calc(50% - 200px)" cy="50%" r="3" fill="#1212B0" class="hud-pop" />
-          <path d="M calc(50% - 200px) 50% L calc(50% - 220px) 50%" class="hud-draw" />
-          
-          <!-- Right -->
-          <path d="M calc(50% + 200px) calc(50% - 30px) L calc(50% + 200px) calc(50% + 30px)" class="hud-draw" />
-          <circle cx="calc(50% + 200px)" cy="50%" r="3" fill="#1212B0" class="hud-pop" />
-          <path d="M calc(50% + 200px) 50% L calc(50% + 220px) 50%" class="hud-draw" />
-
-          <!-- Inner bounds -->
-          <path d="M calc(50% - 15px) calc(50% - 60px) L calc(50% + 15px) calc(50% - 60px)" class="hud-draw" />
-          <path d="M calc(50% - 15px) calc(50% + 60px) L calc(50% + 15px) calc(50% + 60px)" class="hud-draw" />
-          <path d="M calc(50% - 80px) calc(50% - 15px) L calc(50% - 80px) calc(50% + 15px)" class="hud-draw" />
-          <path d="M calc(50% + 80px) calc(50% - 15px) L calc(50% + 80px) calc(50% + 15px)" class="hud-draw" />
-        </g>
-        
-        <circle cx="50%" cy="50%" r="3" fill="#1212B0" class="hud-pop" />
-      </g>
+      <!-- Retro Block Loading Bar (Square Blocks) -->
+      <div class="pixel-progress-box" id="pixel-progress-box">
+        <div class="pixel-block"></div>
+        <div class="pixel-block"></div>
+        <div class="pixel-block"></div>
+        <div class="pixel-block"></div>
+        <div class="pixel-block"></div>
+        <div class="pixel-block"></div>
+        <div class="pixel-block"></div>
+        <div class="pixel-block"></div>
+        <div class="pixel-block"></div>
+        <div class="pixel-block"></div>
+        <div class="pixel-block"></div>
+        <div class="pixel-block"></div>
+      </div>
       
-      <!-- Loading Percentage Text -->
-      <text id="loading-pct" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="'Share Tech Mono', monospace" font-size="24" fill="#1212B0">0%</text>
-    </svg>
+      <div id="pixel-loading-status" class="pixel-status-text">Loading system files...</div>
+    </div>
   </div>  <!-- 3D Scene Containers -->
   <div id="webgl-container"></div>
   <div id="css3d-container"></div>
@@ -79,12 +42,9 @@
     <div class="prompt-text">POWER OFF</div>
     <div class="prompt-sub">Click the power button on the CPU tower to start.</div>
   </div>
-  <!-- The Background Neon Sign -->
-  <div class="neon-sign-container" style="display: none;">
-    <h1 class="neon-sign">In The Lab</h1>
-  </div>
 
   <div class="terminal off">
+    <div id="crt-black-swipe" class="crt-black-swipe"></div>
     <div class="scanlines"></div>
 
     <!-- Header -->
@@ -138,6 +98,7 @@
         <div class="brief-label">// MISSION BRIEF</div>
         <div id="brief-text"></div><span class="cursor" id="cursor"></span>
         <button id="start-btn">[ INITIATE SEQUENCE ]</button>
+        <div class="scroll-below-tag">Scroll Below ↓ to Explore Portfolio</div>
       </div>
 
     </div>
@@ -156,7 +117,7 @@
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/renderers/CSS3DRenderer.js"></script>
   
   <script src="https://unpkg.com/animejs@4.4.1/dist/bundles/anime.umd.js"></script>
-  <script src="loading.js?v=24"></script>
+  <script src="loading.js?v=30"></script>
 
 </body>
 </html>

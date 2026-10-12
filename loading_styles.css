@@ -11,25 +11,96 @@ body {
 }
 
 #grid-overlay {
-  position: absolute;
+  position: fixed;
   top: 0; left: 0;
-  width: 100%; height: 100%;
-  z-index: 100;
-  pointer-events: auto; /* Block interaction initially */
+  width: 100vw; height: 100vh;
+  z-index: 10000;
+  pointer-events: auto;
+  background: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#pixel-loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  max-width: 90vw;
+  padding: 40px 20px;
+}
+
+.pixel-title {
+  font-family: 'Press Start 2P', cursive, monospace;
+  font-size: 32px;
+  color: #121212;
+  letter-spacing: -1px;
+  margin-bottom: 18px;
+  line-height: 1.2;
+}
+
+.pixel-version {
+  color: #1212B0;
+}
+
+.pixel-subtitle {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  color: #1212B0;
+  letter-spacing: 1.5px;
+  margin-bottom: 26px;
+}
+
+.pixel-progress-box {
+  width: 380px;
+  max-width: 85vw;
+  height: 26px;
+  border: 2.5px solid #1212B0;
+  background: #ffffff;
+  padding: 3px;
+  display: flex;
+  gap: 4px;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(18, 18, 176, 0.12);
+  box-sizing: border-box;
+}
+
+.pixel-block {
+  flex: 1;
+  height: 100%;
+  background: #1212B0;
+  opacity: 0;
+  transition: opacity 0.08s ease;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.pixel-block.active {
+  opacity: 1;
+}
+
+.pixel-status-text {
+  font-family: 'VT323', monospace;
+  font-size: 18px;
+  color: #333333;
+  letter-spacing: 1.5px;
+  margin-top: 18px;
+  height: 24px;
 }
 
 .terminal {
   position: relative;
   width: 800px;
-  height: 600px;
+  height: 520px;
   margin: 0;
   border-radius: 0;
   overflow-x: hidden;
   overflow-y: auto;
-  box-shadow: inset 0 0 30px rgba(0,0,0,0.8);
+  box-shadow: none;
   background: #ffffff;
   border: none;
-  color: #274b9b;
+  color: #1212B0;
   transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.8s ease;
 }
 
@@ -67,11 +138,7 @@ body {
 }
 
 .vignette {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle, rgba(0,0,0,0) 50%, rgba(0,0,0,0.5) 100%);
-  z-index: 1000;
-  pointer-events: none;
+  display: none;
 }
 
 /* ── Header ── */
@@ -276,32 +343,75 @@ body {
   display: none;
   margin-top: 18px;
   width: 100%;
-  background: #ffffff;
-  border: 2px solid #000;
-  color: #0044ff;
+  background: #1212B0; /* Solid Blue Box */
+  border: 2px solid #000000;
+  color: #ffffff; /* White Font */
   font-family: 'Share Tech Mono', monospace;
-  font-size: 13px;
-  letter-spacing: 4px;
-  padding: 10px 0;
+  font-size: 14px;
+  font-weight: bold; /* Bold Font */
+  letter-spacing: 3px;
+  padding: 12px 0;
   cursor: pointer;
   text-transform: uppercase;
   position: relative;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  box-shadow: 0 4px 12px rgba(18, 18, 176, 0.4);
+  transition: all 0.2s ease-in-out;
 }
 #start-btn:hover {
-  background: #0055ff;
+  background: #1d1dd6;
   color: #ffffff;
-  border-color: #000;
+  font-weight: bold;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(18, 18, 176, 0.6);
 }
 #start-btn::before, #start-btn::after {
   content: '';
   position: absolute;
   width: 6px; height: 6px;
-  border-color: #000;
+  border-color: #ffffff;
   border-style: solid;
 }
 #start-btn::before { top: -2px; left: -2px; border-width: 2px 0 0 2px; }
 #start-btn::after  { bottom: -2px; right: -2px; border-width: 0 2px 2px 0; }
+
+/* ── Black Screen Swipe Overlay for CRT Power On ── */
+.crt-black-swipe {
+  position: absolute;
+  inset: 0;
+  background: #000000;
+  z-index: 99999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease-in-out;
+}
+.crt-black-swipe.active {
+  opacity: 1;
+}
+
+/* ── Scroll Below Info / Comment Prompts ── */
+.scroll-below-prompt {
+  margin-top: 14px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  color: #1212B0;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  animation: bounce-subtle 1.8s infinite;
+}
+.scroll-below-tag {
+  text-align: center;
+  margin-top: 12px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  font-weight: bold;
+  color: #1212B0;
+  letter-spacing: 2px;
+  animation: bounce-subtle 1.8s infinite;
+}
+@keyframes bounce-subtle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
 
 /* ── Footer ── */
 .terminal-footer {
@@ -429,37 +539,4 @@ body {
   opacity: 0;
 }
 
-/* ── Background Sign (Framed Photograph) ── */
-.neon-sign-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  
-  /* Photograph Frame */
-  background: #fdfdfd;
-  padding: 100px 150px;
-  border: 30px solid #1a1a1a; /* Thick dark wood/black frame */
-}
 
-/* Glass glare effect for the frame */
-.neon-sign-container::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 40%);
-  pointer-events: none;
-}
-
-.neon-sign {
-  font-family: 'Times New Roman', Times, serif;
-  font-size: 250px;
-  color: #111;
-  margin: 0;
-  white-space: nowrap;
-  letter-spacing: -5px;
-  
-  /* Printed ink effect */
-  opacity: 0.9;
-  filter: blur(1px);
-}

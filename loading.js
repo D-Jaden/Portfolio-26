@@ -1,5 +1,3 @@
-const { animate, scrambleText } = window.anime;
-
 /* ── Live clock ── */
 function updateClock() {
   const now = new Date();
@@ -75,6 +73,144 @@ function runStep() {
   }
 }
 
+/* ── Web Audio Synthesizer (Robust, Bulletproof Autoplay, High Volume) ── */
+let audioCtx = null;
+let masterGain = null;
+
+function unlockAudio() {
+  try {
+    if (!audioCtx) {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (AudioContext) {
+        audioCtx = new AudioContext();
+        masterGain = audioCtx.createGain();
+        masterGain.gain.setValueAtTime(1.0, audioCtx.currentTime);
+        masterGain.connect(audioCtx.destination);
+      }
+    }
+    if (audioCtx && audioCtx.state === 'suspended') {
+      audioCtx.resume().then(() => {
+        if (masterGain && audioCtx) {
+          masterGain.gain.setValueAtTime(1.0, audioCtx.currentTime);
+        }
+      });
+    }
+  } catch (e) {
+    console.warn('Audio unlock error:', e);
+  }
+}
+
+// Unlock audio on any initial user interaction anywhere on the screen
+['pointerdown', 'mousedown', 'touchstart', 'touchend', 'keydown', 'click'].forEach(evt => {
+  window.addEventListener(evt, unlockAudio, { passive: true, once: false });
+});
+
+/* 1. Ultra-Crisp Mechanical Mouse Switch Click Sound */
+function playMouseClickSound() {
+  unlockAudio();
+  if (!audioCtx) return;
+
+  const startPlay = () => {
+    try {
+      const now = audioCtx.currentTime + 0.005; // Small offset prevents initial transient clipping
+
+      // Primary click snap (High-frequency snap)
+      const osc1 = audioCtx.createOscillator();
+      const gain1 = audioCtx.createGain();
+      osc1.type = 'triangle';
+      osc1.frequency.setValueAtTime(1600, now);
+      osc1.frequency.exponentialRampToValueAtTime(150, now + 0.045);
+
+      gain1.gain.setValueAtTime(0.9, now);
+      gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.045);
+
+      osc1.connect(gain1);
+      gain1.connect(masterGain || audioCtx.destination);
+      osc1.start(now);
+      osc1.stop(now + 0.045);
+
+      // Body pop transient (Low mechanical thud)
+      const osc2 = audioCtx.createOscillator();
+      const gain2 = audioCtx.createGain();
+      osc2.type = 'square';
+      osc2.frequency.setValueAtTime(420, now);
+      osc2.frequency.exponentialRampToValueAtTime(60, now + 0.035);
+
+      gain2.gain.setValueAtTime(0.6, now);
+      gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
+
+      osc2.connect(gain2);
+      gain2.connect(masterGain || audioCtx.destination);
+      osc2.start(now);
+      osc2.stop(now + 0.035);
+    } catch (e) {
+      console.warn('Mouse click sound error:', e);
+    }
+  };
+
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume().then(startPlay);
+  } else {
+    startPlay();
+  }
+}
+
+/* 2. Authentic Mechanical Keyboard Typing Sound */
+function playTypingKeySound(isSpaceOrEnter = false) {
+  unlockAudio();
+  if (!audioCtx) return;
+
+  const startPlay = () => {
+    try {
+      const now = audioCtx.currentTime + 0.003;
+      const baseFreq = isSpaceOrEnter ? 320 : 750 + (Math.random() * 400 - 200);
+      const duration = isSpaceOrEnter ? 0.06 : 0.038;
+
+      // Click transient
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      osc.type = isSpaceOrEnter ? 'triangle' : 'square';
+      osc.frequency.setValueAtTime(baseFreq, now);
+      osc.frequency.exponentialRampToValueAtTime(isSpaceOrEnter ? 80 : 120, now + duration);
+
+      const vol = isSpaceOrEnter ? 0.8 : 0.55;
+      gain.gain.setValueAtTime(vol, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+
+      osc.connect(gain);
+      gain.connect(masterGain || audioCtx.destination);
+
+      osc.start(now);
+      osc.stop(now + duration);
+
+      // Low housing bottom-out bump
+      const bumpOsc = audioCtx.createOscillator();
+      const bumpGain = audioCtx.createGain();
+      bumpOsc.type = 'sine';
+      bumpOsc.frequency.setValueAtTime(180, now);
+      bumpOsc.frequency.exponentialRampToValueAtTime(50, now + duration + 0.01);
+
+      bumpGain.gain.setValueAtTime(0.4, now);
+      bumpGain.gain.exponentialRampToValueAtTime(0.001, now + duration + 0.01);
+
+      bumpOsc.connect(bumpGain);
+      bumpGain.connect(masterGain || audioCtx.destination);
+
+      bumpOsc.start(now);
+      bumpOsc.stop(now + duration + 0.01);
+    } catch (e) {
+      console.warn('Typing key sound error:', e);
+    }
+  };
+
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume().then(startPlay);
+  } else {
+    startPlay();
+  }
+}
+
 /* Typewriter: writes text char by char, calls done() when finished */
 function typeText(text, done) {
   let i = 0;
@@ -86,6 +222,7 @@ function typeText(text, done) {
       span.textContent += text[i];
       i++;
       const ch = text[i - 1];
+      playTypingKeySound(ch === ' ' || ch === '\n');
       const delay = ch === '\n' ? 180
         : ch === '.' ? 140
           : Math.random() * 40 + 22;
@@ -143,16 +280,20 @@ function initThreeScene() {
     return;
   }
 
-  // Scene & Camera
+  // Scene & Camera (Angle & Framing matched to User Reference Screenshot)
   scene = new THREE.Scene();
-  scene.background = null; // Let the HTML body white background show through, so CSS3D isn't blocked
+  scene.background = null;
   camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 5000);
-  camera.position.set(0, 50, 4000);
+  camera.position.set(-1180, 560, 1180);
 
   // WebGL Renderer
-  glRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  glRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
   glRenderer.setSize(window.innerWidth, window.innerHeight);
-  glRenderer.setPixelRatio(window.devicePixelRatio);
+  glRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  glRenderer.shadowMap.enabled = true;
+  glRenderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  glRenderer.toneMapping = THREE.ACESFilmicToneMapping;
+  glRenderer.toneMappingExposure = 1.15;
   glContainer.appendChild(glRenderer.domElement);
 
   // CSS3D Renderer
@@ -160,204 +301,301 @@ function initThreeScene() {
   cssRenderer.setSize(window.innerWidth, window.innerHeight);
   cssContainer.appendChild(cssRenderer.domElement);
 
-  // Orbit Controls
+  // Orbit Controls (Framed to match screenshot perspective)
   controls = new THREE.OrbitControls(camera, cssRenderer.domElement);
   controls.enableDamping = true;
   controls.dampingFactor = 0.05;
-  controls.minDistance = 800;
-  controls.maxDistance = 2500;
-  controls.maxPolarAngle = Math.PI / 2 + 0.1; // Prevent going too far under
+  controls.minDistance = 500;
+  controls.maxDistance = 2400;
+  controls.maxPolarAngle = Math.PI / 2 + 0.1;
+  controls.target.set(-20, -140, 200);
+  controls.update();
 
   // Monitor Group
   monitorGroup = new THREE.Group();
   scene.add(monitorGroup);
 
-  // Materials
+  // High Quality Materials System
   const retroBeige = new THREE.MeshStandardMaterial({
-    color: 0xf5ebd3, // Warmer eggshell yellow vintage plastic
-    roughness: 0.9,
-    metalness: 0.1
+    color: 0xded6c5, // Vintage Classic Macintosh Ivory/Beige
+    roughness: 0.4,
+    metalness: 0.08
   });
   const retroDark = new THREE.MeshStandardMaterial({
-    color: 0x444444,
-    roughness: 0.8,
-    metalness: 0.2
-  });
-  const screenBackingMat = new THREE.MeshStandardMaterial({
-    color: 0x050505,
-    roughness: 0.9,
-    metalness: 0.1
+    color: 0x1f2226, // Deep charcoal slate accent
+    roughness: 0.55,
+    metalness: 0.25
   });
   const buttonRed = new THREE.MeshStandardMaterial({
     color: 0xff3333,
-    roughness: 0.5,
-    metalness: 0.5
+    roughness: 0.35,
+    metalness: 0.25,
+    emissive: 0x330000,
+    emissiveIntensity: 0.2
+  });
+  const ledGreen = new THREE.MeshStandardMaterial({
+    color: 0x33ff33,
+    emissive: 0x22aa22,
+    emissiveIntensity: 0.8
   });
 
   window.powerButtonMesh = null;
+  window.cpuPowerButtonMesh = null;
   window.isBooted = false;
 
-  // 1. CPU Tower (Right Side)
-  const cpuGeo = new THREE.BoxGeometry(350, 900, 800);
-  const cpuMesh = new THREE.Mesh(cpuGeo, retroBeige);
-  cpuMesh.position.set(700, -25, 0); // Moved up to align with desk at -475
-  monitorGroup.add(cpuMesh);
-  
-  // Power Button on CPU
-  const btnGeo = new THREE.CylinderGeometry(30, 30, 20, 32);
-  btnGeo.rotateX(Math.PI / 2);
-  window.powerButtonMesh = new THREE.Mesh(btnGeo, buttonRed);
-  window.powerButtonMesh.position.set(820, 275, 410); // Moved to right side
-  monitorGroup.add(window.powerButtonMesh);
-  
-  // Floppy / CD slots on CPU
-  const slotGeo = new THREE.BoxGeometry(200, 15, 20);
-  const slot1 = new THREE.Mesh(slotGeo, retroDark);
-  slot1.position.set(700, 175, 400);
-  monitorGroup.add(slot1);
-  const slot2 = new THREE.Mesh(slotGeo, retroDark);
-  slot2.position.set(700, 125, 400);
-  monitorGroup.add(slot2);
-
-  // 2. Monitor (Left Side)
+  // 1. CLASSIC MACINTOSH VINTAGE CRT MONITOR WITH BACK CURVES & STAND
   const monitorScreenGroup = new THREE.Group();
-  monitorScreenGroup.position.set(-200, -15, 0); // Moved down to align base with desk
-  monitorScreenGroup.rotation.x = -0.08; // Tilt back like the reference image
+  monitorScreenGroup.position.set(-120, 0, 0);
   monitorGroup.add(monitorScreenGroup);
 
-  // Main Upper Body
-  const topBodyGeo = new THREE.BoxGeometry(990, 600, 600);
-  const posTop = topBodyGeo.attributes.position;
-  for(let i = 0; i < posTop.count; i++) {
-    const z = posTop.getZ(i);
-    if (z < 0) { // Back
-      posTop.setX(i, posTop.getX(i) * 0.6); // Taper width
-      if (posTop.getY(i) > 0) {
-        posTop.setY(i, posTop.getY(i) * 0.4); // Taper top severely
-      } else {
-        posTop.setY(i, posTop.getY(i) * 1.0); // No taper on bottom to match lower body
-      }
+  // Main Cabinet with Stepped Rear Crown & Curved Back Profile (Widened for Legible Text)
+  const cabGeo = new THREE.BoxGeometry(940, 720, 580);
+  const posCab = cabGeo.attributes.position;
+  for (let i = 0; i < posCab.count; i++) {
+    const y = posCab.getY(i);
+    const z = posCab.getZ(i);
+    
+    // Taper rear vertices inward (X & Y) to form iconic CRT back curves
+    if (z < 0) {
+      posCab.setX(i, posCab.getX(i) * 0.65);
+      posCab.setY(i, posCab.getY(i) * 0.75);
+    }
+    // Stepped Crown Notch on upper back casing
+    if (z < -80 && y > 100) {
+      posCab.setY(i, posCab.getY(i) * 0.88);
     }
   }
-  topBodyGeo.computeVertexNormals();
-  const topBodyMesh = new THREE.Mesh(topBodyGeo, retroBeige);
-  topBodyMesh.position.set(0, 85, 0); 
-  monitorScreenGroup.add(topBodyMesh);
+  cabGeo.computeVertexNormals();
+  const cabMesh = new THREE.Mesh(cabGeo, retroBeige);
+  cabMesh.position.set(0, 40, -40);
+  cabMesh.castShadow = true;
+  cabMesh.receiveShadow = true;
+  monitorScreenGroup.add(cabMesh);
 
-  // Lower Recessed Body (Dark background for ribs)
-  const botBodyGeo = new THREE.BoxGeometry(950, 170, 600); // Narrower for recessed look
-  const posBot = botBodyGeo.attributes.position;
-  for(let i = 0; i < posBot.count; i++) {
-    if (posBot.getZ(i) < 0) posBot.setX(i, posBot.getX(i) * 0.6); 
-  }
-  botBodyGeo.computeVertexNormals();
-  const botBodyMesh = new THREE.Mesh(botBodyGeo, retroDark);
-  botBodyMesh.position.set(0, -300, 0); 
-  monitorScreenGroup.add(botBodyMesh);
-
-  // Monitor Bezel
-  const bezelGeo = new THREE.BoxGeometry(1050, 800, 80);
-  const bezelMesh = new THREE.Mesh(bezelGeo, retroBeige); 
-  bezelMesh.position.set(0, 0, 275); 
+  // Front Outer Bezel Frame
+  const bezelGeo = new THREE.BoxGeometry(960, 740, 60);
+  const bezelMesh = new THREE.Mesh(bezelGeo, retroBeige);
+  bezelMesh.position.set(0, 40, 240);
+  bezelMesh.castShadow = true;
+  bezelMesh.receiveShadow = true;
   monitorScreenGroup.add(bezelMesh);
 
-  // Ribs (Beige strips extending to full width, placed over the dark lower body)
-  for(let i=0; i<4; i++) {
-    const ribGeo = new THREE.BoxGeometry(990, 15, 600);
-    const posRib = ribGeo.attributes.position;
-    for(let j=0; j<posRib.count; j++) {
-      if (posRib.getZ(j) < 0) posRib.setX(j, posRib.getX(j) * 0.6);
+  // Curved CRT Screen Bezel Inset (Widened for Large Screen Text Display)
+  const screenBezelGeo = new THREE.BoxGeometry(820, 520, 40);
+  const screenBezelMesh = new THREE.Mesh(screenBezelGeo, retroBeige);
+  screenBezelMesh.position.set(0, 110, 260);
+  monitorScreenGroup.add(screenBezelMesh);
+
+  // Lower Front Chin (Floppy Drive Slot & Power Button)
+  const chinGeo = new THREE.BoxGeometry(960, 150, 70);
+  const chinMesh = new THREE.Mesh(chinGeo, retroBeige);
+  chinMesh.position.set(0, -235, 245);
+  chinMesh.castShadow = true;
+  monitorScreenGroup.add(chinMesh);
+
+  // Horizontal 3.5" Floppy Disk Drive Slot
+  const slotGeo = new THREE.BoxGeometry(320, 12, 16);
+  const slotMesh = new THREE.Mesh(slotGeo, retroDark);
+  slotMesh.position.set(-80, -215, 275);
+  monitorScreenGroup.add(slotMesh);
+
+  // Red Power Button on Front Lower Right Chin
+  const btnGeo = new THREE.CylinderGeometry(18, 18, 16, 32);
+  btnGeo.rotateX(Math.PI / 2);
+  window.powerButtonMesh = new THREE.Mesh(btnGeo, buttonRed);
+  window.powerButtonMesh.position.set(240, -215, 275);
+  monitorScreenGroup.add(window.powerButtonMesh);
+
+  const btnRingGeo = new THREE.CylinderGeometry(23, 23, 8, 32);
+  btnRingGeo.rotateX(Math.PI / 2);
+  const btnRingMesh = new THREE.Mesh(btnRingGeo, retroDark);
+  btnRingMesh.position.set(240, -215, 270);
+  monitorScreenGroup.add(btnRingMesh);
+
+  // Left & Right Side Rear Cooling Vent Grilles (Inset Flush on Cabinet Walls)
+  const ventMat = retroDark;
+  [-1, 1].forEach(side => {
+    for (let i = 0; i < 9; i++) {
+      const ventGeo = new THREE.BoxGeometry(8, 14, 160);
+      const ventMesh = new THREE.Mesh(ventGeo, ventMat);
+      ventMesh.position.set(side * 285, -100 + (i * 22), -60);
+      ventMesh.rotation.y = side * 0.16;
+      monitorScreenGroup.add(ventMesh);
     }
-    ribGeo.computeVertexNormals();
-    const ribMesh = new THREE.Mesh(ribGeo, retroBeige);
-    ribMesh.position.set(0, -350 + (i * 30), 0);
-    monitorScreenGroup.add(ribMesh);
+  });
+
+  // Monitor Desk Stand Assembly (Sits Directly on Desk Surface at y = -475)
+  const standGroup = new THREE.Group();
+  monitorScreenGroup.add(standGroup);
+
+  // Stand Desk Base Plate
+  const standBaseGeo = new THREE.BoxGeometry(540, 30, 480);
+  const standBaseMesh = new THREE.Mesh(standBaseGeo, retroBeige);
+  standBaseMesh.position.set(0, -460, -20);
+  standBaseMesh.castShadow = true;
+  standBaseMesh.receiveShadow = true;
+  standGroup.add(standBaseMesh);
+
+  // Stand Support Neck Stem
+  const standNeckGeo = new THREE.BoxGeometry(260, 110, 220);
+  const standNeckMesh = new THREE.Mesh(standNeckGeo, retroBeige);
+  standNeckMesh.position.set(0, -395, -20);
+  standNeckMesh.castShadow = true;
+  standGroup.add(standNeckMesh);
+
+  // Swivel Hinge Collar Ring
+  const collarGeo = new THREE.CylinderGeometry(140, 140, 20, 32);
+  const collarMesh = new THREE.Mesh(collarGeo, retroDark);
+  collarMesh.position.set(0, -335, -20);
+  standGroup.add(collarMesh);
+
+  // Rubber Foot Pads Under Stand Base (Resting directly on Desk at y = -475)
+  [[-230, -472, -200], [230, -472, -200], [-230, -472, 160], [230, -472, 160]].forEach(pos => {
+    const footMesh = new THREE.Mesh(new THREE.CylinderGeometry(20, 20, 6, 16), retroDark);
+    footMesh.position.set(...pos);
+    standGroup.add(footMesh);
+  });
+
+  // 2. SEPARATE DESKTOP CPU TOWER BOX (RESTORED ALONGSIDE MONITOR ON DESK)
+  const cpuTowerGroup = new THREE.Group();
+  cpuTowerGroup.position.set(620, -215, 60);
+  monitorGroup.add(cpuTowerGroup);
+
+  // Main CPU Tower Cabinet
+  const cpuGeo = new THREE.BoxGeometry(300, 520, 580);
+  const cpuMesh = new THREE.Mesh(cpuGeo, retroBeige);
+  cpuMesh.position.set(0, 0, 0);
+  cpuMesh.castShadow = true;
+  cpuMesh.receiveShadow = true;
+  cpuTowerGroup.add(cpuMesh);
+
+  // CPU Front Bezel Face
+  const cpuBezelGeo = new THREE.BoxGeometry(310, 530, 30);
+  const cpuBezelMesh = new THREE.Mesh(cpuBezelGeo, retroBeige);
+  cpuBezelMesh.position.set(0, 0, 295);
+  cpuTowerGroup.add(cpuBezelMesh);
+
+  // 5.25" CD-ROM Drive Bay
+  const cdBayGeo = new THREE.BoxGeometry(240, 42, 14);
+  const cdBayMesh = new THREE.Mesh(cdBayGeo, retroDark);
+  cdBayMesh.position.set(0, 170, 310);
+  cpuTowerGroup.add(cdBayMesh);
+
+  // 3.5" Floppy Drive Bay
+  const floppyBayGeo = new THREE.BoxGeometry(200, 18, 14);
+  const floppyBayMesh = new THREE.Mesh(floppyBayGeo, retroDark);
+  floppyBayMesh.position.set(0, 100, 310);
+  cpuTowerGroup.add(floppyBayMesh);
+
+  // Main Glowing Red CPU Power Button
+  const cpuBtnGeo = new THREE.CylinderGeometry(22, 22, 18, 32);
+  cpuBtnGeo.rotateX(Math.PI / 2);
+  window.cpuPowerButtonMesh = new THREE.Mesh(cpuBtnGeo, buttonRed);
+  window.cpuPowerButtonMesh.position.set(-65, -140, 315);
+  cpuTowerGroup.add(window.cpuPowerButtonMesh);
+
+  const cpuBtnRingGeo = new THREE.CylinderGeometry(28, 28, 10, 32);
+  cpuBtnRingGeo.rotateX(Math.PI / 2);
+  const cpuBtnRingMesh = new THREE.Mesh(cpuBtnRingGeo, retroDark);
+  cpuBtnRingMesh.position.set(-65, -140, 310);
+  cpuTowerGroup.add(cpuBtnRingMesh);
+
+  // CPU Green Power Indicator LED
+  const cpuLedGeo = new THREE.SphereGeometry(8, 16, 16);
+  const cpuLedMesh = new THREE.Mesh(cpuLedGeo, ledGreen);
+  cpuLedMesh.position.set(45, -140, 312);
+  cpuTowerGroup.add(cpuLedMesh);
+
+  // CPU Air Vent Grilles
+  for (let i = 0; i < 6; i++) {
+    const ventGeo = new THREE.BoxGeometry(220, 6, 10);
+    const ventMesh = new THREE.Mesh(ventGeo, retroDark);
+    ventMesh.position.set(0, -200 + (i * 14), 310);
+    cpuTowerGroup.add(ventMesh);
   }
-  
-  // Upper Vent (Left) - Flat thin box conforming to taper
-  const sideVentGeo = new THREE.BoxGeometry(1, 40, 100);
-  const leftUpperVent = new THREE.Mesh(sideVentGeo, retroDark);
-  leftUpperVent.position.set(-431, 250, 100);
-  leftUpperVent.rotation.y = -0.318; // Match taper slope
-  monitorScreenGroup.add(leftUpperVent);
 
-  // Upper Vent (Right)
-  const rightUpperVent = new THREE.Mesh(sideVentGeo, retroDark);
-  rightUpperVent.position.set(431, 250, 100);
-  rightUpperVent.rotation.y = 0.318;
-  monitorScreenGroup.add(rightUpperVent);
-
-  // Monitor Base
-  const neckGeo = new THREE.CylinderGeometry(80, 80, 80, 16);
-  const neckMesh = new THREE.Mesh(neckGeo, retroBeige);
-  neckMesh.position.set(-200, -415, 50); 
-  monitorGroup.add(neckMesh);
-  
-  const basePlateGeo = new THREE.CylinderGeometry(300, 300, 20, 32);
-  const basePlateMesh = new THREE.Mesh(basePlateGeo, retroBeige);
-  basePlateMesh.position.set(-200, -465, 50); // Bottom aligns at -475
-  monitorGroup.add(basePlateMesh);
-
-  // WebGL Screen Mask (Punches a transparent hole in WebGL so CSS3D can show through)
+  // WebGL Screen Mask
   const maskMat = new THREE.MeshBasicMaterial({ colorWrite: false });
-  const maskGeo = new THREE.BoxGeometry(800, 600, 10); // Perfectly matches .terminal size
+  const maskGeo = new THREE.BoxGeometry(780, 490, 10);
   const maskMesh = new THREE.Mesh(maskGeo, maskMat);
-  maskMesh.position.set(0, 0, 314); 
-  maskMesh.renderOrder = -1; // MUST draw first to update depth buffer before bezel draws
+  maskMesh.position.set(0, 110, 276); 
+  maskMesh.renderOrder = -1;
   monitorScreenGroup.add(maskMesh);
 
-  // 3. Keyboard
+  // 3. Keyboard (Detailed Mechanical Keybed)
   const keyboardGroup = new THREE.Group();
   
-  const kbGeo = new THREE.BoxGeometry(900, 50, 400);
+  const kbGeo = new THREE.BoxGeometry(900, 45, 400);
   const kbMesh = new THREE.Mesh(kbGeo, retroBeige);
-  kbMesh.position.set(0, 0, 0); // Local center
+  kbMesh.position.set(0, 0, 0);
   keyboardGroup.add(kbMesh);
 
-  const keybedGeo = new THREE.BoxGeometry(820, 10, 320);
+  const keybedGeo = new THREE.BoxGeometry(840, 12, 330);
   const keybedMesh = new THREE.Mesh(keybedGeo, retroDark);
-  keybedMesh.position.set(0, 20, 0); // Sitting on top of base
+  keybedMesh.position.set(0, 20, 0);
   keyboardGroup.add(keybedMesh);
 
-  const keyGeo = new THREE.BoxGeometry(35, 30, 35); // Taller keys
+  const keyGeo = new THREE.BoxGeometry(34, 25, 34);
+  const escKeyMat = new THREE.MeshStandardMaterial({ color: 0xd32f2f, roughness: 0.4 });
+  const enterKeyMat = new THREE.MeshStandardMaterial({ color: 0x1976d2, roughness: 0.4 });
+
   for(let row=0; row<6; row++) {
     for(let col=0; col<20; col++) {
-      const keyMesh = new THREE.Mesh(keyGeo, retroBeige);
-      let x = -380 + (col * 40); // Local X relative to 0
-      let z = -120 + (row * 40); // Local Z relative to 0
-      let y = 30; // Sticking out above keybed
+      let keyMat = retroBeige;
+      if (row === 0 && col === 0) keyMat = escKeyMat; // Red ESC Key
+      else if (row === 3 && col === 18) keyMat = enterKeyMat; // Blue Enter Key
+      else if (row === 5 && (col >= 5 && col <= 14)) continue; // Spacebar slot
+
+      const keyMesh = new THREE.Mesh(keyGeo, keyMat);
+      let x = -380 + (col * 40);
+      let z = -120 + (row * 40);
+      let y = 30;
       keyMesh.position.set(x, y, z);
       keyboardGroup.add(keyMesh);
     }
   }
 
-  // Slant the entire keyboard group and position it globally
+  // Spacebar Key
+  const spaceGeo = new THREE.BoxGeometry(380, 25, 34);
+  const spaceMesh = new THREE.Mesh(spaceGeo, retroDark);
+  spaceMesh.position.set(0, 30, 80);
+  keyboardGroup.add(spaceMesh);
+
   keyboardGroup.rotation.x = 0.15;
   keyboardGroup.position.set(-100, -450, 600);
   monitorGroup.add(keyboardGroup);
 
+  // 3.5 Mouse (Curved Contour & Scroll Wheel)
+  const mouseGroup = new THREE.Group();
+  mouseGroup.position.set(500, -455, 600);
+  monitorGroup.add(mouseGroup);
 
-  // 3.5 Mouse
-  const mouseGeo = new THREE.BoxGeometry(100, 40, 150);
+  const mouseGeo = new THREE.BoxGeometry(110, 42, 160);
   const mouseMesh = new THREE.Mesh(mouseGeo, retroBeige);
-  mouseMesh.position.set(500, -455, 600); // Bottom aligns at -475
-  monitorGroup.add(mouseMesh);
-  
-  const slitGeo = new THREE.BoxGeometry(4, 20, 60);
-  const slitMesh = new THREE.Mesh(slitGeo, retroDark);
-  slitMesh.position.set(500, -445, 560);
-  monitorGroup.add(slitMesh);
+  mouseMesh.position.set(0, 0, 0);
+  mouseGroup.add(mouseMesh);
 
-  // 4. Desk and Chair
+  const wheelGeo = new THREE.CylinderGeometry(10, 10, 12, 16);
+  wheelGeo.rotateZ(Math.PI / 2);
+  const wheelMesh = new THREE.Mesh(wheelGeo, retroDark);
+  wheelMesh.position.set(0, 16, -45);
+  mouseGroup.add(wheelMesh);
+
+  const seamGeo = new THREE.BoxGeometry(3, 15, 65);
+  const seamMesh = new THREE.Mesh(seamGeo, retroDark);
+  seamMesh.position.set(0, 18, -45);
+  mouseGroup.add(seamMesh);
+
+  // 4. Desk and Chair (High Contrast Wood & Chrome Base)
   const woodMat = new THREE.MeshStandardMaterial({
-    color: 0x6e3c15, // Brown wood
-    roughness: 0.9,
-    metalness: 0.1
+    color: 0x4a2a18, // Rich dark mahogany wood
+    roughness: 0.4,
+    metalness: 0.05
   });
 
   const tableTopGeo = new THREE.BoxGeometry(4000, 50, 2000);
   const tableTopMesh = new THREE.Mesh(tableTopGeo, woodMat);
-  tableTopMesh.position.set(0, -500, 300); // Top aligns at -475
+  tableTopMesh.position.set(0, -500, 300);
   monitorGroup.add(tableTopMesh);
 
   const legGeo = new THREE.BoxGeometry(100, 1500, 100);
@@ -371,145 +609,184 @@ function initThreeScene() {
     monitorGroup.add(legMesh);
   });
 
-  const chairMat = new THREE.MeshStandardMaterial({
-    color: 0x222222,
-    roughness: 0.9,
-    metalness: 0.2
+  const chairLeatherMat = new THREE.MeshStandardMaterial({
+    color: 0x141619, // Deep black leather
+    roughness: 0.35,
+    metalness: 0.15
+  });
+
+  const chairChromeMat = new THREE.MeshStandardMaterial({
+    color: 0xdcdcdc, // Chrome metal base
+    roughness: 0.2,
+    metalness: 0.85
   });
   
   const chairGroup = new THREE.Group();
   chairGroup.position.set(-100, 0, 1700);
   monitorGroup.add(chairGroup);
 
-  const seatGeo = new THREE.BoxGeometry(700, 50, 700);
-  const seatMesh = new THREE.Mesh(seatGeo, chairMat);
+  const seatGeo = new THREE.BoxGeometry(700, 60, 700);
+  const seatMesh = new THREE.Mesh(seatGeo, chairLeatherMat);
   seatMesh.position.set(0, -1075, 0);
   chairGroup.add(seatMesh);
 
-  const backrestGeo = new THREE.BoxGeometry(650, 800, 50);
-  const backrestMesh = new THREE.Mesh(backrestGeo, chairMat);
+  const backrestGeo = new THREE.BoxGeometry(650, 800, 55);
+  const backrestMesh = new THREE.Mesh(backrestGeo, chairLeatherMat);
   backrestMesh.position.set(0, -700, 325);
   chairGroup.add(backrestMesh);
 
-  const postGeo = new THREE.CylinderGeometry(50, 50, 925, 16);
-  const postMesh = new THREE.Mesh(postGeo, chairMat);
+  const postGeo = new THREE.CylinderGeometry(40, 40, 925, 24);
+  const postMesh = new THREE.Mesh(postGeo, chairChromeMat);
   postMesh.position.set(0, -1550, 0);
   chairGroup.add(postMesh);
 
-  const baseLegGeo = new THREE.BoxGeometry(800, 50, 100);
-  const baseLeg1 = new THREE.Mesh(baseLegGeo, chairMat);
+  const baseLegGeo = new THREE.BoxGeometry(820, 45, 90);
+  const baseLeg1 = new THREE.Mesh(baseLegGeo, chairChromeMat);
   baseLeg1.position.set(0, -1975, 0);
   chairGroup.add(baseLeg1);
-  const baseLeg2 = new THREE.Mesh(baseLegGeo, chairMat);
+  const baseLeg2 = new THREE.Mesh(baseLegGeo, chairChromeMat);
   baseLeg2.position.set(0, -1975, 0);
   baseLeg2.rotation.y = Math.PI / 2;
   chairGroup.add(baseLeg2);
 
   // Armrests
-  const armrestGeo = new THREE.BoxGeometry(70, 250, 450);
-  const leftArm = new THREE.Mesh(armrestGeo, chairMat);
-  leftArm.position.set(-315, -925, 50);
+  const armrestGeo = new THREE.BoxGeometry(75, 260, 450);
+  const leftArm = new THREE.Mesh(armrestGeo, chairLeatherMat);
+  leftArm.position.set(-320, -925, 50);
   chairGroup.add(leftArm);
-  const rightArm = new THREE.Mesh(armrestGeo, chairMat);
-  rightArm.position.set(315, -925, 50);
+  const rightArm = new THREE.Mesh(armrestGeo, chairLeatherMat);
+  rightArm.position.set(320, -925, 50);
   chairGroup.add(rightArm);
 
-  // 5. Potted Bonsai Plant
+  // 5. Potted Bonsai Plant (Vibrant Foliage & Terracotta Pot)
   const plantGroup = new THREE.Group();
-  plantGroup.position.set(-1200, -475, 400); // On left side of desk
-  plantGroup.scale.set(2.2, 2.2, 2.2); // Scaled up even more
+  plantGroup.position.set(-1200, -475, 400);
+  plantGroup.scale.set(2.3, 2.3, 2.3);
   monitorGroup.add(plantGroup);
 
-  // Shallow Pot
-  const potGeo = new THREE.CylinderGeometry(140, 110, 40, 16);
-  const potMat = new THREE.MeshStandardMaterial({ color: 0xcc6644, roughness: 0.9, metalness: 0.1 }); 
+  const potGeo = new THREE.CylinderGeometry(140, 105, 45, 32);
+  const potMat = new THREE.MeshStandardMaterial({ color: 0xd95a32, roughness: 0.7, metalness: 0.08 }); 
   const potMesh = new THREE.Mesh(potGeo, potMat);
-  potMesh.position.set(0, 20, 0); // Resting on desk
+  potMesh.position.set(0, 22.5, 0);
   plantGroup.add(potMesh);
 
-  // Twisted Trunk
-  const trunkMat = new THREE.MeshStandardMaterial({ color: 0x4a2f1d, roughness: 0.9 });
-  const trunk1 = new THREE.Mesh(new THREE.CylinderGeometry(15, 20, 80, 8), trunkMat);
-  trunk1.position.set(0, 60, 0);
+  const soilGeo = new THREE.CylinderGeometry(130, 130, 8, 32);
+  const soilMat = new THREE.MeshStandardMaterial({ color: 0x221810, roughness: 0.95 });
+  const soilMesh = new THREE.Mesh(soilGeo, soilMat);
+  soilMesh.position.set(0, 42, 0);
+  plantGroup.add(soilMesh);
+
+  const trunkMat = new THREE.MeshStandardMaterial({ color: 0x3b2314, roughness: 0.85 });
+  const trunk1 = new THREE.Mesh(new THREE.CylinderGeometry(16, 22, 85, 12), trunkMat);
+  trunk1.position.set(0, 70, 0);
   trunk1.rotation.z = 0.2;
   plantGroup.add(trunk1);
-  const trunk2 = new THREE.Mesh(new THREE.CylinderGeometry(10, 15, 70, 8), trunkMat);
-  trunk2.position.set(20, 110, 0);
+  const trunk2 = new THREE.Mesh(new THREE.CylinderGeometry(12, 16, 75, 12), trunkMat);
+  trunk2.position.set(20, 120, 0);
   trunk2.rotation.z = -0.3;
   plantGroup.add(trunk2);
 
-  // Layered Foliage (Flattened Spheres)
-  const leafMat = new THREE.MeshStandardMaterial({ color: 0x228833, roughness: 0.8, metalness: 0.1 });
-  const leafGeo = new THREE.SphereGeometry(70, 16, 16);
-  const leaf1 = new THREE.Mesh(leafGeo, leafMat);
-  leaf1.scale.set(1, 0.4, 1);
-  leaf1.position.set(30, 140, 0);
+  // Layered Vibrant Foliage
+  const leafMat1 = new THREE.MeshStandardMaterial({ color: 0x1b5e20, roughness: 0.6, metalness: 0.05 });
+  const leafMat2 = new THREE.MeshStandardMaterial({ color: 0x2e7d32, roughness: 0.6, metalness: 0.05 });
+  const leafMat3 = new THREE.MeshStandardMaterial({ color: 0x43a047, roughness: 0.6, metalness: 0.05 });
+  
+  const leafGeo = new THREE.SphereGeometry(72, 24, 24);
+  
+  const leaf1 = new THREE.Mesh(leafGeo, leafMat1);
+  leaf1.scale.set(1, 0.42, 1);
+  leaf1.position.set(32, 150, 0);
   plantGroup.add(leaf1);
 
-  const leaf2 = new THREE.Mesh(leafGeo, leafMat);
-  leaf2.scale.set(0.8, 0.4, 0.8);
-  leaf2.position.set(-20, 100, 30);
+  const leaf2 = new THREE.Mesh(leafGeo, leafMat2);
+  leaf2.scale.set(0.82, 0.42, 0.82);
+  leaf2.position.set(-22, 110, 32);
   plantGroup.add(leaf2);
 
-  const leaf3 = new THREE.Mesh(leafGeo, leafMat);
-  leaf3.scale.set(0.9, 0.4, 0.9);
-  leaf3.position.set(10, 160, -20);
+  const leaf3 = new THREE.Mesh(leafGeo, leafMat3);
+  leaf3.scale.set(0.92, 0.42, 0.92);
+  leaf3.position.set(12, 172, -22);
   plantGroup.add(leaf3);
 
-  // 6. Books
+  // 6. Books (Jewel Tones with Paper Pages Edge)
   const booksGroup = new THREE.Group();
-  booksGroup.position.set(-850, -475, 600); // Between plant and monitor
+  booksGroup.position.set(-850, -475, 600);
   monitorGroup.add(booksGroup);
 
-  const bookMat1 = new THREE.MeshStandardMaterial({ color: 0x224488, roughness: 0.7 });
-  const bookMat2 = new THREE.MeshStandardMaterial({ color: 0x882222, roughness: 0.7 });
-  const bookMat3 = new THREE.MeshStandardMaterial({ color: 0x226622, roughness: 0.7 });
+  const bookMat1 = new THREE.MeshStandardMaterial({ color: 0x15325b, roughness: 0.5 }); // Sapphire Blue
+  const bookMat2 = new THREE.MeshStandardMaterial({ color: 0x7a1818, roughness: 0.5 }); // Crimson Red
+  const bookMat3 = new THREE.MeshStandardMaterial({ color: 0x1b4d24, roughness: 0.5 }); // Emerald Green
+  const pagesMat = new THREE.MeshStandardMaterial({ color: 0xeae5d9, roughness: 0.9 });
 
-  const book1 = new THREE.Mesh(new THREE.BoxGeometry(200, 30, 280), bookMat1);
-  book1.position.set(0, 15, 0);
+  // Helper to make detailed book with cover & page block
+  function createDetailedBook(w, h, d, mat) {
+    const bg = new THREE.Group();
+    const cover = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
+    bg.add(cover);
+    const pages = new THREE.Mesh(new THREE.BoxGeometry(w - 10, h - 6, d - 10), pagesMat);
+    pages.position.set(4, 0, 0);
+    bg.add(pages);
+    return bg;
+  }
+
+  const book1 = createDetailedBook(200, 32, 280, bookMat1);
+  book1.position.set(0, 16, 0);
   book1.rotation.y = 0.2;
   booksGroup.add(book1);
 
-  const book2 = new THREE.Mesh(new THREE.BoxGeometry(190, 40, 260), bookMat2);
-  book2.position.set(5, 50, -5);
-  book2.rotation.y = -0.1;
+  const book2 = createDetailedBook(190, 38, 260, bookMat2);
+  book2.position.set(5, 51, -5);
+  book2.rotation.y = -0.12;
   booksGroup.add(book2);
 
-  const book3 = new THREE.Mesh(new THREE.BoxGeometry(180, 25, 250), bookMat3);
-  book3.position.set(-10, 82.5, 10);
-  book3.rotation.y = 0.3;
+  const book3 = createDetailedBook(180, 26, 250, bookMat3);
+  book3.position.set(-10, 83, 10);
+  book3.rotation.y = 0.28;
   booksGroup.add(book3);
-
-  // 7. Neon Sign Background
-  const neonElement = document.querySelector('.neon-sign-container');
-  if (neonElement) {
-    neonElement.style.display = 'flex';
-    const neonCSS = new THREE.CSS3DObject(neonElement);
-    neonCSS.position.set(0, 1200, -2000); // High up on the back wall, far away
-    scene.add(neonCSS);
-  }
 
   // 4. CSS3D Terminal Screen
   const terminalElement = document.querySelector('.terminal');
   terminalElement.style.display = 'flex'; 
   
   const cssObject = new THREE.CSS3DObject(terminalElement);
-  cssObject.position.set(0, 0, 316); // Perfectly aligned with mask hole
+  cssObject.position.set(0, 110, 277);
   monitorScreenGroup.add(cssObject);
 
-  // Lighting
-  const ambient = new THREE.AmbientLight(0xfff8ed, 0.4); // Warmer ambient
+  // Enable Shadows Across All 3D Objects
+  monitorGroup.traverse((child) => {
+    if (child.isMesh) {
+      child.castShadow = true;
+      child.receiveShadow = true;
+    }
+  });
+
+  // Balanced High-Contrast Studio Lighting
+  const ambient = new THREE.AmbientLight(0xfff8ed, 0.35);
   scene.add(ambient);
-  const dirLight = new THREE.DirectionalLight(0xfff8ed, 0.6); // Warmer directional
-  dirLight.position.set(500, 1000, 1000);
-  scene.add(dirLight);
-  const rimLight = new THREE.DirectionalLight(0xccddff, 0.5);
-  rimLight.position.set(-800, 500, -500);
+
+  const mainLight = new THREE.DirectionalLight(0xfffaed, 1.25);
+  mainLight.position.set(800, 1400, 1000);
+  mainLight.castShadow = true;
+  mainLight.shadow.mapSize.width = 2048;
+  mainLight.shadow.mapSize.height = 2048;
+  mainLight.shadow.camera.near = 500;
+  mainLight.shadow.camera.far = 4000;
+  mainLight.shadow.camera.left = -2000;
+  mainLight.shadow.camera.right = 2000;
+  mainLight.shadow.camera.top = 2000;
+  mainLight.shadow.camera.bottom = -2000;
+  mainLight.shadow.bias = -0.0005;
+  const fillLight = new THREE.DirectionalLight(0xd0e0ff, 0.45);
+  fillLight.position.set(-900, 600, 800);
+  scene.add(fillLight);
+
+  const rimLight = new THREE.DirectionalLight(0xffeedd, 0.65);
+  rimLight.position.set(0, 1000, -1200);
   scene.add(rimLight);
 
   window.addEventListener('resize', onWindowResize);
   
-  // Raycaster for Power Button
+  // Raycaster for Power Buttons (CPU Tower & Monitor Front)
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
 
@@ -521,27 +798,38 @@ function initThreeScene() {
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
     
     raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObject(window.powerButtonMesh);
+    const targets = [window.powerButtonMesh, window.cpuPowerButtonMesh].filter(Boolean);
+    const intersects = raycaster.intersectObjects(targets);
     
     if (intersects.length > 0) {
+      playMouseClickSound();
       window.isBooted = true;
-      // Change button color to green to show it's on
-      window.powerButtonMesh.material.color.setHex(0x33ff33);
+      // Change button colors to green to show power is ON
+      targets.forEach(b => { if (b.material) b.material.color.setHex(0x33ff33); });
       
-      // Turn on terminal
-      terminalElement.classList.remove('off');
       const bootPrompt = document.getElementById('boot-prompt');
       if (bootPrompt) bootPrompt.classList.add('hidden');
-      
-      // Start sequence
-      setTimeout(runStep, 500);
+
+      // Swipe black screen first with slight delay before displaying welcome screen
+      const blackSwipe = document.getElementById('crt-black-swipe');
+      if (blackSwipe) blackSwipe.classList.add('active');
+
+      setTimeout(() => {
+        terminalElement.classList.remove('off');
+        if (blackSwipe) {
+          setTimeout(() => {
+            blackSwipe.classList.remove('active');
+          }, 250);
+        }
+        setTimeout(runStep, 400);
+      }, 650);
     }
   });
 
   animateScene();
   
-  // Play the intro grid animation
-  playGridIntro();
+  // Play the retro pixel intro animation
+  playPixelIntro();
 }
 
 function onWindowResize() {
@@ -554,10 +842,6 @@ function onWindowResize() {
 function animateScene() {
   requestAnimationFrame(animateScene);
   controls.update();
-  
-  // Static scene, no floating animation
-  // monitorGroup.position.y = Math.sin(time) * 10;
-  // monitorGroup.rotation.y = Math.sin(time * 0.5) * 0.05;
 
   glRenderer.render(scene, camera);
   cssRenderer.render(scene, camera);
@@ -566,6 +850,7 @@ function animateScene() {
 window.addEventListener('load', initThreeScene);
 
 btn.addEventListener('click', () => {
+  playMouseClickSound();
   const terminal = document.querySelector('.terminal');
   if (terminal) terminal.classList.add('sweep-up');
   setTimeout(() => {
@@ -573,53 +858,64 @@ btn.addEventListener('click', () => {
   }, 850);
 });
 
-function playGridIntro() {
+function playPixelIntro() {
   const overlay = document.getElementById('grid-overlay');
-  const pctText = document.getElementById('loading-pct');
-  if (!overlay || !pctText) return;
+  const blocks = document.querySelectorAll('.pixel-block');
+  const statusText = document.getElementById('pixel-loading-status');
+  if (!overlay) return;
 
-  const tl = anime.timeline({
-    easing: 'easeOutExpo'
-  });
+  const messages = [
+    'Initializing system core...',
+    'Loading brand strategy...',
+    'Mounting retro 3D workspace...',
+    'Configuring UI components...',
+    'Loading humor.txt & charisma.dat...',
+    'All systems ready.'
+  ];
 
-  // Draw HUD lines
-  tl.add({
-    targets: '.hud-draw',
-    strokeDashoffset: [anime.setDashoffset, 0],
-    duration: 1500,
-    delay: anime.stagger(50),
-    easing: 'easeInOutSine'
-  })
-  // Pop the dots
-  .add({
-    targets: '.hud-pop',
-    r: [0, 3],
-    opacity: [0, 1],
-    duration: 600,
-    delay: anime.stagger(30),
-    easing: 'easeOutBack'
-  }, '-=800')
-  // Animate Percentage
-  .add({
-    targets: { val: 0 },
-    val: 100,
-    round: 1,
-    duration: 1500,
-    easing: 'linear',
-    update: function(a) {
-      pctText.innerHTML = a.animations[0].currentValue + '%';
+  // Slower, unhurried loading duration (4.8 seconds)
+  const duration = 4800;
+  let startTime = null;
+
+  function animateLoading(timestamp) {
+    if (!startTime) startTime = timestamp;
+    const elapsed = timestamp - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+
+    if (blocks && blocks.length > 0) {
+      const activeCount = Math.floor(progress * (blocks.length + 1));
+      blocks.forEach((block, idx) => {
+        if (idx < activeCount) {
+          block.classList.add('active');
+        } else {
+          block.classList.remove('active');
+        }
+      });
     }
-  }, '+=100')
-  // Fade out entire overlay to reveal 3D scene
-  .add({
-    targets: overlay,
-    opacity: 0,
-    duration: 800,
-    easing: 'easeInOutQuad'
-  }, '+=400')
-  .finished.then(() => {
-    overlay.style.display = 'none';
-    const bootPrompt = document.getElementById('boot-prompt');
-    if (bootPrompt) bootPrompt.classList.remove('hidden');
-  });
+
+    if (statusText) {
+      const msgIdx = Math.min(Math.floor(progress * messages.length), messages.length - 1);
+      statusText.textContent = messages[msgIdx];
+    }
+
+    if (progress < 1) {
+      requestAnimationFrame(animateLoading);
+    } else {
+      setTimeout(() => {
+        overlay.style.transition = 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease-out';
+        overlay.style.transform = 'scale(1.06)';
+        overlay.style.opacity = '0';
+
+        setTimeout(() => {
+          overlay.style.display = 'none';
+          const bootPrompt = document.getElementById('boot-prompt');
+          if (bootPrompt) {
+            bootPrompt.classList.remove('hidden');
+          }
+        }, 500);
+      }, 350);
+    }
+  }
+
+  requestAnimationFrame(animateLoading);
 }

@@ -316,11 +316,12 @@
     margin-bottom: 12px;
   }
   .board-desc {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
     font-size: 15px;
     color: var(--paper);
     opacity: 0.95;
-    line-height: 1.5;
+    line-height: 1.55;
     max-width: 48ch;
   }
   .board-content {
@@ -345,13 +346,13 @@
 
   .bus-figure {
     position: absolute;
-    bottom: -40px; /* Pull the bus way down to compensate for the image's transparent shadow/padding */
+    bottom: -55px; /* Pull the bus down to align tires on the highway line */
     left: 2%; /* Starts slightly further left */
-    height: 400px; /* Adjust size based on feedback */
+    height: 560px; /* Enlarge bus size for high visual impact */
     width: auto;
     z-index: 10;
     will-change: transform;
-    filter: drop-shadow(0 15px 15px rgba(0,0,0,0.5));
+    filter: drop-shadow(0 18px 18px rgba(0,0,0,0.55));
     transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
   .bus-figure img {
@@ -443,8 +444,8 @@
       inset: 20px;
     }
     .bus-figure {
-      height: 250px;
-      bottom: -25px; /* keep tires on the line */
+      height: 360px;
+      bottom: -35px; /* keep tires on the line */
       left: 5%;
     }
     .comic-bubble {
@@ -469,8 +470,8 @@
       min-height: 600px;
     }
     .bus-figure {
-      height: 180px;
-      bottom: -15px;
+      height: 260px;
+      bottom: -25px;
     }
     .route-map-container {
       padding: 0 10px;

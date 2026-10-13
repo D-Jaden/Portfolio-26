@@ -283,7 +283,9 @@ function initThreeScene() {
   // Scene & Camera (Angle & Framing matched to User Reference Screenshot)
   scene = new THREE.Scene();
   scene.background = null;
-  camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 5000);
+  const aspect = window.innerWidth / window.innerHeight;
+  const initialFov = aspect < 1 ? Math.min(70, 45 * Math.sqrt(1 / aspect)) : 45;
+  camera = new THREE.PerspectiveCamera(initialFov, aspect, 1, 5000);
   camera.position.set(-1180, 560, 1180);
 
   // WebGL Renderer
@@ -848,10 +850,17 @@ function initThreeScene() {
 }
 
 function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
+  if (!camera) return;
+  const aspect = window.innerWidth / window.innerHeight;
+  camera.aspect = aspect;
+  if (aspect < 1) {
+    camera.fov = Math.min(70, 45 * Math.sqrt(1 / aspect));
+  } else {
+    camera.fov = 45;
+  }
   camera.updateProjectionMatrix();
-  glRenderer.setSize(window.innerWidth, window.innerHeight);
-  cssRenderer.setSize(window.innerWidth, window.innerHeight);
+  if (glRenderer) glRenderer.setSize(window.innerWidth, window.innerHeight);
+  if (cssRenderer) cssRenderer.setSize(window.innerWidth, window.innerHeight);
 }
 
 function animateScene() {

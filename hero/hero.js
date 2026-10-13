@@ -94,13 +94,20 @@ if (badge) {
 }
 
 // ── RULER & GRID ──
-const COL_COUNT = 14;
-const LEFT_PAD  = 28;
-const RIGHT_PAD = 28;
+let COL_COUNT = 14;
+let LEFT_PAD  = 28;
+let RIGHT_PAD = 28;
 
 function buildRuler() {
   const row = document.getElementById('ruler-row');
+  if (!row) return { W: 0, usable: 0, colW: 0, leftPad: 28, rightPad: 28, colCount: 14 };
   const W   = row.offsetWidth;
+  const isMobile = W <= 768;
+  const isSmallMobile = W <= 480;
+  COL_COUNT = isMobile ? (isSmallMobile ? 6 : 8) : 14;
+  LEFT_PAD  = isMobile ? 16 : 28;
+  RIGHT_PAD = isMobile ? 16 : 28;
+
   const usable = W - LEFT_PAD - RIGHT_PAD;
   const colW   = usable / COL_COUNT;
 
@@ -123,6 +130,7 @@ function buildRuler() {
   scl.style.cssText = `position:absolute;bottom:4px;right:${RIGHT_PAD}px;font-family:Helvetica,Arial,sans-serif;font-size:8px;letter-spacing:.1em;color:#1212B0;opacity:.5;`;
   row.appendChild(scl);
 
+  const numMinorTicks = isMobile ? (isSmallMobile ? 4 : 5) : 10;
   for (let i = 0; i <= COL_COUNT; i++) {
     const x  = LEFT_PAD + i * colW;
     const mm = i * 100;
@@ -130,21 +138,22 @@ function buildRuler() {
     tick.style.cssText = `position:absolute;bottom:0;left:${x}px;width:1px;height:12px;background:rgba(18,18,176,0.32);`;
     row.appendChild(tick);
     if (i < COL_COUNT) l(mm, x);
-    for (let j = 1; j < 10; j++) {
-      const mx = x + j * (colW / 10);
+    for (let j = 1; j < numMinorTicks; j++) {
+      const mx = x + j * (colW / numMinorTicks);
       const mt = document.createElement('div');
-      const h  = j === 5 ? 7 : 4;
-      mt.style.cssText = `position:absolute;bottom:0;left:${mx}px;width:1px;height:${h}px;background:rgba(18,18,176,${j===5?0.24:0.14});`;
+      const h  = (j === Math.floor(numMinorTicks / 2)) ? 7 : 4;
+      mt.style.cssText = `position:absolute;bottom:0;left:${mx}px;width:1px;height:${h}px;background:rgba(18,18,176,${j===Math.floor(numMinorTicks/2)?0.24:0.14});`;
       row.appendChild(mt);
     }
   }
-  return { W, usable, colW };
+  return { W, usable, colW, leftPad: LEFT_PAD, rightPad: RIGHT_PAD, colCount: COL_COUNT };
 }
 
 function buildGrid(dims) {
-  const { W, usable, colW } = dims;
+  const { W, usable, colW, leftPad, colCount } = dims;
   const canvas = document.getElementById('grid-canvas');
   const hero   = document.getElementById('hero-open');
+  if (!canvas || !hero) return;
   const H      = hero.offsetHeight;
   const DPR    = window.devicePixelRatio || 1;
   canvas.width  = W * DPR;
@@ -153,9 +162,10 @@ function buildGrid(dims) {
   canvas.style.height = H + 'px';
   const ctx = canvas.getContext('2d');
   ctx.scale(DPR, DPR);
-  const x0 = LEFT_PAD;
-  const x1 = LEFT_PAD + usable;
-  const cellW = colW / 10;
+  const x0 = leftPad !== undefined ? leftPad : LEFT_PAD;
+  const x1 = x0 + usable;
+  const count = colCount !== undefined ? colCount : COL_COUNT;
+  const cellW = colW / (W <= 768 ? 5 : 10);
   const cellH = cellW;
 
   ctx.strokeStyle = 'rgba(18,18,176,0.10)';
@@ -169,7 +179,7 @@ function buildGrid(dims) {
 
   ctx.strokeStyle = 'rgba(18,18,176,0.20)';
   ctx.lineWidth   = 0.75;
-  for (let i = 0; i <= COL_COUNT; i++) {
+  for (let i = 0; i <= count; i++) {
     const x = x0 + i * colW;
     ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
   }
@@ -188,8 +198,10 @@ function buildGrid(dims) {
   ctx.beginPath(); ctx.moveTo(vx, 0); ctx.lineTo(x1, H); ctx.stroke();
 
   const lbl = document.getElementById('fl-tl');
-  lbl.style.left    = LEFT_PAD + 'px';
-  lbl.style.display = 'block';
+  if (lbl) {
+    lbl.style.left    = x0 + 'px';
+    lbl.style.display = 'block';
+  }
 }
 
 // ── STICKY NOTE DRAG + DOUBLE-CLICK ACTION ──
@@ -235,11 +247,54 @@ function initStickyDrag() {
       document.addEventListener('mouseup',   onUp);
     });
 
+    // Mobile touch drag & tap support
+    el.addEventListener('touchstart', e => {
+      if (e.touches && e.touches.length > 0) {
+        dragged = false;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        origLeft = el.offsetLeft;
+        origTop = el.offsetTop;
+      }
+    }, { passive: true });
+
+    el.addEventListener('touchmove', e => {
+      if (e.touches && e.touches.length > 0) {
+        const dx = e.touches[0].clientX - startX;
+        const dy = e.touches[0].clientY - startY;
+        if (Math.abs(dx) > 6 || Math.abs(dy) > 6) dragged = true;
+        if (dragged) {
+          el.style.left = (origLeft + dx) + 'px';
+          el.style.top = (origTop + dy) + 'px';
+        }
+      }
+    }, { passive: true });
+
+    el.addEventListener('touchend', () => {
+      if (!dragged) {
+        if (el.id === 'sticky-resume') {
+          window.open('CV.pdf', '_blank');
+        } else if (el.id === 'sticky-contact') {
+          const contactSec = document.getElementById('contactSection');
+          if (contactSec) {
+            contactSec.scrollIntoView({ behavior: 'smooth' });
+          } else {
+            window.location.href = '../contact/contact.html';
+          }
+        }
+      }
+    });
+
     el.addEventListener('click', () => {
       if (el.id === 'sticky-resume') {
         window.open('CV.pdf', '_blank');
       } else if (el.id === 'sticky-contact') {
-        window.location.href = '../contact/contact.html';
+        const contactSec = document.getElementById('contactSection');
+        if (contactSec) {
+          contactSec.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          window.location.href = '../contact/contact.html';
+        }
       }
     });
 
@@ -247,7 +302,12 @@ function initStickyDrag() {
       if (el.id === 'sticky-resume') {
         window.open('CV.pdf', '_blank');
       } else {
-        window.location.href = '../contact/contact.html';
+        const contactSec = document.getElementById('contactSection');
+        if (contactSec) {
+          contactSec.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          window.location.href = '../contact/contact.html';
+        }
       }
     });
   });
@@ -393,8 +453,9 @@ function initExperienceBillboard() {
     });
 
     if (busFigure) {
-      const startLeft = 10;
-      const endLeft = 60;
+      const isMobile = window.innerWidth <= 768;
+      const startLeft = isMobile ? 3 : 10;
+      const endLeft = isMobile ? 46 : 60;
       const targetLeft = startLeft + (activeStop / (STOPS - 1)) * (endLeft - startLeft);
       
       if (window.anime) {
@@ -3759,9 +3820,12 @@ function initAboutThreeScene() {
       // Normal overview camera with subtle mouse parallax
       const targetX = mouseX * 35;
       const targetY = 120 - mouseY * 25;
+      const baseZ = window.innerWidth <= 768
+        ? Math.min(1500, Math.round(820 * (650 / Math.max(window.innerWidth, 320))))
+        : 820;
       aboutCamera.position.x += (targetX - aboutCamera.position.x) * 0.05;
       aboutCamera.position.y += (targetY - aboutCamera.position.y) * 0.05;
-      aboutCamera.position.z += (820 - aboutCamera.position.z) * 0.05;
+      aboutCamera.position.z += (baseZ - aboutCamera.position.z) * 0.05;
       aboutCamera.lookAt(defaultCamLookAt);
     }
     aboutRenderer.render(aboutScene, aboutCamera);

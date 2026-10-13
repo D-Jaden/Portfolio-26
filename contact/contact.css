@@ -308,6 +308,8 @@ body {
 .id-card-holder {
   position: relative;
   width: 420px;
+  max-width: calc(100vw - 32px);
+  box-sizing: border-box;
   background: rgba(255, 255, 255, 0.94);
   border: 2px solid rgba(18, 18, 176, 0.35);
   border-radius: 14px;
@@ -823,8 +825,52 @@ body {
 }
 
 @media (max-width: 900px) {
+  .meta {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 10px 16px;
+  }
+  .contact-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px 16px 16px;
+    gap: 12px;
+  }
+  .contact-header .display-name .script-title {
+    font-size: clamp(38px, 9.5vw, 58px);
+  }
+  .contact-header .display-name .sans-title {
+    font-size: clamp(24px, 6vw, 38px);
+  }
   .contact-grid {
     grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 20px 16px;
+  }
+  .id-card-holder {
+    width: 100%;
+    max-width: 350px;
+    margin-top: 85px;
+    padding: 10px 12px 12px;
+  }
+  .yellow-lanyard-band {
+    top: -130px;
+    height: 215px;
+    width: 32px;
+  }
+  .lanyard-clip {
+    top: 70px;
+  }
+  .footer-content {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+    padding: 20px 16px 85px 16px;
+  }
+  .footer-left, .footer-center, .footer-right {
+    align-items: center;
+    justify-content: center;
+    width: 100%;
   }
 }
 

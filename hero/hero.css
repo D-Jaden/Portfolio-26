@@ -6,12 +6,14 @@ html, body {
   background: #ffffff;
   color: #1212B0;
   min-height: 100vh;
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 .page {
   width: 100%;
   max-width: 100%;
-  overflow-x: clip;
+  overflow-x: hidden;
 }
 
 /* ── META HEADER ── */
@@ -2664,4 +2666,795 @@ html, body {
   color: #ffffff;
   letter-spacing: 0.15em;
   opacity: 0.8;
+}
+
+/* ========================================================================== */
+/* COMPREHENSIVE RESPONSIVE DESIGN FOR TABLETS & SMARTPHONES                  */
+/* ========================================================================== */
+
+/* ── TABLET BREAKPOINT (max-width: 1024px) ── */
+@media (max-width: 1024px) {
+  .body {
+    grid-template-columns: 240px 1fr;
+  }
+  .contact-section .contact-grid {
+    gap: 28px;
+    padding: 30px 24px;
+  }
+}
+
+/* ── MOBILE / SMARTPHONE BREAKPOINT (max-width: 768px) ── */
+@media (max-width: 768px) {
+  /* 1. Meta Header */
+  .meta {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 14px;
+    padding: 10px 16px;
+  }
+  .mc {
+    align-items: flex-start !important;
+  }
+  .mk {
+    font-size: 8px;
+  }
+  .mv {
+    font-size: 8.5px;
+  }
+
+  /* 2. Ruler */
+  .ruler-row {
+    height: 22px;
+  }
+
+  /* 3. Hero Open Field */
+  .hero-open {
+    height: 380px;
+  }
+  .hero-name-row {
+    padding: 0 16px;
+  }
+  .display-name {
+    font-size: clamp(48px, 12vw, 84px);
+    line-height: 0.95;
+    padding-bottom: 2px;
+  }
+  .archive-tag {
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    padding-bottom: 14px;
+    margin-left: 12px;
+  }
+  .fl-tr {
+    right: 14px;
+    top: 8px;
+  }
+
+  /* Sticky Notes */
+  .sticky-zone {
+    right: 14px;
+    top: 10px;
+    gap: 8px;
+  }
+  .sticky {
+    min-width: 95px;
+    min-height: 72px;
+    padding: 10px 12px;
+  }
+  .sticky-sub {
+    font-size: 9.5px;
+    letter-spacing: 0.08em;
+  }
+
+  /* Grid Meta Strip */
+  .grid-strip {
+    padding: 5px 16px;
+    font-size: 7.5px;
+  }
+
+  /* 4. Body & Sidebar */
+  .body {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  .sidebar {
+    position: static;
+    height: auto;
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid rgba(18, 18, 176, 0.28);
+    padding: 18px 16px;
+    gap: 16px;
+    box-sizing: border-box;
+  }
+  .mission {
+    font-size: 9px;
+    line-height: 1.6;
+    padding-bottom: 12px;
+  }
+  .sb-lbl {
+    font-size: 7.5px;
+    margin-bottom: 6px;
+  }
+  .sb-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+  }
+  .sb-list li {
+    font-size: 9px;
+    padding: 2px 0;
+  }
+
+  /* 5. Personal Fun Projects Drawer */
+  .drawer-container {
+    padding: 14px 12px 24px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    min-height: 320vh;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .drawer-header {
+    margin-bottom: 38px;
+    top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .drawer-label {
+    font-size: 16px;
+    letter-spacing: 0.03em;
+  }
+  .drawer-hint {
+    font-size: 9.5px;
+  }
+  .drawer-box {
+    top: 70px;
+    height: calc(100vh - 95px);
+    min-height: 480px;
+  }
+  
+  /* Responsive Tab Layout - 4 tabs distributed evenly */
+  .folder-tab {
+    position: absolute;
+    top: -30px;
+    height: 32px;
+    padding: 0 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(8px, 2.2vw, 10px);
+    letter-spacing: 0.4px;
+    border-radius: 6px 6px 0 0;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+  }
+  .folder-1 .folder-tab { left: -2px; width: calc(25% + 2px); }
+  .folder-2 .folder-tab { left: calc(25% - 2px); width: calc(25% + 2px); }
+  .folder-3 .folder-tab { left: calc(50% - 2px); width: calc(25% + 2px); }
+  .folder-4 .folder-tab { left: calc(75% - 2px); width: calc(25% + 4px); }
+
+  .folder-content {
+    padding: 14px 14px 20px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    height: 100%;
+  }
+  .folder-meta {
+    font-size: 9px;
+  }
+  .folder-title {
+    font-size: 24px;
+    margin: 0 0 4px 0;
+  }
+  .folder-content p {
+    font-size: 12px;
+    line-height: 1.45;
+    margin-bottom: 6px;
+  }
+  .folder-action-row {
+    margin-bottom: 8px;
+    gap: 8px;
+  }
+  .folder-specs {
+    font-size: 9px;
+    padding: 3px 8px;
+    gap: 6px;
+  }
+  .project-view-btn {
+    font-size: 11px;
+    padding: 5px 12px;
+  }
+
+  /* Responsive Phone Chassis & Screen */
+  .project-phone-showcase {
+    gap: 12px;
+    padding-bottom: 8px;
+    margin-top: 6px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .phone-chassis {
+    width: 140px;
+    height: 292px;
+    border-radius: 20px;
+    padding: 5px;
+    border-width: 1px;
+  }
+  .phone-screen {
+    width: 130px;
+    height: 282px;
+    border-radius: 15px;
+  }
+  .phone-island {
+    width: 30px;
+    height: 7px;
+    border-radius: 4px;
+    top: 3px;
+  }
+  .island-lens {
+    width: 4px;
+    height: 4px;
+  }
+  .phone-volume-btn.left-up { top: 55px; height: 20px; }
+  .phone-volume-btn.left-down { top: 80px; height: 20px; }
+  .phone-power-btn.right { top: 65px; height: 28px; }
+  .phone-caption {
+    font-size: 8.5px;
+    letter-spacing: 0.08em;
+  }
+
+  /* 6. Start Lights & Doors */
+  .start-lights {
+    height: 180vh;
+  }
+  .wordmark .eyebrow {
+    font-size: 10px;
+    margin-bottom: 6px;
+  }
+  .wordmark h1 {
+    font-size: clamp(30px, 8vw, 48px);
+    line-height: 1;
+  }
+  .wordmark .sub {
+    font-size: 11px;
+    margin-top: 8px;
+  }
+  .rig {
+    padding: 10px 14px;
+    gap: 10px;
+    border-radius: 10px;
+  }
+  .light {
+    width: 28px;
+    height: 28px;
+  }
+  .grid-text {
+    font-size: clamp(32px, 8vw, 54px);
+  }
+  .map-container svg {
+    width: 85%;
+  }
+  .map-text {
+    font-size: 20px;
+    margin-top: 12px;
+  }
+
+  /* 7. Highway Experience */
+  .highway-pin {
+    padding-bottom: 10px;
+  }
+  .experience-badge {
+    top: 12px;
+    right: 12px;
+    font-size: 18px;
+    padding: 4px 12px;
+    box-shadow: 0 6px 16px rgba(39, 75, 155, 0.25);
+  }
+  .route-map-container {
+    width: 94%;
+    margin: 52px auto 10px;
+    height: 60px;
+    padding: 0 20px;
+  }
+  .station-dot {
+    width: 13px;
+    height: 13px;
+    border-width: 2px;
+  }
+  .station-label {
+    font-size: 8.5px;
+    top: 18px;
+  }
+  .main-content-area {
+    gap: 8px;
+    padding: 0 10px;
+    margin-bottom: 170px;
+  }
+  .nav-btn {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    border-width: 2px;
+    box-shadow: 3px 3px 0 #201a14;
+  }
+  .nav-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+  .billboard-container {
+    width: 100%;
+  }
+  .posts {
+    width: 90%;
+  }
+  .post {
+    height: 28px;
+    width: 10px;
+  }
+  .board {
+    padding: 16px 20px 22px;
+    min-height: 220px;
+    border-width: 4px;
+    border-radius: 10px;
+  }
+  .board::after {
+    inset: 5px;
+    border-width: 2px;
+  }
+  .board-content {
+    top: 14px;
+    left: 16px;
+    right: 16px;
+    bottom: 14px;
+  }
+  .board-eyebrow {
+    font-size: 9.5px;
+    margin-bottom: 4px;
+  }
+  .board-title {
+    font-size: 26px;
+    margin-bottom: 4px;
+  }
+  .board-meta {
+    font-size: 10px;
+    margin-bottom: 8px;
+  }
+  .board-desc {
+    font-size: 12px;
+    line-height: 1.45;
+  }
+  .bus-figure {
+    width: 200px;
+    bottom: 35px;
+  }
+  .comic-bubble {
+    font-size: 10.5px;
+    padding: 5px 10px;
+    bottom: 95%;
+    border-width: 2px;
+    box-shadow: 2px 2px 0 #201a14;
+  }
+  .bottom-info-bar {
+    font-size: 7.5px;
+    height: 32px;
+    padding: 0 8px;
+  }
+
+  /* 8. About Me 3D Studio */
+  .about-hint {
+    top: 14px;
+    bottom: auto;
+    font-size: 8.5px;
+    padding: 5px 12px;
+    max-width: 92vw;
+    text-align: center;
+    white-space: normal;
+    line-height: 1.35;
+    letter-spacing: 0.08em;
+  }
+  .oryzo-glass-panel {
+    max-width: 90vw;
+    left: 5vw;
+    top: 5vh;
+  }
+  .about-bio-box {
+    max-width: 90vw;
+    right: 5vw;
+  }
+
+  /* 9. Audio Now Playing Toast Pill */
+  .now-playing-pill {
+    bottom: 74px;
+    padding: 6px 12px;
+    gap: 8px;
+    font-size: 9px;
+    max-width: 94vw;
+  }
+  #nowPlayingLabel {
+    max-width: 140px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .audio-ctrl-btn {
+    width: 28px;
+    height: 28px;
+  }
+
+  /* 10. Glass Taskbar Dock */
+  .glass-taskbar {
+    bottom: 10px;
+    height: 52px;
+    gap: 10px;
+    padding: 6px 12px;
+    border-radius: 20px;
+  }
+  .taskbar-item {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+  }
+  .taskbar-item svg {
+    width: 20px;
+    height: 20px;
+  }
+  .taskbar-item::after {
+    display: none !important;
+  }
+
+  /* 11. SVG Shape Overlays Transitions */
+  .shape-caption-title {
+    font-size: clamp(20px, 5.5vw, 32px);
+    padding: 0 16px;
+  }
+  .shape-caption-tag {
+    font-size: 9px;
+    padding: 4px 10px;
+  }
+
+  /* 12. Contact Section */
+  .contact-section {
+    padding-bottom: 80px;
+  }
+  .contact-section .contact-header {
+    padding: 24px 16px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .contact-section .display-name .script-title {
+    font-size: clamp(38px, 9.5vw, 58px);
+  }
+  .contact-section .display-name .sans-title {
+    font-size: clamp(24px, 6vw, 38px);
+  }
+  .contact-section .archive-tag {
+    font-size: 9px;
+    padding: 4px 10px;
+    margin-bottom: 0;
+  }
+  .contact-section .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 20px 16px;
+  }
+  .contact-section .channels-column {
+    gap: 14px;
+  }
+  .contact-section .channel-card {
+    padding: 16px;
+  }
+  .contact-section .card-val {
+    font-size: 15px;
+    margin-bottom: 10px;
+  }
+  .contact-section .card-sub {
+    font-size: 11px;
+  }
+  .id-column {
+    margin-top: 10px;
+  }
+  .id-card-holder {
+    width: 100%;
+    max-width: 350px;
+    margin-top: 85px;
+    padding: 10px 12px 12px;
+  }
+  .yellow-lanyard-band {
+    top: -130px;
+    height: 215px;
+    width: 32px;
+  }
+  .yellow-lanyard-band::after {
+    top: 75px;
+    font-size: 8px;
+  }
+  .lanyard-clip {
+    top: 70px;
+  }
+  .id-card-top-bar {
+    padding: 6px 10px;
+  }
+  .id-agency {
+    font-size: 11px;
+  }
+  .id-badge-no {
+    font-size: 9.5px;
+  }
+  .id-card-body {
+    padding: 10px;
+    gap: 10px;
+  }
+  .id-photo-box {
+    width: 75px;
+    height: 85px;
+  }
+  .id-name {
+    font-size: 15px;
+  }
+  .id-role {
+    font-size: 9.5px;
+    padding: 2px 6px;
+  }
+  .id-meta {
+    font-size: 9.5px;
+  }
+  .id-card-footer {
+    padding: 6px 10px 8px;
+  }
+  .id-modal-container {
+    max-width: 92vw;
+  }
+  .id-modal-card-flipper {
+    width: min(92vw, 350px);
+    height: 210px;
+  }
+  .id-modal-btn {
+    padding: 6px 14px;
+    font-size: 11px;
+  }
+
+  /* 13. Footer */
+  .footer-bounce-wrap {
+    margin-top: 50px;
+    padding: 10px 0 80px 0;
+  }
+  .footer-content {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+    padding: 20px 16px 85px 16px;
+  }
+  .footer-left, .footer-center, .footer-right {
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  /* Disable cursor badge on touch viewports */
+  .cursor-badge, .hero-flair {
+    display: none !important;
+  }
+}
+
+/* ── SMALL PHONES BREAKPOINT (max-width: 480px) ── */
+@media (max-width: 480px) {
+  .meta {
+    padding: 8px 12px;
+    gap: 6px 10px;
+  }
+  .mk, .mv {
+    font-size: 7.5px;
+  }
+  .hero-open {
+    height: 340px;
+  }
+  .display-name {
+    font-size: clamp(38px, 11vw, 54px);
+  }
+  .archive-tag {
+    font-size: 8px;
+    padding-bottom: 8px;
+    margin-left: 8px;
+  }
+  .sticky-zone {
+    right: 10px;
+    top: 8px;
+    gap: 6px;
+  }
+  .sticky {
+    min-width: 82px;
+    min-height: 62px;
+    padding: 8px 10px;
+  }
+  .sticky-sub {
+    font-size: 8.5px;
+  }
+  .grid-strip {
+    padding: 4px 12px;
+    font-size: 7px;
+  }
+
+  .drawer-container {
+    padding: 10px 8px 18px;
+  }
+  .drawer-header {
+    margin-bottom: 32px;
+  }
+  .drawer-label {
+    font-size: 14.5px;
+  }
+  .drawer-hint {
+    font-size: 8.5px;
+  }
+  .drawer-box {
+    top: 62px;
+    height: calc(100vh - 85px);
+    min-height: 440px;
+  }
+  .folder-tab {
+    top: -26px;
+    height: 28px;
+    font-size: 8px;
+    padding: 0 2px;
+    letter-spacing: 0.2px;
+  }
+  .folder-content {
+    padding: 10px 10px 16px;
+  }
+  .folder-title {
+    font-size: 21px;
+  }
+  .folder-content p {
+    font-size: 11.5px;
+  }
+  .folder-specs {
+    font-size: 8px;
+    padding: 2px 6px;
+    gap: 4px;
+  }
+  .project-view-btn {
+    font-size: 10px;
+    padding: 4px 10px;
+  }
+
+  .phone-chassis {
+    width: 126px;
+    height: 262px;
+    border-radius: 18px;
+    padding: 4px;
+  }
+  .phone-screen {
+    width: 118px;
+    height: 254px;
+    border-radius: 14px;
+  }
+  .phone-island {
+    width: 26px;
+    height: 6px;
+  }
+  .phone-volume-btn.left-up { top: 48px; height: 18px; }
+  .phone-volume-btn.left-down { top: 70px; height: 18px; }
+  .phone-power-btn.right { top: 56px; height: 24px; }
+  .phone-caption {
+    font-size: 8px;
+  }
+
+  .wordmark h1 {
+    font-size: clamp(24px, 7vw, 36px);
+  }
+  .wordmark .sub {
+    font-size: 9.5px;
+  }
+  .rig {
+    padding: 8px 10px;
+    gap: 6px;
+    border-radius: 8px;
+  }
+  .light {
+    width: 24px;
+    height: 24px;
+  }
+  .grid-text {
+    font-size: clamp(24px, 7vw, 38px);
+  }
+  .map-text {
+    font-size: 16px;
+  }
+
+  .experience-badge {
+    font-size: 15px;
+    padding: 3px 8px;
+    top: 8px;
+    right: 8px;
+  }
+  .route-map-container {
+    height: 52px;
+    padding: 0 12px;
+    margin-top: 44px;
+  }
+  .station-dot {
+    width: 11px;
+    height: 11px;
+  }
+  .station-label {
+    font-size: 7.5px;
+    top: 15px;
+  }
+  .main-content-area {
+    margin-bottom: 145px;
+    gap: 6px;
+    padding: 0 4px;
+  }
+  .nav-btn {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+  }
+  .board {
+    padding: 12px 14px 18px;
+    min-height: 210px;
+  }
+  .board-title {
+    font-size: 22px;
+  }
+  .board-desc {
+    font-size: 11.5px;
+  }
+  .bus-figure {
+    width: 155px;
+    bottom: 32px;
+  }
+  .comic-bubble {
+    font-size: 9.5px;
+    padding: 4px 8px;
+  }
+
+  .id-card-holder {
+    max-width: 315px;
+    margin-top: 75px;
+    padding: 8px 10px 10px;
+  }
+  .yellow-lanyard-band {
+    top: -120px;
+    height: 195px;
+    width: 28px;
+  }
+  .lanyard-clip {
+    top: 65px;
+  }
+  .id-photo-box {
+    width: 65px;
+    height: 75px;
+  }
+  .id-name {
+    font-size: 13.5px;
+  }
+  .id-role {
+    font-size: 8.5px;
+  }
+  .id-meta {
+    font-size: 8.5px;
+  }
+  .id-modal-card-flipper {
+    width: 310px;
+    height: 190px;
+  }
+}
+
+/* ── TOUCH DEVICE ADJUSTMENTS ── */
+@media (hover: none) {
+  .cursor-badge, .hero-flair {
+    display: none !important;
+  }
+  .taskbar-item::after {
+    display: none !important;
+  }
+  .sticky {
+    cursor: default;
+  }
 }

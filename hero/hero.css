@@ -424,7 +424,7 @@ html, body {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  gap: 18px;
+  gap: 15px;
   overflow-x: auto;
   overflow-y: hidden;
   padding-bottom: 6px;
@@ -468,14 +468,14 @@ html, body {
 
 .phone-chassis {
   position: relative;
-  width: 208px;
-  height: 432px;
+  width: 174px;
+  height: 362px;
   background: #151922;
-  border-radius: 30px;
-  padding: 7px;
+  border-radius: 25px;
+  padding: 6px;
   box-shadow: 
-    0 20px 42px -8px rgba(18, 18, 176, 0.24),
-    0 10px 22px -4px rgba(15, 23, 42, 0.24),
+    0 16px 36px -8px rgba(18, 18, 176, 0.24),
+    0 8px 18px -4px rgba(15, 23, 42, 0.24),
     inset 0 0 0 1.5px #333a48,
     inset 0 0 0 2.5px #0c0f16;
   border: 1.2px solid rgba(255, 255, 255, 0.2);
@@ -490,23 +490,23 @@ html, body {
   background: #2d3340;
   border-radius: 2px 0 0 2px;
 }
-.phone-volume-btn.left-up { top: 82px; height: 28px; }
-.phone-volume-btn.left-down { top: 118px; height: 28px; }
+.phone-volume-btn.left-up { top: 68px; height: 24px; }
+.phone-volume-btn.left-down { top: 98px; height: 24px; }
 .phone-power-btn.right {
   position: absolute;
   right: -3px;
-  top: 98px;
+  top: 82px;
   width: 3px;
-  height: 42px;
+  height: 35px;
   background: #2d3340;
   border-radius: 0 2px 2px 0;
 }
 
 .phone-screen {
   position: relative;
-  width: 194px;
-  height: 418px;
-  border-radius: 23px;
+  width: 162px;
+  height: 350px;
+  border-radius: 19px;
   overflow: hidden;
   display: block;
   background: #000000;
@@ -528,12 +528,12 @@ html, body {
 .phone-island {
   position: absolute;
   left: 50%;
-  top: 5px;
+  top: 4px;
   transform: translateX(-50%);
-  width: 44px;
-  height: 10px;
+  width: 38px;
+  height: 9px;
   background: #000000;
-  border-radius: 6px;
+  border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -543,8 +543,8 @@ html, body {
 }
 
 .island-lens {
-  width: 4px;
-  height: 4px;
+  width: 3.5px;
+  height: 3.5px;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 35%, #2a4365, #0a0f1d);
   border: 0.5px solid rgba(255, 255, 255, 0.25);
@@ -552,21 +552,21 @@ html, body {
 
 .phone-screen-img {
   width: 100%;
-  height: calc(100% + 44px);
+  height: calc(100% + 36px);
   object-fit: cover;
   object-position: center top;
-  transform: translateY(-42px);
+  transform: translateY(-34px);
   display: block;
   background: #0f172a;
 }
 
 .phone-home-indicator {
   position: absolute;
-  bottom: 5px;
+  bottom: 4px;
   left: 50%;
   transform: translateX(-50%);
-  width: 54px;
-  height: 3px;
+  width: 44px;
+  height: 2.5px;
   background: rgba(255, 255, 255, 0.6);
   border-radius: 2px;
   z-index: 15;
@@ -575,13 +575,13 @@ html, body {
 
 .phone-caption {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 9.5px;
+  font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.08em;
   color: rgba(18, 18, 176, 0.7);
   background: rgba(18, 18, 176, 0.05);
   border: 1px solid rgba(18, 18, 176, 0.15);
-  padding: 2px 8px;
+  padding: 2px 7px;
   border-radius: 4px;
   text-transform: uppercase;
 }
@@ -731,15 +731,15 @@ html, body {
   bottom: 84px;
   left: 50%;
   transform: translateX(-50%) translateY(20px);
-  background: rgba(18, 18, 176, 0.92);
+  background: rgba(18, 18, 176, 0.95);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   color: #ffffff;
-  padding: 9px 20px;
+  padding: 8px 18px;
   border-radius: 30px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   font-family: 'Share Tech Mono', monospace;
   font-size: 11px;
   letter-spacing: 0.08em;
@@ -749,6 +749,7 @@ html, body {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  max-width: 90vw;
 }
 
 .now-playing-pill.is-active {
@@ -757,16 +758,22 @@ html, body {
   pointer-events: auto;
 }
 
+.now-playing-pill.is-paused .now-playing-bar {
+  animation-play-state: paused;
+  opacity: 0.45;
+}
+
 .now-playing-bars {
   display: flex;
   align-items: flex-end;
   gap: 2.5px;
   height: 14px;
+  flex-shrink: 0;
 }
 
 .now-playing-bar {
   width: 2.5px;
-  background: #ffffff;
+  background: #00f0ff;
   border-radius: 1px;
   animation: audioBarAnim 0.75s ease-in-out infinite alternate;
 }
@@ -775,6 +782,52 @@ html, body {
 .now-playing-bar:nth-child(2) { height: 13px; animation-delay: 0.25s; }
 .now-playing-bar:nth-child(3) { height: 9px; animation-delay: 0.4s; }
 .now-playing-bar:nth-child(4) { height: 14px; animation-delay: 0.15s; }
+
+.audio-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.audio-ctrl-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #ffffff;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+  touch-action: manipulation;
+}
+
+.audio-ctrl-btn:hover {
+  background: #ffffff;
+  color: #1212B0;
+  transform: scale(1.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.audio-ctrl-btn:active {
+  transform: scale(0.95);
+}
+
+.audio-ctrl-btn.play-pause-btn {
+  background: #00f0ff;
+  color: #060a12;
+  border-color: #00f0ff;
+}
+
+.audio-ctrl-btn.play-pause-btn:hover {
+  background: #ffffff;
+  color: #1212B0;
+}
 
 @keyframes audioBarAnim {
   0% { transform: scaleY(0.3); }

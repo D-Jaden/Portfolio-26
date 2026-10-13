@@ -222,7 +222,10 @@
     justify-content: center;
     gap: clamp(10px, 3vw, 40px);
     padding: 0 20px;
-    margin-bottom: 25vh; /* leave space for the road */
+    margin-top: 10px;
+    margin-bottom: clamp(260px, 32vh, 320px); /* Leave generous space for highway bus without interrupting signboards */
+    position: relative;
+    z-index: 25;
   }
 
   .nav-btn {
@@ -259,6 +262,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    z-index: 25;
   }
   .posts {
     display: flex;
@@ -282,7 +286,7 @@
     padding: 30px 40px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.3);
     margin-top: -15px; /* Overlap the posts slightly */
-    z-index: 2;
+    z-index: 25;
   }
   .board::after {
     content: '';
@@ -346,13 +350,13 @@
 
   .bus-figure {
     position: absolute;
-    bottom: -55px; /* Pull the bus down to align tires on the highway line */
+    bottom: -30px; /* Pull the bus down to align tires on the highway line */
     left: 2%; /* Starts slightly further left */
-    height: 560px; /* Enlarge bus size for high visual impact */
+    height: 310px; /* Sized to glide comfortably below the billboard signboards */
     width: auto;
     z-index: 10;
     will-change: transform;
-    filter: drop-shadow(0 18px 18px rgba(0,0,0,0.55));
+    filter: drop-shadow(0 14px 14px rgba(0,0,0,0.45));
     transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
   .bus-figure img {
@@ -363,22 +367,22 @@
 
   .comic-bubble {
     position: absolute;
-    bottom: 115%;
-    right: 5%;
+    bottom: 92%;
+    right: 8%;
     background: #ffffff;
     border: 3px solid var(--ink);
-    border-radius: 20px;
-    padding: 12px 18px;
+    border-radius: 16px;
+    padding: 8px 14px;
     font-family: 'Space Mono', monospace;
-    font-size: 16px;
+    font-size: 13px;
     font-weight: 900;
     color: var(--ink);
-    box-shadow: 4px 4px 0 var(--ink);
+    box-shadow: 3px 3px 0 var(--ink);
     opacity: 0;
     transform: scale(0.5) translateY(20px);
     transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     pointer-events: none;
-    z-index: 20;
+    z-index: 15;
   }
   .comic-bubble::after {
     content: '';
@@ -424,7 +428,7 @@
     .main-content-area {
       flex-direction: column;
       gap: 20px;
-      margin-bottom: 30vh;
+      margin-bottom: clamp(200px, 26vh, 240px);
     }
     .nav-btn {
       width: 100%;
@@ -444,14 +448,14 @@
       inset: 20px;
     }
     .bus-figure {
-      height: 360px;
-      bottom: -35px; /* keep tires on the line */
+      height: 220px;
+      bottom: -20px; /* keep tires on the line */
       left: 5%;
     }
     .comic-bubble {
-      font-size: 14px;
-      padding: 8px 12px;
-      bottom: 110%;
+      font-size: 11px;
+      padding: 6px 10px;
+      bottom: 88%;
     }
     .route-map-container {
       padding: 0 25px;
@@ -469,9 +473,12 @@
     .highway, .highway-pin {
       min-height: 600px;
     }
+    .main-content-area {
+      margin-bottom: clamp(160px, 22vh, 190px);
+    }
     .bus-figure {
-      height: 260px;
-      bottom: -25px;
+      height: 160px;
+      bottom: -15px;
     }
     .route-map-container {
       padding: 0 10px;

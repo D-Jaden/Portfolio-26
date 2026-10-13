@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Black+Han+Sans&family=Permanent+Marker&family=Sedgwick+Ave&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="hero.css?v=34">
+<link rel="stylesheet" href="hero.css?v=35">
 </head>
 <body>
 <div class="page-sweep-out" id="page-sweep-out"></div>
@@ -656,18 +656,30 @@
 <!-- HEADPHONES AUDIO 2: MK GEE - I Know How You Get Sometimes -->
 <audio id="headphonesAudio2" preload="auto">
   <source src="assets/mk_gee_i_know.m4a" type="audio/mp4">
-  <source src="https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/b9/fd/a0/b9fda068-40f7-5e8f-6b22-2fb2c7e78e04/mzaf_13963592254213568079.plus.aac.p.m4a" type="audio/mp4">
+  <source src="https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/ab/62/94/ab629435-5bd7-21f9-c64c-0d8d006023e1/mzaf_7047356058109146186.plus.aac.p.m4a" type="audio/mp4">
 </audio>
 
-<!-- NOW PLAYING INDICATOR PILL -->
+<!-- NOW PLAYING INDICATOR PILL WITH INTERACTIVE CONTROLS -->
 <div class="now-playing-pill" id="nowPlayingPill">
-  <div class="now-playing-bars">
+  <div class="now-playing-bars" id="nowPlayingBars">
     <div class="now-playing-bar"></div>
     <div class="now-playing-bar"></div>
     <div class="now-playing-bar"></div>
     <div class="now-playing-bar"></div>
   </div>
-  <span>NOW PLAYING: JORDAN WARD — FAMJAM4000</span>
+  <span id="nowPlayingLabel">NOW PLAYING: JORDAN WARD — FAMJAM4000</span>
+  <div class="audio-controls">
+    <button type="button" class="audio-ctrl-btn" id="audioRevBtn" title="Previous / Rewind" aria-label="Previous">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2.5v12H6zm3.5 6l9 6.5V5.5z"/></svg>
+    </button>
+    <button type="button" class="audio-ctrl-btn play-pause-btn" id="audioPlayPauseBtn" title="Play / Pause" aria-label="Play / Pause">
+      <svg id="audioPauseIcon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+      <svg id="audioPlayIcon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><path d="M8 5v14l11-7z"/></svg>
+    </button>
+    <button type="button" class="audio-ctrl-btn" id="audioNextBtn" title="Next Song" aria-label="Next">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M5.5 18.5l9-6.5-9-6.5v13zM15.5 6v12H18V6h-2.5z"/></svg>
+    </button>
+  </div>
 </div>
 
 <!-- Glass Taskbar -->
@@ -701,6 +713,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <!-- High-Res Studio WebGL Assets -->
 <script src="hero_assets.js"></script>
-<script src="hero.js?v=78"></script>
+<script src="hero.js?v=79"></script>
 </body>
 </html>

@@ -356,6 +356,10 @@ body {
   position: relative;
   box-shadow: 0 4px 12px rgba(18, 18, 176, 0.4);
   transition: all 0.2s ease-in-out;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  pointer-events: auto;
 }
 #start-btn:hover {
   background: #1d1dd6;

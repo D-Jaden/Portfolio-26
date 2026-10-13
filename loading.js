@@ -831,14 +831,15 @@ function initThreeScene() {
     handlePowerClick(event.clientX, event.clientY);
   });
 
-  // Touch support for mobile - use touchend to get final touch position
+  // Touch support for mobile - use touchend to get final touch position without blocking other UI touches
   window.addEventListener('touchend', (event) => {
-    event.preventDefault();
+    if (window.isBooted) return;
+    if (event.target && (event.target.id === 'start-btn' || (event.target.closest && event.target.closest('#start-btn')))) return;
     if (event.changedTouches && event.changedTouches.length > 0) {
       const t = event.changedTouches[0];
       handlePowerClick(t.clientX, t.clientY);
     }
-  }, { passive: false });
+  });
 
   animateScene();
   
@@ -863,14 +864,28 @@ function animateScene() {
 
 window.addEventListener('load', initThreeScene);
 
-btn.addEventListener('click', () => {
+let sequenceInitiated = false;
+function triggerInitiateSequence(e) {
+  if (sequenceInitiated) return;
+  sequenceInitiated = true;
+  if (e) {
+    if (e.cancelable) e.preventDefault();
+    e.stopPropagation();
+  }
   playMouseClickSound();
   const terminal = document.querySelector('.terminal');
   if (terminal) terminal.classList.add('sweep-up');
   setTimeout(() => {
     window.location.href = './hero/hero.html';
   }, 850);
-});
+}
+
+window.triggerInitiateSequence = triggerInitiateSequence;
+
+if (btn) {
+  btn.addEventListener('click', triggerInitiateSequence);
+  btn.addEventListener('touchend', triggerInitiateSequence);
+}
 
 function playPixelIntro() {
   const overlay = document.getElementById('grid-overlay');

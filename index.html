@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Mission Brief</title>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&family=VT323&family=Mr+Dafoe&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="loading_styles.css?v=29"/>
+  <link rel="stylesheet" href="loading_styles.css?v=30"/>
 </head>
 <body>
 
@@ -97,7 +97,7 @@
       <div class="brief-box brief-corners-bottom">
         <div class="brief-label">// MISSION BRIEF</div>
         <div id="brief-text"></div><span class="cursor" id="cursor"></span>
-        <button id="start-btn">[ INITIATE SEQUENCE ]</button>
+        <button id="start-btn" onclick="if(window.triggerInitiateSequence) window.triggerInitiateSequence(event);">[ INITIATE SEQUENCE ]</button>
         <div class="scroll-below-tag">Scroll Below ↓ to Explore Portfolio</div>
       </div>
 
@@ -117,7 +117,7 @@
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/renderers/CSS3DRenderer.js"></script>
   
   <script src="https://unpkg.com/animejs@4.4.1/dist/bundles/anime.umd.js"></script>
-  <script src="loading.js?v=31"></script>
+  <script src="loading.js?v=32"></script>
 
 </body>
 </html>

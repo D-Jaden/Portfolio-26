@@ -1466,10 +1466,16 @@ function create3DChromeHeadphones(sharedEnvMap) {
     sctx.fillStyle = '#060a12';
     sctx.fillRect(0, 0, 512, 360);
 
+    const track = (group.userData && group.userData.currentTrack) || {
+      title: 'FAMJAM4000',
+      artist: 'Jordan Ward // FORWARD'
+    };
+    const isPlayingMusic = !!(group.userData && group.userData.isAudioPlaying);
+
     // Status bar
     sctx.fillStyle = '#00f0ff';
     sctx.font = 'bold 24px monospace';
-    sctx.fillText('JDS AUDIO // OS.01', 20, 42);
+    sctx.fillText(isPlayingMusic ? '▶ PLAYING' : '❚❚ PAUSED', 20, 42);
     sctx.fillStyle = '#10b981';
     sctx.fillText('⚡ 100%', 400, 42);
 
@@ -1478,25 +1484,26 @@ function create3DChromeHeadphones(sharedEnvMap) {
     sctx.lineWidth = 3;
     sctx.beginPath(); sctx.moveTo(18, 60); sctx.lineTo(494, 60); sctx.stroke();
 
-    // Track Info: Jordan Ward - FAMJAM4000
+    // Track Info
     sctx.fillStyle = '#ffffff';
     sctx.font = 'bold 28px "Share Tech Mono", monospace, sans-serif';
-    sctx.fillText('FAMJAM4000', 20, 112);
+    sctx.fillText(track.title || 'FAMJAM4000', 20, 112);
     sctx.fillStyle = 'rgba(0, 240, 255, 0.95)';
     sctx.font = 'bold 20px monospace';
-    sctx.fillText('Jordan Ward // FORWARD', 20, 148);
+    sctx.fillText(track.artist || 'Jordan Ward // FORWARD', 20, 148);
 
     // Dynamic EQ visualizer bars
     const t = time || Date.now() * 0.003;
-    const isPlayingMusic = (group.userData && group.userData.isPlayingMusic);
     const baseH = [28, 55, 90, 68, 105, 48, 80, 42, 85, 62, 35, 70, 45, 80];
     const barW = 22;
     const barGap = 12;
     const startX = 20;
     baseH.forEach((bh, bi) => {
-      const pulseMult = isPlayingMusic ? 1.7 : 0.85;
-      const pulse = (Math.sin(t * (isPlayingMusic ? 6.5 : 3.5) + bi * 0.7) * 26 + Math.cos(t * (isPlayingMusic ? 8.2 : 5.2) + bi * 1.1) * 16) * pulseMult;
-      const h = Math.max(10, Math.min(130, bh * (isPlayingMusic ? 1.25 : 0.9) + pulse));
+      const pulseMult = isPlayingMusic ? 1.7 : 0.0;
+      const pulse = isPlayingMusic
+        ? (Math.sin(t * 6.5 + bi * 0.7) * 26 + Math.cos(t * 8.2 + bi * 1.1) * 16) * pulseMult
+        : 0;
+      const h = isPlayingMusic ? Math.max(10, Math.min(130, bh * 1.25 + pulse)) : 8;
       const grad = sctx.createLinearGradient(0, 305 - h, 0, 305);
       grad.addColorStop(0, '#00f0ff');
       grad.addColorStop(0.65, '#3b82f6');
@@ -1506,7 +1513,7 @@ function create3DChromeHeadphones(sharedEnvMap) {
     });
 
     // Progress line
-    sctx.fillStyle = '#10b981';
+    sctx.fillStyle = isPlayingMusic ? '#10b981' : '#475569';
     sctx.fillRect(20, 330, 340, 8);
     sctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
     sctx.fillRect(360, 330, 132, 8);
@@ -1523,10 +1530,10 @@ function create3DChromeHeadphones(sharedEnvMap) {
   });
   const screenMesh = new THREE.Mesh(new THREE.PlaneGeometry(31, 22), screenMat);
   screenMesh.position.set(0, 12, 4.9);
+  screenMesh.name = 'mp3Screen';
   mp3Group.add(screenMesh);
 
   group.userData.renderMp3 = (isZoomed) => {
-    group.userData.isPlayingMusic = !!isZoomed;
     renderMp3Screen();
     screenTexture.needsUpdate = true;
   };
@@ -1559,6 +1566,7 @@ function create3DChromeHeadphones(sharedEnvMap) {
   const wheelMesh = new THREE.Mesh(wheelGeo, wheelMat);
   wheelMesh.rotation.x = Math.PI / 2;
   wheelMesh.position.set(0, -14, 4.6);
+  wheelMesh.name = 'mp3Wheel';
   mp3Group.add(wheelMesh);
 
   // Center Action Button (Polished Chrome)
@@ -1566,6 +1574,7 @@ function create3DChromeHeadphones(sharedEnvMap) {
   const centerBtnMesh = new THREE.Mesh(centerBtnGeo, chromeMat);
   centerBtnMesh.rotation.x = Math.PI / 2;
   centerBtnMesh.position.set(0, -14, 4.9);
+  centerBtnMesh.name = 'mp3CenterBtn';
   mp3Group.add(centerBtnMesh);
 
   // 4. 3.5mm Headphone Jack Port on the LEFT side of MP3 player facing the headphones
@@ -3162,34 +3171,180 @@ function initAboutThreeScene() {
   const nowPlayingLabel = nowPlayingPill ? nowPlayingPill.querySelector('span') : null;
 
   const songs = [
-    { el: headphonesAudio, label: 'NOW PLAYING: JORDAN WARD — FAMJAM4000' },
-    { el: headphonesAudio2, label: 'NOW PLAYING: MK GEE — I KNOW HOW YOU GET SOMETIMES' }
+    {
+      id: 0,
+      el: headphonesAudio,
+      title: 'FAMJAM4000',
+      artist: 'Jordan Ward // FORWARD',
+      label: 'NOW PLAYING: JORDAN WARD — FAMJAM4000',
+      shortLabel: 'JORDAN WARD — FAMJAM4000'
+    },
+    {
+      id: 1,
+      el: headphonesAudio2,
+      title: 'I KNOW HOW YOU GET',
+      artist: 'Mk.gee // Dream Police',
+      label: 'NOW PLAYING: MK.GEE — I KNOW HOW YOU GET SOMETIMES',
+      shortLabel: 'MK.GEE — I KNOW HOW YOU GET SOMETIMES'
+    }
   ];
   let currentSongIdx = 0;
+  let isAudioPlaying = false;
   let activeAudio = null;
 
-  function startHeadphonesAudio() {
-    // Alternate songs each time
-    currentSongIdx = (currentSongIdx + 1) % songs.length;
+  function updatePlayerUI() {
     const song = songs[currentSongIdx];
-    if (activeAudio && activeAudio !== song.el) {
-      activeAudio.pause();
-      activeAudio.currentTime = 0;
+    const playIcon = document.getElementById('audioPlayIcon');
+    const pauseIcon = document.getElementById('audioPauseIcon');
+    const labelEl = document.getElementById('nowPlayingLabel') || (nowPlayingPill ? nowPlayingPill.querySelector('span') : null);
+
+    if (labelEl) {
+      labelEl.textContent = (isAudioPlaying ? 'NOW PLAYING: ' : 'PAUSED: ') + song.shortLabel;
     }
+
+    if (nowPlayingPill) {
+      if (isAudioPlaying) {
+        nowPlayingPill.classList.remove('is-paused');
+      } else {
+        nowPlayingPill.classList.add('is-paused');
+      }
+    }
+
+    if (playIcon && pauseIcon) {
+      if (isAudioPlaying) {
+        playIcon.style.display = 'none';
+        pauseIcon.style.display = 'block';
+      } else {
+        playIcon.style.display = 'block';
+        pauseIcon.style.display = 'none';
+      }
+    }
+
+    if (headphones3D && headphones3D.userData && headphones3D.userData.renderMp3) {
+      headphones3D.userData.currentTrack = song;
+      headphones3D.userData.isAudioPlaying = isAudioPlaying;
+      headphones3D.userData.renderMp3(isHeadphonesZoomed);
+    }
+  }
+
+  function playSongAtIndex(idx, resetTime = false) {
+    currentSongIdx = idx;
+    const song = songs[currentSongIdx];
+
+    // Pause any other audio
+    songs.forEach((s, i) => {
+      if (i !== currentSongIdx && s.el) {
+        s.el.pause();
+        s.el.currentTime = 0;
+      }
+    });
+
     activeAudio = song.el;
     if (activeAudio) {
-      activeAudio.currentTime = 0;
-      activeAudio.play().catch(e => console.log('Audio autoplay waiting for user gesture:', e));
+      if (resetTime) {
+        activeAudio.currentTime = 0;
+      }
+      activeAudio.play()
+        .then(() => {
+          isAudioPlaying = true;
+          updatePlayerUI();
+        })
+        .catch(err => {
+          console.warn('Audio playback waiting for gesture:', err);
+          isAudioPlaying = false;
+          updatePlayerUI();
+        });
     }
-    if (nowPlayingLabel) nowPlayingLabel.textContent = song.label;
+
+    isAudioPlaying = true;
+    updatePlayerUI();
     if (nowPlayingPill) nowPlayingPill.classList.add('is-active');
+  }
+
+  function togglePlayPause() {
+    if (isAudioPlaying) {
+      if (activeAudio) activeAudio.pause();
+      isAudioPlaying = false;
+      updatePlayerUI();
+    } else {
+      if (!activeAudio) {
+        playSongAtIndex(currentSongIdx, false);
+      } else {
+        activeAudio.play()
+          .then(() => {
+            isAudioPlaying = true;
+            updatePlayerUI();
+          })
+          .catch(e => console.warn(e));
+      }
+    }
+  }
+
+  function nextSong() {
+    const nextIdx = (currentSongIdx + 1) % songs.length;
+    playSongAtIndex(nextIdx, true);
+  }
+
+  function revSong() {
+    if (activeAudio && activeAudio.currentTime > 2.5) {
+      activeAudio.currentTime = 0;
+      if (!isAudioPlaying) {
+        activeAudio.play().then(() => { isAudioPlaying = true; updatePlayerUI(); }).catch(e => console.warn(e));
+      }
+    } else {
+      const prevIdx = (currentSongIdx - 1 + songs.length) % songs.length;
+      playSongAtIndex(prevIdx, true);
+    }
+  }
+
+  function startHeadphonesAudio() {
+    // Requirements: starts with Fam Jam 4000 Jordan Ward (index 0)
+    if (!activeAudio || activeAudio.currentTime === 0) {
+      currentSongIdx = 0;
+    }
+    playSongAtIndex(currentSongIdx, false);
   }
 
   function stopHeadphonesAudio() {
     if (activeAudio) {
       activeAudio.pause();
     }
+    isAudioPlaying = false;
+    updatePlayerUI();
     if (nowPlayingPill) nowPlayingPill.classList.remove('is-active');
+  }
+
+  // Auto-advance to next song on ended
+  songs.forEach(song => {
+    if (song.el) {
+      song.el.addEventListener('ended', () => {
+        nextSong();
+      });
+    }
+  });
+
+  // Attach controls to now playing pill buttons
+  const revBtn = document.getElementById('audioRevBtn');
+  const playPauseBtn = document.getElementById('audioPlayPauseBtn');
+  const nextBtn = document.getElementById('audioNextBtn');
+
+  if (revBtn) {
+    revBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      revSong();
+    });
+  }
+  if (playPauseBtn) {
+    playPauseBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      togglePlayPause();
+    });
+  }
+  if (nextBtn) {
+    nextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      nextSong();
+    });
   }
 
   let mouseDownX = 0, mouseDownY = 0;
@@ -3316,13 +3471,42 @@ function initAboutThreeScene() {
           isHeadphonesZoomed = false;
         }
       } else if (parentObj.name === 'headphones') {
-        isHeadphonesZoomed = !isHeadphonesZoomed;
-        if (isHeadphonesZoomed) {
+        if (!isHeadphonesZoomed) {
           isGreenBoardZoomed = false;
           isLaptopZoomed = false;
+          isHeadphonesZoomed = true;
           startHeadphonesAudio();
         } else {
-          stopHeadphonesAudio();
+          // Headphones are already zoomed - check if MP3 player or controls were clicked
+          let hitObj = hits[0].object;
+          let isMp3Click = false;
+          let curr = hitObj;
+          while (curr && curr !== headphones3D) {
+            if (curr.name === 'mp3Wheel' || curr.name === 'mp3CenterBtn' || curr.name === 'mp3Screen' || curr.name === 'mp3Player') {
+              isMp3Click = true;
+              break;
+            }
+            curr = curr.parent;
+          }
+
+          if (hitObj.name === 'mp3CenterBtn' || hitObj.name === 'mp3Screen') {
+            togglePlayPause();
+          } else if (hitObj.name === 'mp3Wheel') {
+            const localPoint = hitObj.worldToLocal(hits[0].point.clone());
+            if (localPoint.x > 3) {
+              nextSong();
+            } else if (localPoint.x < -3) {
+              revSong();
+            } else {
+              togglePlayPause();
+            }
+          } else if (isMp3Click) {
+            togglePlayPause();
+          } else {
+            // Clicked outside MP3 player on headphones body: unzoom
+            isHeadphonesZoomed = false;
+            stopHeadphonesAudio();
+          }
         }
       } else {
         isGreenBoardZoomed = false;
@@ -3469,13 +3653,40 @@ function initAboutThreeScene() {
           isLaptopZoomed = !isLaptopZoomed;
           if (isLaptopZoomed) { isGreenBoardZoomed = false; isHeadphonesZoomed = false; }
         } else if (parentObj.name === 'headphones') {
-          isHeadphonesZoomed = !isHeadphonesZoomed;
-          if (isHeadphonesZoomed) {
+          if (!isHeadphonesZoomed) {
             isGreenBoardZoomed = false;
             isLaptopZoomed = false;
+            isHeadphonesZoomed = true;
             startHeadphonesAudio();
           } else {
-            stopHeadphonesAudio();
+            let hitObj = hits[0].object;
+            let isMp3Click = false;
+            let curr = hitObj;
+            while (curr && curr !== headphones3D) {
+              if (curr.name === 'mp3Wheel' || curr.name === 'mp3CenterBtn' || curr.name === 'mp3Screen' || curr.name === 'mp3Player') {
+                isMp3Click = true;
+                break;
+              }
+              curr = curr.parent;
+            }
+
+            if (hitObj.name === 'mp3CenterBtn' || hitObj.name === 'mp3Screen') {
+              togglePlayPause();
+            } else if (hitObj.name === 'mp3Wheel') {
+              const localPoint = hitObj.worldToLocal(hits[0].point.clone());
+              if (localPoint.x > 3) {
+                nextSong();
+              } else if (localPoint.x < -3) {
+                revSong();
+              } else {
+                togglePlayPause();
+              }
+            } else if (isMp3Click) {
+              togglePlayPause();
+            } else {
+              isHeadphonesZoomed = false;
+              stopHeadphonesAudio();
+            }
           }
         } else {
           isGreenBoardZoomed = false;

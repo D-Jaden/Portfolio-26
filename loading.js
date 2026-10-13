@@ -790,12 +790,12 @@ function initThreeScene() {
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
 
-  window.addEventListener('click', (event) => {
+  function handlePowerClick(clientX, clientY) {
     if (window.isBooted) return;
     
-    // Normalize mouse coordinates to -1 to +1
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    // Normalize coordinates to -1 to +1
+    mouse.x = (clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(clientY / window.innerHeight) * 2 + 1;
     
     raycaster.setFromCamera(mouse, camera);
     const targets = [window.powerButtonMesh, window.cpuPowerButtonMesh].filter(Boolean);
@@ -824,7 +824,21 @@ function initThreeScene() {
         setTimeout(runStep, 400);
       }, 650);
     }
+  }
+
+  // Mouse click
+  window.addEventListener('click', (event) => {
+    handlePowerClick(event.clientX, event.clientY);
   });
+
+  // Touch support for mobile - use touchend to get final touch position
+  window.addEventListener('touchend', (event) => {
+    event.preventDefault();
+    if (event.changedTouches && event.changedTouches.length > 0) {
+      const t = event.changedTouches[0];
+      handlePowerClick(t.clientX, t.clientY);
+    }
+  }, { passive: false });
 
   animateScene();
   

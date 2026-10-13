@@ -52,9 +52,9 @@ function goToStop(index) {
   });
 
   // Animate Bus
-  // Bus needs to move across the screen. We'll animate 'left' property from 10% to about 70%
-  const startLeft = 10;
-  const endLeft = 60;
+  // Bus drives across the screen; endLeft is large enough to clear the centered signboard
+  const startLeft = 5;
+  const endLeft = 78;
   const targetLeft = startLeft + (activeStop / (STOPS - 1)) * (endLeft - startLeft);
   
   // Make the bus bob while moving

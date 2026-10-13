@@ -3157,25 +3157,39 @@ function initAboutThreeScene() {
   let targetHeadphonesScale = 1.0;
 
   const headphonesAudio = document.getElementById('headphonesAudio');
+  const headphonesAudio2 = document.getElementById('headphonesAudio2');
   const nowPlayingPill = document.getElementById('nowPlayingPill');
+  const nowPlayingLabel = nowPlayingPill ? nowPlayingPill.querySelector('span') : null;
+
+  const songs = [
+    { el: headphonesAudio, label: 'NOW PLAYING: JORDAN WARD — FAMJAM4000' },
+    { el: headphonesAudio2, label: 'NOW PLAYING: MK GEE — I KNOW HOW YOU GET SOMETIMES' }
+  ];
+  let currentSongIdx = 0;
+  let activeAudio = null;
 
   function startHeadphonesAudio() {
-    if (headphonesAudio) {
-      headphonesAudio.currentTime = 0;
-      headphonesAudio.play().catch(e => console.log('Audio autoplay waiting for user gesture:', e));
+    // Alternate songs each time
+    currentSongIdx = (currentSongIdx + 1) % songs.length;
+    const song = songs[currentSongIdx];
+    if (activeAudio && activeAudio !== song.el) {
+      activeAudio.pause();
+      activeAudio.currentTime = 0;
     }
-    if (nowPlayingPill) {
-      nowPlayingPill.classList.add('is-active');
+    activeAudio = song.el;
+    if (activeAudio) {
+      activeAudio.currentTime = 0;
+      activeAudio.play().catch(e => console.log('Audio autoplay waiting for user gesture:', e));
     }
+    if (nowPlayingLabel) nowPlayingLabel.textContent = song.label;
+    if (nowPlayingPill) nowPlayingPill.classList.add('is-active');
   }
 
   function stopHeadphonesAudio() {
-    if (headphonesAudio) {
-      headphonesAudio.pause();
+    if (activeAudio) {
+      activeAudio.pause();
     }
-    if (nowPlayingPill) {
-      nowPlayingPill.classList.remove('is-active');
-    }
+    if (nowPlayingPill) nowPlayingPill.classList.remove('is-active');
   }
 
   let mouseDownX = 0, mouseDownY = 0;
@@ -3371,6 +3385,129 @@ function initAboutThreeScene() {
     }
   });
 
+  // ── TOUCH SUPPORT FOR MOBILE (3D About Canvas) ──
+  let touchStartX = 0, touchStartY = 0;
+
+  canvasEl.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    const t = e.touches[0];
+    touchStartX = t.clientX;
+    touchStartY = t.clientY;
+
+    const rect = canvasEl.getBoundingClientRect();
+    mouseVec.x = ((t.clientX - rect.left) / rect.width) * 2 - 1;
+    mouseVec.y = -((t.clientY - rect.top) / rect.height) * 2 + 1;
+
+    raycaster.setFromCamera(mouseVec, aboutCamera);
+    const hits = raycaster.intersectObjects(interactiveFigurines, true);
+
+    if (hits.length > 0) {
+      isDraggingFigurine = true;
+      let parentObj = hits[0].object;
+      while (parentObj.parent && parentObj.parent !== aboutScene) {
+        parentObj = parentObj.parent;
+      }
+      selectedFigurine = parentObj;
+      dragPlaneMesh.position.copy(selectedFigurine.position);
+      dragPlaneMesh.lookAt(aboutCamera.position);
+      const intersects = raycaster.intersectObject(dragPlaneMesh);
+      if (intersects.length > 0) {
+        offset.copy(intersects[0].point).sub(selectedFigurine.position);
+      }
+    }
+  }, { passive: false });
+
+  canvasEl.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+    if (!isDraggingFigurine || !selectedFigurine) return;
+    const t = e.touches[0];
+    const rect = canvasEl.getBoundingClientRect();
+    mouseVec.x = ((t.clientX - rect.left) / rect.width) * 2 - 1;
+    mouseVec.y = -((t.clientY - rect.top) / rect.height) * 2 + 1;
+    raycaster.setFromCamera(mouseVec, aboutCamera);
+    const intersects = raycaster.intersectObject(dragPlaneMesh);
+    if (intersects.length > 0) {
+      const targetPos = intersects[0].point.sub(offset);
+      dragVelocity.subVectors(targetPos, selectedFigurine.position);
+      selectedFigurine.position.copy(targetPos);
+      selectedFigurine.rotation.z = -dragVelocity.x * 0.04;
+      selectedFigurine.rotation.x = dragVelocity.y * 0.04;
+    }
+  }, { passive: false });
+
+  canvasEl.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    const t = e.changedTouches[0];
+    const dist = Math.hypot(t.clientX - touchStartX, t.clientY - touchStartY);
+
+    if (isDraggingFigurine) {
+      isDraggingFigurine = false;
+      if (selectedFigurine) {
+        selectedFigurine.rotation.z = 0;
+        selectedFigurine.rotation.x = 0;
+      }
+      selectedFigurine = null;
+    }
+
+    // Treat short touches (< 12px movement) as clicks
+    if (dist < 12) {
+      const rect = canvasEl.getBoundingClientRect();
+      mouseVec.x = ((t.clientX - rect.left) / rect.width) * 2 - 1;
+      mouseVec.y = -((t.clientY - rect.top) / rect.height) * 2 + 1;
+      raycaster.setFromCamera(mouseVec, aboutCamera);
+      const hits = raycaster.intersectObjects(interactiveFigurines, true);
+
+      if (hits.length > 0) {
+        let parentObj = hits[0].object;
+        while (parentObj.parent && parentObj.parent !== aboutScene) {
+          parentObj = parentObj.parent;
+        }
+        if (parentObj.name === 'greenBoard') {
+          isGreenBoardZoomed = !isGreenBoardZoomed;
+          if (isGreenBoardZoomed) { isLaptopZoomed = false; isHeadphonesZoomed = false; }
+        } else if (parentObj.name === 'laptop') {
+          isLaptopZoomed = !isLaptopZoomed;
+          if (isLaptopZoomed) { isGreenBoardZoomed = false; isHeadphonesZoomed = false; }
+        } else if (parentObj.name === 'headphones') {
+          isHeadphonesZoomed = !isHeadphonesZoomed;
+          if (isHeadphonesZoomed) {
+            isGreenBoardZoomed = false;
+            isLaptopZoomed = false;
+            startHeadphonesAudio();
+          } else {
+            stopHeadphonesAudio();
+          }
+        } else {
+          isGreenBoardZoomed = false;
+          isLaptopZoomed = false;
+          if (isHeadphonesZoomed) stopHeadphonesAudio();
+          isHeadphonesZoomed = false;
+        }
+      } else {
+        isGreenBoardZoomed = false;
+        isLaptopZoomed = false;
+        if (isHeadphonesZoomed) stopHeadphonesAudio();
+        isHeadphonesZoomed = false;
+      }
+
+      if (isGreenBoardZoomed) {
+        targetGreenBoardPos.copy(zoomedGreenBoardPos);
+        targetGreenBoardScale = 1.05;
+      } else {
+        targetGreenBoardPos.copy(defaultGreenBoardPos);
+        targetGreenBoardScale = 1.0;
+      }
+      if (isHeadphonesZoomed) {
+        targetHeadphonesPos.copy(zoomedHeadphonesPos);
+        targetHeadphonesScale = 0.85;
+      } else {
+        targetHeadphonesPos.copy(defaultHeadphonesPos);
+        targetHeadphonesScale = 1.0;
+      }
+    }
+  }, { passive: false });
+
+
   const laptopScreenCamPos = new THREE.Vector3(190, -18, 225);
   const laptopScreenLookAt = new THREE.Vector3(238, -18, 10);
   const defaultCamLookAt = new THREE.Vector3(0, 20, 0);
@@ -3391,7 +3528,8 @@ function initAboutThreeScene() {
       const nextScale = THREE.MathUtils.lerp(currentScale, targetHeadphonesScale, 0.08);
       headphones3D.scale.set(nextScale, nextScale, nextScale);
       if (isHeadphonesZoomed) {
-        headphones3D.rotation.y += 0.01; // Smooth showcase slow spin of mirror chrome
+        // No rotation when zoomed - just hold steady for clean viewing
+        headphones3D.rotation.y = THREE.MathUtils.lerp(headphones3D.rotation.y, 0.48, 0.04);
       } else {
         headphones3D.rotation.y = THREE.MathUtils.lerp(headphones3D.rotation.y, 0.48, 0.08);
         headphones3D.rotation.z = THREE.MathUtils.lerp(headphones3D.rotation.z, 0, 0.08);

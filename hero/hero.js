@@ -532,24 +532,29 @@ function initScrollTriggeredDoors() {
   }
 
   function updateScroll(p) {
-    // 1. Doors ("ENTER BOS SMIT") open from 0.0 to 0.38, sliding smoothly left and right to reveal Lights out at Shillong
-    const doorP = clamp(p / 0.38);
+    // 1. Doors ("ENTER BOS SMIT") open from 0.0 to 0.35, sliding smoothly left and right to reveal race starting lights
+    const doorP = clamp(p / 0.35);
     const easedDoor = doorP * doorP * (3 - 2 * doorP); // smoothstep
     if (doorLeft) doorLeft.style.transform = `translateX(${-easedDoor * 160}%)`;
     if (doorRight) doorRight.style.transform = `translateX(${easedDoor * 160}%)`;
     if (sceneBg) sceneBg.style.opacity = easedDoor;
 
-    // 2. Lights sequence inside: 0.15 to 0.65 (lights light up red sequentially, then turn green)
+    // 2. F1 Race Lights sequence inside: 0.15 to 0.68
+    // 5 lights ignite sequentially in bright glowing red, then switch to green / lights out!
     const lightsStart = 0.15;
-    const lightsSpan = 0.50;
-    const lightsStep = lightsSpan / 5;
+    const lightsEnd = 0.58;
+    const lightsStep = (lightsEnd - lightsStart) / 5;
+    const greenStart = 0.58;
+    const greenEnd = 0.68;
+
     lights.forEach((el, i) => {
-      const onAt = lightsStart + i * lightsStep;
-      const greenAt = onAt + lightsStep * 0.55;
-      if (p >= greenAt) {
+      const redOnAt = lightsStart + i * lightsStep;
+      if (p >= greenStart && p < greenEnd) {
+        // All 5 lights turn intense bright green: "LIGHTS OUT!"
         el.classList.add('is-green');
         el.classList.remove('is-red-hot');
-      } else if (p >= onAt) {
+      } else if (p >= redOnAt && p < greenStart) {
+        // Sequentially ignite red
         el.classList.add('is-red-hot');
         el.classList.remove('is-green');
       } else {
@@ -557,16 +562,16 @@ function initScrollTriggeredDoors() {
       }
     });
 
-    // 3. Wordmark stays fully visible as doors open, then fades out as lights complete: 0.60 to 0.75
-    const fadeP = clamp((p - 0.60) / 0.15);
+    // 3. Race lights fade out after turning green: 0.68 to 0.78
+    const fadeP = clamp((p - 0.68) / 0.10);
     if (wordmarkEl) {
       wordmarkEl.style.opacity = 1 - fadeP;
-      wordmarkEl.style.transform = `translateY(${fadeP * -18}px)`;
+      wordmarkEl.style.transform = `translateY(${fadeP * -20}px) scale(${1 - fadeP * 0.05})`;
     }
 
-    // 4. Map line draw & reveal: 0.70 to 1.0 leading into Highway section
+    // 4. Then it goes to LIGHTS OFF IN SHILLONG: map line draw & reveal from 0.70 to 1.0
     const mapP = clamp((p - 0.70) / 0.30);
-    if (mapContainer) mapContainer.style.opacity = mapP > 0 ? clamp(mapP * 1.5) : 0;
+    if (mapContainer) mapContainer.style.opacity = mapP > 0 ? clamp(mapP * 1.6) : 0;
     if (mapRoute && dashoffsetStart) {
       mapRoute.style.strokeDashoffset = dashoffsetStart * (1 - mapP);
     }
@@ -2673,7 +2678,7 @@ function create3DDeskOpenLaptop(sharedStudioEnvMap) {
 
       { isCat: true,  cat: 'STACK',       arrow: '────────────>', val: 'Node.js, React, Python, C++, SQL' },
 
-      { isCat: true,  cat: 'PROJECTS',    arrow: '───────────>', val: 'Poké Guide, F1 Entropy, Stellar' },
+      { isCat: true,  cat: 'PROJECTS',    arrow: '───────────>', val: 'Poké Guide, Speed Share, Meghyra, Stellar' },
 
       { isCat: true,  cat: 'IEEE PAPER',  arrow: '──────────>',  val: 'AI Doc Q&A (IEEE 10894448)' },
       { isCat: false, sub: 'Contact',     arrow: '────────> ',  val: 'jadedsyiem@gmail.com | D-Jaden' }
@@ -3019,15 +3024,16 @@ function initAboutThreeScene() {
 
   const aspect = w / h;
   const isPortrait = aspect < 1;
-  const initialZ = isPortrait
-    ? Math.round(820 * (1.25 / Math.max(aspect, 0.35)))
+  const isMobile = window.innerWidth <= 768 || isPortrait;
+  const initialZ = isMobile
+    ? Math.min(1050, Math.max(860, Math.round(430 / Math.max(aspect, 0.35))))
     : 820;
-  const initialX = isPortrait ? 60 : 0;
-  const initialY = isPortrait ? 100 : 45;
+  const initialX = 0;
+  const initialY = isMobile ? 105 : 45;
 
   aboutCamera = new THREE.PerspectiveCamera(40, aspect, 1, 4500);
   aboutCamera.position.set(initialX, initialY, initialZ);
-  aboutCamera.lookAt(isPortrait ? 60 : 0, 45, 0);
+  aboutCamera.lookAt(0, isMobile ? 30 : 45, 0);
 
   aboutRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
   aboutRenderer.setSize(w, h);
@@ -3248,6 +3254,135 @@ function initAboutThreeScene() {
   let targetHeadphonesPos = defaultHeadphonesPos.clone();
   let targetHeadphonesScale = 1.0;
 
+  function applyStudioResponsivePositions() {
+    const isMobile = window.innerWidth <= 768;
+
+    if (isMobile) {
+      // Clustered portrait composition for phones & tablets
+      defaultGreenBoardPos.set(-105, 145, -295);
+      defaultHeadphonesPos.set(110, 145, -295);
+      defaultLaptopPos.set(0, -114, 85);
+
+      if (greenBoard3D && !isGreenBoardZoomed) {
+        targetGreenBoardPos.copy(defaultGreenBoardPos);
+        targetGreenBoardScale = 0.82;
+        greenBoard3D.position.copy(defaultGreenBoardPos);
+        greenBoard3D.scale.set(0.82, 0.82, 0.82);
+      }
+      if (keyboard3D) {
+        keyboard3D.position.set(0, 195, -310);
+        keyboard3D.scale.set(0.70, 0.70, 0.70);
+      }
+      if (pegHook3D) {
+        pegHook3D.position.set(110, 205, -336);
+        pegHook3D.scale.set(0.85, 0.85, 0.85);
+      }
+      if (headphones3D && !isHeadphonesZoomed) {
+        targetHeadphonesPos.copy(defaultHeadphonesPos);
+        targetHeadphonesScale = 0.85;
+        headphones3D.position.copy(defaultHeadphonesPos);
+        headphones3D.scale.set(0.85, 0.85, 0.85);
+      }
+      if (laptop3D && !isLaptopZoomed) {
+        laptop3D.position.copy(defaultLaptopPos);
+        laptop3D.rotation.y = 0;
+        laptop3D.scale.set(0.88, 0.88, 0.88);
+      }
+      if (matMesh) {
+        matMesh.position.set(0, -116, 115);
+        matMesh.scale.set(0.65, 0.65, 0.65);
+      }
+      if (coasterMesh) {
+        coasterMesh.position.set(-135, -113, 150);
+        coasterMesh.scale.set(0.85, 0.85, 0.85);
+      }
+      if (cupBodyMesh) {
+        cupBodyMesh.position.set(-135, -38, 150);
+        cupBodyMesh.scale.set(0.85, 0.85, 0.85);
+      }
+      if (cupLidMesh) {
+        cupLidMesh.position.set(-135, 36, 150);
+        cupLidMesh.scale.set(0.85, 0.85, 0.85);
+      }
+      if (plant3D) {
+        plant3D.position.set(-160, -80, 60);
+        plant3D.scale.set(0.65, 0.65, 0.65);
+      }
+      if (pencil3D) {
+        pencil3D.position.set(-85, -115, 215);
+        pencil3D.rotation.y = 0.25;
+        pencil3D.scale.set(0.85, 0.85, 0.85);
+      }
+      if (knife3D) {
+        knife3D.position.set(85, -114, 215);
+        knife3D.rotation.y = -0.15;
+        knife3D.scale.set(0.85, 0.85, 0.85);
+      }
+    } else {
+      // Desktop wide studio composition
+      defaultGreenBoardPos.set(-270, 140, -310);
+      defaultHeadphonesPos.set(510, 150, -314);
+      defaultLaptopPos.set(220, -114, 90);
+
+      if (greenBoard3D && !isGreenBoardZoomed) {
+        targetGreenBoardPos.copy(defaultGreenBoardPos);
+        targetGreenBoardScale = 1.0;
+        greenBoard3D.position.copy(defaultGreenBoardPos);
+        greenBoard3D.scale.set(1.0, 1.0, 1.0);
+      }
+      if (keyboard3D) {
+        keyboard3D.position.set(160, 140, -310);
+        keyboard3D.scale.set(1.0, 1.0, 1.0);
+      }
+      if (pegHook3D) {
+        pegHook3D.position.set(510, 210, -346);
+        pegHook3D.scale.set(1.0, 1.0, 1.0);
+      }
+      if (headphones3D && !isHeadphonesZoomed) {
+        targetHeadphonesPos.copy(defaultHeadphonesPos);
+        targetHeadphonesScale = 1.0;
+        headphones3D.position.copy(defaultHeadphonesPos);
+        headphones3D.scale.set(1.0, 1.0, 1.0);
+      }
+      if (laptop3D && !isLaptopZoomed) {
+        laptop3D.position.copy(defaultLaptopPos);
+        laptop3D.rotation.y = -0.22;
+        laptop3D.scale.set(1.0, 1.0, 1.0);
+      }
+      if (matMesh) {
+        matMesh.position.set(220, -116, 120);
+        matMesh.scale.set(1.0, 1.0, 1.0);
+      }
+      if (coasterMesh) {
+        coasterMesh.position.set(-260, -113, 180);
+        coasterMesh.scale.set(1.0, 1.0, 1.0);
+      }
+      if (cupBodyMesh) {
+        cupBodyMesh.position.set(-260, -38, 180);
+        cupBodyMesh.scale.set(1.0, 1.0, 1.0);
+      }
+      if (cupLidMesh) {
+        cupLidMesh.position.set(-260, 36, 180);
+        cupLidMesh.scale.set(1.0, 1.0, 1.0);
+      }
+      if (plant3D) {
+        plant3D.position.set(-370, -70, 130);
+        plant3D.scale.set(1.0, 1.0, 1.0);
+      }
+      if (pencil3D) {
+        pencil3D.position.set(-80, -115, 200);
+        pencil3D.rotation.y = 0.35;
+        pencil3D.scale.set(1.0, 1.0, 1.0);
+      }
+      if (knife3D) {
+        knife3D.position.set(40, -114, 220);
+        knife3D.rotation.y = 0.15;
+        knife3D.scale.set(1.0, 1.0, 1.0);
+      }
+    }
+  }
+  applyStudioResponsivePositions();
+
   const headphonesAudio = document.getElementById('headphonesAudio');
   const headphonesAudio2 = document.getElementById('headphonesAudio2');
   const nowPlayingPill = document.getElementById('nowPlayingPill');
@@ -3458,6 +3593,16 @@ function initAboutThreeScene() {
 
     // Hover state over 3D figurines
     const hits = raycaster.intersectObjects(interactiveFigurines, true);
+    const isMobileMode = window.innerWidth <= 768;
+    const getBaseScale = (fig) => {
+      if (!isMobileMode) return 1.0;
+      if (fig === greenBoard3D) return 0.82;
+      if (fig === headphones3D) return 0.85;
+      if (fig === laptop3D) return 0.88;
+      if (fig === keyboard3D) return 0.70;
+      return 1.0;
+    };
+
     if (hits.length > 0) {
       canvasEl.style.cursor = 'pointer';
       let parentObj = hits[0].object;
@@ -3465,31 +3610,33 @@ function initAboutThreeScene() {
         parentObj = parentObj.parent;
       }
       interactiveFigurines.forEach(fig => {
+        const baseS = getBaseScale(fig);
         if (fig === parentObj) {
           if (
             (fig !== greenBoard3D || !isGreenBoardZoomed) &&
             (fig !== laptop3D || !isLaptopZoomed) &&
             (fig !== headphones3D || !isHeadphonesZoomed)
           ) {
-            fig.scale.set(1.08, 1.08, 1.08);
+            fig.scale.set(baseS * 1.08, baseS * 1.08, baseS * 1.08);
           }
         } else if (
           (fig !== greenBoard3D || !isGreenBoardZoomed) &&
           (fig !== laptop3D || !isLaptopZoomed) &&
           (fig !== headphones3D || !isHeadphonesZoomed)
         ) {
-          fig.scale.set(1, 1, 1);
+          fig.scale.set(baseS, baseS, baseS);
         }
       });
     } else {
       canvasEl.style.cursor = 'default';
       interactiveFigurines.forEach(fig => {
+        const baseS = getBaseScale(fig);
         if (
           (fig !== greenBoard3D || !isGreenBoardZoomed) &&
           (fig !== laptop3D || !isLaptopZoomed) &&
           (fig !== headphones3D || !isHeadphonesZoomed)
         ) {
-          fig.scale.set(1, 1, 1);
+          fig.scale.set(baseS, baseS, baseS);
         }
       });
     }
@@ -3606,28 +3753,29 @@ function initAboutThreeScene() {
 
     const isMobileAspect = window.innerWidth <= 768;
     if (isGreenBoardZoomed) {
-      targetGreenBoardPos.copy(isMobileAspect ? new THREE.Vector3(0, 90, 750) : zoomedGreenBoardPos);
-      targetGreenBoardScale = isMobileAspect ? 1.35 : 1.05;
+      targetGreenBoardPos.copy(isMobileAspect ? new THREE.Vector3(0, 65, 520) : zoomedGreenBoardPos);
+      targetGreenBoardScale = isMobileAspect ? 1.25 : 1.05;
     } else {
       targetGreenBoardPos.copy(defaultGreenBoardPos);
-      targetGreenBoardScale = 1.0;
+      targetGreenBoardScale = isMobileAspect ? 0.82 : 1.0;
     }
 
     if (isHeadphonesZoomed) {
-      targetHeadphonesPos.copy(isMobileAspect ? new THREE.Vector3(0, 140, 850) : zoomedHeadphonesPos);
+      targetHeadphonesPos.copy(isMobileAspect ? new THREE.Vector3(0, 110, 560) : zoomedHeadphonesPos);
       targetHeadphonesScale = isMobileAspect ? 1.15 : 0.85;
     } else {
       targetHeadphonesPos.copy(defaultHeadphonesPos);
-      targetHeadphonesScale = 1.0;
+      targetHeadphonesScale = isMobileAspect ? 0.85 : 1.0;
     }
   });
 
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
+      const isMobileAspect = window.innerWidth <= 768;
       if (isGreenBoardZoomed) {
         isGreenBoardZoomed = false;
         targetGreenBoardPos.copy(defaultGreenBoardPos);
-        targetGreenBoardScale = 1.0;
+        targetGreenBoardScale = isMobileAspect ? 0.82 : 1.0;
       }
       if (isLaptopZoomed) {
         isLaptopZoomed = false;
@@ -3636,7 +3784,7 @@ function initAboutThreeScene() {
         isHeadphonesZoomed = false;
         stopHeadphonesAudio();
         targetHeadphonesPos.copy(defaultHeadphonesPos);
-        targetHeadphonesScale = 1.0;
+        targetHeadphonesScale = isMobileAspect ? 0.85 : 1.0;
       }
     }
   });
@@ -3790,18 +3938,18 @@ function initAboutThreeScene() {
 
       const isMobileAspect = window.innerWidth <= 768;
       if (isGreenBoardZoomed) {
-        targetGreenBoardPos.copy(isMobileAspect ? new THREE.Vector3(0, 90, 750) : zoomedGreenBoardPos);
-        targetGreenBoardScale = isMobileAspect ? 1.35 : 1.05;
+        targetGreenBoardPos.copy(isMobileAspect ? new THREE.Vector3(0, 65, 520) : zoomedGreenBoardPos);
+        targetGreenBoardScale = isMobileAspect ? 1.25 : 1.05;
       } else {
         targetGreenBoardPos.copy(defaultGreenBoardPos);
-        targetGreenBoardScale = 1.0;
+        targetGreenBoardScale = isMobileAspect ? 0.82 : 1.0;
       }
       if (isHeadphonesZoomed) {
-        targetHeadphonesPos.copy(isMobileAspect ? new THREE.Vector3(0, 140, 850) : zoomedHeadphonesPos);
+        targetHeadphonesPos.copy(isMobileAspect ? new THREE.Vector3(0, 110, 560) : zoomedHeadphonesPos);
         targetHeadphonesScale = isMobileAspect ? 1.15 : 0.85;
       } else {
         targetHeadphonesPos.copy(defaultHeadphonesPos);
-        targetHeadphonesScale = 1.0;
+        targetHeadphonesScale = isMobileAspect ? 0.85 : 1.0;
       }
     }
   }, { passive: true });
@@ -3841,22 +3989,34 @@ function initAboutThreeScene() {
 
     if (isLaptopZoomed && aboutCamera) {
       // Fly camera directly into the laptop display screen
-      aboutCamera.position.lerp(laptopScreenCamPos, 0.08);
-      aboutCamera.lookAt(laptopScreenLookAt);
+      const isMobileAspect = window.innerWidth <= 768;
+      const targetLaptopCamPos = isMobileAspect ? new THREE.Vector3(0, -25, 220) : laptopScreenCamPos;
+      const targetLaptopLookAt = isMobileAspect ? new THREE.Vector3(0, -25, 0) : laptopScreenLookAt;
+      aboutCamera.position.lerp(targetLaptopCamPos, 0.08);
+      aboutCamera.lookAt(targetLaptopLookAt);
     } else if (aboutCamera && !isDraggingFigurine && !isGreenBoardZoomed && !isHeadphonesZoomed) {
       // Normal overview camera with subtle mouse parallax
       const aspect = (aboutRenderer.domElement.clientWidth || window.innerWidth) / (aboutRenderer.domElement.clientHeight || window.innerHeight);
       const isPortrait = aspect < 1;
-      const baseZ = isPortrait
-        ? Math.round(820 * (1.25 / Math.max(aspect, 0.35)))
-        : 820;
-      const targetX = isPortrait ? 60 : (mouseX * 35);
-      const targetY = isPortrait ? 100 : (120 - mouseY * 25);
-      const targetLookAt = isPortrait ? new THREE.Vector3(60, 45, 0) : defaultCamLookAt;
-      aboutCamera.position.x += (targetX - aboutCamera.position.x) * 0.05;
-      aboutCamera.position.y += (targetY - aboutCamera.position.y) * 0.05;
-      aboutCamera.position.z += (baseZ - aboutCamera.position.z) * 0.05;
-      aboutCamera.lookAt(targetLookAt);
+      const isMobile = window.innerWidth <= 768 || isPortrait;
+      if (isMobile) {
+        const baseZ = Math.min(1050, Math.max(860, Math.round(430 / Math.max(aspect, 0.35))));
+        const targetX = 0;
+        const targetY = 105;
+        const targetLookAt = new THREE.Vector3(0, 30, 0);
+        aboutCamera.position.x += (targetX - aboutCamera.position.x) * 0.05;
+        aboutCamera.position.y += (targetY - aboutCamera.position.y) * 0.05;
+        aboutCamera.position.z += (baseZ - aboutCamera.position.z) * 0.05;
+        aboutCamera.lookAt(targetLookAt);
+      } else {
+        const baseZ = 820;
+        const targetX = mouseX * 35;
+        const targetY = 120 - mouseY * 25;
+        aboutCamera.position.x += (targetX - aboutCamera.position.x) * 0.05;
+        aboutCamera.position.y += (targetY - aboutCamera.position.y) * 0.05;
+        aboutCamera.position.z += (baseZ - aboutCamera.position.z) * 0.05;
+        aboutCamera.lookAt(defaultCamLookAt);
+      }
     }
     aboutRenderer.render(aboutScene, aboutCamera);
   }
@@ -3869,6 +4029,7 @@ function initAboutThreeScene() {
     aboutCamera.aspect = nw / nh;
     aboutCamera.updateProjectionMatrix();
     aboutRenderer.setSize(nw, nh);
+    applyStudioResponsivePositions();
   });
 }
 
@@ -4189,6 +4350,10 @@ function openIDBadgeModal() {
                   <div><span>CLEARANCE:</span> LEVEL 01</div>
                   <div><span>STATUS:</span> ACTIVE // OPEN</div>
                 </div>
+              </div>
+              <div class="id-seal-stamp" title="Security Clearance Official Seal">
+                <img src="${sealPath}" alt="Batman Official Seal" class="id-seal-img" />
+                <span class="id-seal-text">OFFICIAL SEAL</span>
               </div>
             </div>
             <div class="id-card-footer">

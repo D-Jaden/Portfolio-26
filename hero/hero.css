@@ -554,10 +554,9 @@ html, body {
 
 .phone-screen-img {
   width: 100%;
-  height: calc(100% + 36px);
+  height: 100%;
   object-fit: cover;
   object-position: center top;
-  transform: translateY(-34px);
   display: block;
   background: #0f172a;
 }
@@ -1039,27 +1038,42 @@ html, body {
 
 .rig {
   display: flex;
-  gap: clamp(10px, 2.2vw, 22px);
-  padding: 16px 22px;
-  background: rgba(0,0,0,.35);
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: 14px;
+  gap: clamp(14px, 2.8vw, 26px);
+  padding: clamp(16px, 2.5vw, 24px) clamp(22px, 3.8vw, 42px);
+  background: linear-gradient(180deg, #181a22 0%, #0c0d12 100%);
+  border: 2px solid #2e3342;
+  border-radius: 18px;
+  box-shadow: 
+    0 25px 60px rgba(0, 0, 0, 0.65),
+    inset 0 1px 1px rgba(255, 255, 255, 0.22),
+    0 0 35px rgba(18, 18, 176, 0.22);
 }
 .light {
-  width: clamp(30px, 5vw, 54px);
-  height: clamp(30px, 5vw, 54px);
+  width: clamp(34px, 5.5vw, 56px);
+  height: clamp(34px, 5.5vw, 56px);
   border-radius: 50%;
-  background: #600;
-  box-shadow: inset 0 0 0 3px rgba(0,0,0,.4);
-  transition: background .25s ease, box-shadow .25s ease;
+  background: radial-gradient(circle at 40% 40%, #1e2330 0%, #080a0e 100%);
+  border: 3px solid #06070a;
+  box-shadow: inset 0 4px 8px rgba(0,0,0,0.9), 0 2px 4px rgba(0,0,0,0.5);
+  transition: background .12s, box-shadow .12s, border-color .12s;
 }
 .light.is-red-hot {
-  background: #d6412c;
-  box-shadow: 0 0 22px 6px rgba(214,65,44,.6), inset 0 0 0 3px rgba(0,0,0,.25);
+  background: radial-gradient(circle at 45% 45%, #ffffff 0%, #ff7755 20%, #ff1800 55%, #b30000 100%) !important;
+  border-color: #ff9988 !important;
+  box-shadow: 
+    0 0 25px 8px #ff2200, 
+    0 0 60px 24px rgba(255, 30, 0, 0.8), 
+    0 0 100px 40px rgba(255, 0, 0, 0.4), 
+    inset 0 0 14px #ffffff !important;
 }
 .light.is-green {
-  background: #3fae5c;
-  box-shadow: 0 0 22px 6px rgba(63,174,92,.65), inset 0 0 0 3px rgba(0,0,0,.25);
+  background: radial-gradient(circle at 45% 45%, #ffffff 0%, #70ff99 20%, #00e640 55%, #008820 100%) !important;
+  border-color: #99ffb8 !important;
+  box-shadow: 
+    0 0 25px 8px #00e640, 
+    0 0 60px 24px rgba(0, 230, 64, 0.8), 
+    0 0 100px 40px rgba(0, 255, 70, 0.4), 
+    inset 0 0 14px #ffffff !important;
 }
 
 /* Door panels */
@@ -2399,10 +2413,40 @@ html, body {
 }
 
 .id-card-body {
+  position: relative;
   padding: 12px 16px;
   display: flex;
   gap: 16px;
   align-items: center;
+}
+
+.id-seal-stamp {
+  position: absolute;
+  right: 14px;
+  bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  pointer-events: none;
+  opacity: 0.92;
+  z-index: 6;
+}
+
+.id-seal-img {
+  width: 44px;
+  height: 26px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 3px rgba(18, 18, 176, 0.45));
+}
+
+.id-seal-text {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 6.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #1212B0;
+  opacity: 0.8;
 }
 
 .id-photo-box {
@@ -2820,8 +2864,8 @@ html, body {
   }
   .drawer-box {
     top: 60px;
-    height: min(430px, calc(100vh - 85px));
-    min-height: 400px;
+    height: min(465px, calc(100vh - 80px));
+    min-height: 435px;
   }
   
   /* Responsive Tab Layout - 4 tabs distributed evenly */
@@ -2881,25 +2925,29 @@ html, body {
 
   /* Responsive Phone Chassis & Screen */
   .project-phone-showcase {
-    gap: 12px;
-    padding-bottom: 6px;
-    margin-top: 4px;
+    gap: 16px;
+    padding: 6px 6px 14px;
+    margin-top: 6px;
     -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+  }
+  .phone-mockup-item {
+    scroll-snap-align: center;
   }
   .phone-chassis {
-    width: 130px;
-    height: 270px;
-    border-radius: 17px;
+    width: 160px;
+    height: 330px;
+    border-radius: 20px;
     padding: 4px;
     border-width: 1px;
   }
   .phone-screen {
-    width: 122px;
-    height: 262px;
-    border-radius: 13px;
+    width: 152px;
+    height: 322px;
+    border-radius: 16px;
   }
   .phone-island {
-    width: 25px;
+    width: 28px;
     height: 6px;
     border-radius: 3px;
     top: 3px;
@@ -2908,39 +2956,27 @@ html, body {
     width: 3.5px;
     height: 3.5px;
   }
-  .phone-volume-btn.left-up { top: 44px; height: 16px; }
-  .phone-volume-btn.left-down { top: 64px; height: 16px; }
-  .phone-power-btn.right { top: 52px; height: 22px; }
+  .phone-volume-btn.left-up { top: 48px; height: 18px; }
+  .phone-volume-btn.left-down { top: 72px; height: 18px; }
+  .phone-power-btn.right { top: 58px; height: 26px; }
   .phone-caption {
-    font-size: 7.5px;
-    letter-spacing: 0.06em;
-    margin-top: 4px;
+    font-size: 8px;
+    letter-spacing: 0.08em;
+    margin-top: 5px;
   }
 
   /* 6. Start Lights & Doors */
   .start-lights {
     height: 160vh;
   }
-  .wordmark .eyebrow {
-    font-size: 9px;
-    margin-bottom: 4px;
-  }
-  .wordmark h1 {
-    font-size: clamp(26px, 7vw, 38px);
-    line-height: 1.05;
-  }
-  .wordmark .sub {
-    font-size: 9.5px;
-    margin-top: 6px;
-  }
   .rig {
-    padding: 8px 12px;
-    gap: 8px;
-    border-radius: 8px;
+    padding: 14px 22px;
+    gap: 12px;
+    border-radius: 14px;
   }
   .light {
-    width: 22px;
-    height: 22px;
+    width: 28px;
+    height: 28px;
   }
   .grid-text {
     font-size: clamp(44px, 10vw, 64px);
@@ -3169,7 +3205,15 @@ html, body {
     font-size: 10px;
   }
   .id-column {
-    margin-top: 8px;
+    margin-top: 80px;
+  }
+  .id-seal-stamp {
+    right: 10px;
+    bottom: 6px;
+  }
+  .id-seal-img {
+    width: 36px;
+    height: 22px;
   }
   .id-card-holder {
     width: 100%;
@@ -3316,8 +3360,8 @@ html, body {
   }
   .drawer-box {
     top: 52px;
-    height: min(390px, calc(100vh - 75px));
-    min-height: 365px;
+    height: min(450px, calc(100vh - 70px));
+    min-height: 415px;
   }
   .folder-tab {
     top: -24px;
@@ -3356,24 +3400,29 @@ html, body {
   }
 
   .project-phone-showcase {
-    gap: 12px;
-    padding-bottom: 8px;
+    gap: 14px;
+    padding: 4px 4px 10px;
     margin-top: 4px;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+  }
+  .phone-mockup-item {
+    scroll-snap-align: center;
   }
   .phone-chassis {
-    width: 120px;
-    height: 252px;
-    border-radius: 16px;
+    width: 150px;
+    height: 310px;
+    border-radius: 18px;
     padding: 3.5px;
     border-width: 1px;
   }
   .phone-screen {
-    width: 113px;
-    height: 245px;
-    border-radius: 12px;
+    width: 143px;
+    height: 303px;
+    border-radius: 14px;
   }
   .phone-island {
-    width: 22px;
+    width: 25px;
     height: 5px;
     top: 2.5px;
   }
@@ -3381,32 +3430,26 @@ html, body {
     width: 2.5px;
     height: 2.5px;
   }
-  .phone-volume-btn.left-up { top: 40px; height: 14px; }
-  .phone-volume-btn.left-down { top: 58px; height: 14px; }
-  .phone-power-btn.right { top: 46px; height: 18px; }
+  .phone-volume-btn.left-up { top: 44px; height: 16px; }
+  .phone-volume-btn.left-down { top: 66px; height: 16px; }
+  .phone-power-btn.right { top: 52px; height: 22px; }
   .phone-caption {
     font-size: 7.5px;
-    margin-top: 3px;
+    letter-spacing: 0.08em;
+    margin-top: 4px;
   }
 
   .start-lights {
     height: 160vh;
   }
-  .wordmark h1 {
-    font-size: clamp(20px, 6vw, 30px);
-    line-height: 1.05;
-  }
-  .wordmark .sub {
-    font-size: 8.5px;
-  }
   .rig {
-    padding: 6px 8px;
-    gap: 5px;
-    border-radius: 6px;
+    padding: 12px 18px;
+    gap: 9px;
+    border-radius: 12px;
   }
   .light {
-    width: 18px;
-    height: 18px;
+    width: 24px;
+    height: 24px;
   }
   .grid-text {
     font-size: clamp(38px, 10vw, 52px);
@@ -3546,7 +3589,18 @@ html, body {
   }
 
   .id-column {
-    margin-top: 6px;
+    margin-top: 75px;
+  }
+  .id-seal-stamp {
+    right: 8px;
+    bottom: 5px;
+  }
+  .id-seal-img {
+    width: 30px;
+    height: 18px;
+  }
+  .id-seal-text {
+    font-size: 5px;
   }
   .id-card-holder {
     max-width: 215px;

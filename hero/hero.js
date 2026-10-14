@@ -570,7 +570,19 @@ function initScrollTriggeredDoors() {
     }
   }
 
-  if (window.anime && typeof window.anime === 'object' && window.anime.onScroll) {
+  const lightsPin = lightsSection ? lightsSection.querySelector('.lights-pin') : null;
+
+  if (window.ScrollTrigger && lightsPin) {
+    ScrollTrigger.create({
+      trigger: lightsSection,
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: true,
+      onUpdate: (self) => {
+        updateScroll(self.progress);
+      }
+    });
+  } else if (window.anime && typeof window.anime === 'object' && window.anime.onScroll) {
     const { onScroll } = window.anime;
     onScroll({
       target: '#lightsSection',
@@ -3963,12 +3975,16 @@ function initProjectsScrollTrigger() {
     }
   });
 
+  const isMobile = window.innerWidth <= 768;
+  const pinTopOffset = isMobile ? (window.innerWidth <= 480 ? 52 : 60) : 108;
+
   const tl = gsap.timeline({
     scrollTrigger: {
       trigger: container,
-      start: 'top top+=90',
-      end: 'bottom bottom',
-      scrub: 0.5
+      start: () => `top top+=${pinTopOffset}`,
+      end: () => `bottom top+=${pinTopOffset + drawerBox.offsetHeight}`,
+      scrub: 0.5,
+      invalidateOnRefresh: true
     }
   });
 

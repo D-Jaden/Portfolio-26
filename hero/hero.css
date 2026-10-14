@@ -6,14 +6,14 @@ html, body {
   background: #ffffff;
   color: #1212B0;
   min-height: 100vh;
-  overflow-x: hidden;
+  overflow-x: clip;
   max-width: 100%;
 }
 
 .page {
   width: 100%;
   max-width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 /* ── META HEADER ── */
@@ -209,13 +209,13 @@ html, body {
 .drawer-container {
   overflow: visible;
   position: relative;
-  min-height: 360vh; /* Smooth, spacious scroll distance for all projects */
+  min-height: 220vh; /* Smooth, natural scroll distance for all projects */
   background: rgba(18,18,176,0.02);
   border-top: 1px solid rgba(18,18,176,0.28);
   border-bottom: 1px solid rgba(18,18,176,0.28);
   padding: 20px 24px 30px;
   margin-top: 20px;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 }
 
 .drawer-header {
@@ -940,7 +940,7 @@ html, body {
 /* ── LIGHTS OUT & ENTER BOS SMIT DOORS ── */
 .start-lights {
   position: relative;
-  height: 200vh;
+  height: 120vh;
   background: #ffffff;
   border-top: 1px solid rgba(18,18,176,0.28);
 }
@@ -2708,47 +2708,49 @@ html, body {
 
   /* 3. Hero Open Field */
   .hero-open {
-    height: 380px;
+    height: clamp(250px, 38vh, 310px);
   }
   .hero-name-row {
-    padding: 0 16px;
+    padding: 0 14px;
   }
   .display-name {
-    font-size: clamp(48px, 12vw, 84px);
-    line-height: 0.95;
+    font-size: clamp(34px, 8.5vw, 48px);
+    line-height: 1.05;
     padding-bottom: 2px;
   }
   .archive-tag {
-    font-size: 9px;
-    letter-spacing: 0.18em;
-    padding-bottom: 14px;
-    margin-left: 12px;
+    font-size: 8.5px;
+    letter-spacing: 0.14em;
+    padding-bottom: 8px;
+    margin-left: 8px;
   }
   .fl-tr {
-    right: 14px;
-    top: 8px;
+    right: 12px;
+    top: 6px;
+    font-size: 7.5px;
   }
 
   /* Sticky Notes */
   .sticky-zone {
-    right: 14px;
-    top: 10px;
-    gap: 8px;
+    right: 10px;
+    top: 8px;
+    gap: 6px;
   }
   .sticky {
-    min-width: 95px;
-    min-height: 72px;
-    padding: 10px 12px;
+    min-width: 74px;
+    width: 74px;
+    min-height: 54px;
+    padding: 6px 8px;
   }
   .sticky-sub {
-    font-size: 9.5px;
-    letter-spacing: 0.08em;
+    font-size: 8px;
+    letter-spacing: 0.05em;
   }
 
   /* Grid Meta Strip */
   .grid-strip {
-    padding: 5px 16px;
-    font-size: 7.5px;
+    padding: 4px 14px;
+    font-size: 7px;
   }
 
   /* 4. Body & Sidebar */
@@ -2763,69 +2765,69 @@ html, body {
     width: 100%;
     border-right: none;
     border-bottom: 1px solid rgba(18, 18, 176, 0.28);
-    padding: 18px 16px;
-    gap: 16px;
+    padding: 14px 14px;
+    gap: 12px;
     box-sizing: border-box;
   }
   .mission {
-    font-size: 9px;
-    line-height: 1.6;
-    padding-bottom: 12px;
+    font-size: 8.5px;
+    line-height: 1.5;
+    padding-bottom: 8px;
   }
   .sb-lbl {
-    font-size: 7.5px;
-    margin-bottom: 6px;
+    font-size: 7px;
+    margin-bottom: 4px;
   }
   .sb-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 4px 16px;
+    gap: 4px 14px;
   }
   .sb-list li {
-    font-size: 9px;
-    padding: 2px 0;
+    font-size: 8.5px;
+    padding: 1px 0;
   }
 
   /* 5. Personal Fun Projects Drawer */
   .drawer-container {
-    padding: 14px 12px 24px;
-    margin-top: 10px;
-    margin-bottom: 30px;
-    min-height: 320vh;
+    padding: 12px 10px 20px;
+    margin-top: 8px;
+    margin-bottom: 20px;
+    min-height: 190vh;
     width: 100%;
     box-sizing: border-box;
   }
   .drawer-header {
-    margin-bottom: 38px;
-    top: 10px;
+    margin-bottom: 28px;
+    top: 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
   .drawer-label {
-    font-size: 16px;
+    font-size: 14px;
     letter-spacing: 0.03em;
   }
   .drawer-hint {
-    font-size: 9.5px;
+    font-size: 8.5px;
   }
   .drawer-box {
-    top: 70px;
-    height: calc(100vh - 95px);
-    min-height: 480px;
+    top: 60px;
+    height: calc(100vh - 80px);
+    min-height: 440px;
   }
   
   /* Responsive Tab Layout - 4 tabs distributed evenly */
   .folder-tab {
     position: absolute;
-    top: -30px;
-    height: 32px;
-    padding: 0 4px;
+    top: -28px;
+    height: 30px;
+    padding: 0 3px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: clamp(8px, 2.2vw, 10px);
-    letter-spacing: 0.4px;
+    font-size: clamp(7.5px, 2.1vw, 9.5px);
+    letter-spacing: 0.3px;
     border-radius: 6px 6px 0 0;
     text-align: center;
     white-space: nowrap;
@@ -2839,108 +2841,109 @@ html, body {
   .folder-4 .folder-tab { left: calc(75% - 2px); width: calc(25% + 4px); }
 
   .folder-content {
-    padding: 14px 14px 20px;
+    padding: 10px 12px 16px;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     height: 100%;
   }
   .folder-meta {
-    font-size: 9px;
+    font-size: 8px;
   }
   .folder-title {
-    font-size: 24px;
-    margin: 0 0 4px 0;
+    font-size: 21px;
+    margin: 0 0 3px 0;
   }
   .folder-content p {
-    font-size: 12px;
-    line-height: 1.45;
-    margin-bottom: 6px;
+    font-size: 11.5px;
+    line-height: 1.4;
+    margin-bottom: 5px;
   }
   .folder-action-row {
-    margin-bottom: 8px;
-    gap: 8px;
-  }
-  .folder-specs {
-    font-size: 9px;
-    padding: 3px 8px;
+    margin-bottom: 6px;
     gap: 6px;
   }
+  .folder-specs {
+    font-size: 8px;
+    padding: 2px 6px;
+    gap: 4px;
+  }
   .project-view-btn {
-    font-size: 11px;
-    padding: 5px 12px;
+    font-size: 10px;
+    padding: 4px 10px;
   }
 
   /* Responsive Phone Chassis & Screen */
   .project-phone-showcase {
-    gap: 12px;
-    padding-bottom: 8px;
-    margin-top: 6px;
+    gap: 10px;
+    padding-bottom: 6px;
+    margin-top: 4px;
     -webkit-overflow-scrolling: touch;
   }
   .phone-chassis {
-    width: 140px;
-    height: 292px;
-    border-radius: 20px;
-    padding: 5px;
+    width: 114px;
+    height: 236px;
+    border-radius: 17px;
+    padding: 4px;
     border-width: 1px;
   }
   .phone-screen {
-    width: 130px;
-    height: 282px;
-    border-radius: 15px;
+    width: 106px;
+    height: 228px;
+    border-radius: 13px;
   }
   .phone-island {
-    width: 30px;
-    height: 7px;
-    border-radius: 4px;
+    width: 25px;
+    height: 6px;
+    border-radius: 3px;
     top: 3px;
   }
   .island-lens {
-    width: 4px;
-    height: 4px;
+    width: 3.5px;
+    height: 3.5px;
   }
-  .phone-volume-btn.left-up { top: 55px; height: 20px; }
-  .phone-volume-btn.left-down { top: 80px; height: 20px; }
-  .phone-power-btn.right { top: 65px; height: 28px; }
+  .phone-volume-btn.left-up { top: 44px; height: 16px; }
+  .phone-volume-btn.left-down { top: 64px; height: 16px; }
+  .phone-power-btn.right { top: 52px; height: 22px; }
   .phone-caption {
-    font-size: 8.5px;
-    letter-spacing: 0.08em;
+    font-size: 7.5px;
+    letter-spacing: 0.06em;
+    margin-top: 4px;
   }
 
   /* 6. Start Lights & Doors */
   .start-lights {
-    height: 180vh;
+    height: 100vh;
   }
   .wordmark .eyebrow {
-    font-size: 10px;
-    margin-bottom: 6px;
+    font-size: 9px;
+    margin-bottom: 4px;
   }
   .wordmark h1 {
-    font-size: clamp(30px, 8vw, 48px);
-    line-height: 1;
+    font-size: clamp(26px, 7vw, 38px);
+    line-height: 1.05;
   }
   .wordmark .sub {
-    font-size: 11px;
-    margin-top: 8px;
+    font-size: 9.5px;
+    margin-top: 6px;
   }
   .rig {
-    padding: 10px 14px;
-    gap: 10px;
-    border-radius: 10px;
+    padding: 8px 12px;
+    gap: 8px;
+    border-radius: 8px;
   }
   .light {
-    width: 28px;
-    height: 28px;
+    width: 22px;
+    height: 22px;
   }
   .grid-text {
-    font-size: clamp(32px, 8vw, 54px);
+    font-size: clamp(26px, 7vw, 42px);
   }
   .map-container svg {
     width: 85%;
   }
   .map-text {
-    font-size: 20px;
-    margin-top: 12px;
+    font-size: 16px;
+    margin-top: 8px;
   }
 
   /* 7. Highway Experience */
@@ -2948,42 +2951,42 @@ html, body {
     padding-bottom: 10px;
   }
   .experience-badge {
-    top: 12px;
-    right: 12px;
-    font-size: 18px;
-    padding: 4px 12px;
-    box-shadow: 0 6px 16px rgba(39, 75, 155, 0.25);
+    top: 10px;
+    right: 10px;
+    font-size: 16px;
+    padding: 3px 10px;
+    box-shadow: 0 4px 12px rgba(39, 75, 155, 0.25);
   }
   .route-map-container {
-    width: 94%;
-    margin: 52px auto 10px;
-    height: 60px;
-    padding: 0 20px;
+    width: 95%;
+    margin: 44px auto 8px;
+    height: 54px;
+    padding: 0 16px;
   }
   .station-dot {
-    width: 13px;
-    height: 13px;
+    width: 12px;
+    height: 12px;
     border-width: 2px;
   }
   .station-label {
-    font-size: 8.5px;
-    top: 18px;
+    font-size: 8px;
+    top: 16px;
   }
   .main-content-area {
-    gap: 8px;
-    padding: 0 10px;
-    margin-bottom: 170px;
+    gap: 6px;
+    padding: 0 8px;
+    margin-bottom: 115px;
   }
   .nav-btn {
-    width: 40px;
-    height: 40px;
-    min-width: 40px;
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
     border-width: 2px;
-    box-shadow: 3px 3px 0 #201a14;
+    box-shadow: 2px 2px 0 #201a14;
   }
   .nav-btn svg {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
   }
   .billboard-container {
     width: 100%;
@@ -2992,69 +2995,69 @@ html, body {
     width: 90%;
   }
   .post {
-    height: 28px;
-    width: 10px;
+    height: 24px;
+    width: 9px;
   }
   .board {
-    padding: 16px 20px 22px;
-    min-height: 220px;
+    padding: 12px 16px 18px;
+    min-height: 180px;
     border-width: 4px;
     border-radius: 10px;
   }
   .board::after {
-    inset: 5px;
-    border-width: 2px;
+    inset: 4px;
+    border-width: 1.5px;
   }
   .board-content {
-    top: 14px;
-    left: 16px;
-    right: 16px;
-    bottom: 14px;
+    top: 10px;
+    left: 12px;
+    right: 12px;
+    bottom: 10px;
   }
   .board-eyebrow {
-    font-size: 9.5px;
-    margin-bottom: 4px;
+    font-size: 9px;
+    margin-bottom: 3px;
   }
   .board-title {
-    font-size: 26px;
-    margin-bottom: 4px;
+    font-size: 21px;
+    margin-bottom: 3px;
   }
   .board-meta {
-    font-size: 10px;
-    margin-bottom: 8px;
+    font-size: 9.5px;
+    margin-bottom: 6px;
   }
   .board-desc {
-    font-size: 12px;
+    font-size: 11px;
     line-height: 1.45;
   }
   .bus-figure {
-    width: 200px;
-    bottom: 35px;
+    width: 135px;
+    bottom: 22px;
   }
   .comic-bubble {
-    font-size: 10.5px;
-    padding: 5px 10px;
-    bottom: 95%;
+    font-size: 9px;
+    padding: 3px 7px;
+    bottom: 85%;
     border-width: 2px;
     box-shadow: 2px 2px 0 #201a14;
   }
   .bottom-info-bar {
-    font-size: 7.5px;
-    height: 32px;
-    padding: 0 8px;
+    font-size: 7px;
+    height: 28px;
+    padding: 0 6px;
   }
 
   /* 8. About Me 3D Studio */
   .about-hint {
-    top: 14px;
+    top: 12px;
     bottom: auto;
-    font-size: 8.5px;
-    padding: 5px 12px;
+    font-size: 8px;
+    padding: 4px 10px;
     max-width: 92vw;
     text-align: center;
     white-space: normal;
     line-height: 1.35;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
   }
   .oryzo-glass-panel {
     max-width: 90vw;
@@ -3068,39 +3071,39 @@ html, body {
 
   /* 9. Audio Now Playing Toast Pill */
   .now-playing-pill {
-    bottom: 74px;
-    padding: 6px 12px;
-    gap: 8px;
-    font-size: 9px;
-    max-width: 94vw;
+    bottom: 58px;
+    padding: 4px 10px;
+    gap: 6px;
+    font-size: 8.5px;
+    max-width: 90vw;
   }
   #nowPlayingLabel {
-    max-width: 140px;
+    max-width: 130px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
   .audio-ctrl-btn {
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
   }
 
   /* 10. Glass Taskbar Dock */
   .glass-taskbar {
-    bottom: 10px;
-    height: 52px;
-    gap: 10px;
-    padding: 6px 12px;
-    border-radius: 20px;
+    bottom: 8px;
+    height: 46px;
+    gap: 8px;
+    padding: 4px 10px;
+    border-radius: 18px;
   }
   .taskbar-item {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
   }
   .taskbar-item svg {
-    width: 20px;
-    height: 20px;
+    width: 17px;
+    height: 17px;
   }
   .taskbar-item::after {
     display: none !important;
@@ -3108,126 +3111,126 @@ html, body {
 
   /* 11. SVG Shape Overlays Transitions */
   .shape-caption-title {
-    font-size: clamp(20px, 5.5vw, 32px);
-    padding: 0 16px;
+    font-size: clamp(18px, 5vw, 26px);
+    padding: 0 14px;
   }
   .shape-caption-tag {
-    font-size: 9px;
-    padding: 4px 10px;
+    font-size: 8.5px;
+    padding: 3px 8px;
   }
 
   /* 12. Contact Section */
   .contact-section {
-    padding-bottom: 80px;
+    padding-bottom: 70px;
   }
   .contact-section .contact-header {
-    padding: 24px 16px 16px;
+    padding: 18px 14px 12px;
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
+    gap: 8px;
   }
   .contact-section .display-name .script-title {
-    font-size: clamp(38px, 9.5vw, 58px);
+    font-size: clamp(30px, 8vw, 42px);
   }
   .contact-section .display-name .sans-title {
-    font-size: clamp(24px, 6vw, 38px);
+    font-size: clamp(19px, 5.2vw, 28px);
   }
   .contact-section .archive-tag {
-    font-size: 9px;
-    padding: 4px 10px;
+    font-size: 8.5px;
+    padding: 3px 8px;
     margin-bottom: 0;
   }
   .contact-section .contact-grid {
     grid-template-columns: 1fr;
-    gap: 32px;
-    padding: 20px 16px;
+    gap: 22px;
+    padding: 16px 12px;
   }
   .contact-section .channels-column {
-    gap: 14px;
+    gap: 12px;
   }
   .contact-section .channel-card {
-    padding: 16px;
+    padding: 12px 14px;
   }
   .contact-section .card-val {
-    font-size: 15px;
-    margin-bottom: 10px;
+    font-size: 13.5px;
+    margin-bottom: 8px;
   }
   .contact-section .card-sub {
-    font-size: 11px;
+    font-size: 10px;
   }
   .id-column {
-    margin-top: 10px;
+    margin-top: 8px;
   }
   .id-card-holder {
     width: 100%;
-    max-width: 350px;
-    margin-top: 85px;
-    padding: 10px 12px 12px;
+    max-width: 250px;
+    margin-top: 55px;
+    padding: 8px 10px 10px;
   }
   .yellow-lanyard-band {
-    top: -130px;
-    height: 215px;
-    width: 32px;
+    top: -95px;
+    height: 155px;
+    width: 24px;
   }
   .yellow-lanyard-band::after {
-    top: 75px;
-    font-size: 8px;
+    top: 50px;
+    font-size: 7px;
   }
   .lanyard-clip {
-    top: 70px;
+    top: 52px;
   }
   .id-card-top-bar {
-    padding: 6px 10px;
+    padding: 5px 8px;
   }
   .id-agency {
-    font-size: 11px;
+    font-size: 10px;
   }
   .id-badge-no {
-    font-size: 9.5px;
+    font-size: 8.5px;
   }
   .id-card-body {
-    padding: 10px;
-    gap: 10px;
+    padding: 8px;
+    gap: 8px;
   }
   .id-photo-box {
-    width: 75px;
-    height: 85px;
+    width: 58px;
+    height: 68px;
   }
   .id-name {
-    font-size: 15px;
+    font-size: 13px;
   }
   .id-role {
-    font-size: 9.5px;
-    padding: 2px 6px;
+    font-size: 8.5px;
+    padding: 2px 5px;
   }
   .id-meta {
-    font-size: 9.5px;
+    font-size: 8px;
   }
   .id-card-footer {
-    padding: 6px 10px 8px;
+    padding: 4px 8px 6px;
   }
   .id-modal-container {
     max-width: 92vw;
   }
   .id-modal-card-flipper {
-    width: min(92vw, 350px);
-    height: 210px;
+    width: min(92vw, 290px);
+    height: 180px;
   }
   .id-modal-btn {
-    padding: 6px 14px;
-    font-size: 11px;
+    padding: 5px 12px;
+    font-size: 10px;
   }
 
   /* 13. Footer */
   .footer-bounce-wrap {
-    margin-top: 50px;
-    padding: 10px 0 80px 0;
+    margin-top: 40px;
+    padding: 8px 0 70px 0;
   }
   .footer-content {
     flex-direction: column;
-    gap: 16px;
+    gap: 14px;
     text-align: center;
-    padding: 20px 16px 85px 16px;
+    padding: 16px 14px 75px 14px;
   }
   .footer-left, .footer-center, .footer-right {
     align-items: center;
@@ -3244,205 +3247,328 @@ html, body {
 /* ── SMALL PHONES BREAKPOINT (max-width: 480px) ── */
 @media (max-width: 480px) {
   .meta {
-    padding: 8px 12px;
-    gap: 6px 10px;
+    padding: 6px 10px;
+    gap: 4px 8px;
   }
   .mk, .mv {
-    font-size: 7.5px;
-  }
-  .hero-open {
-    height: 340px;
-  }
-  .display-name {
-    font-size: clamp(38px, 11vw, 54px);
-  }
-  .archive-tag {
-    font-size: 8px;
-    padding-bottom: 8px;
-    margin-left: 8px;
-  }
-  .sticky-zone {
-    right: 10px;
-    top: 8px;
-    gap: 6px;
-  }
-  .sticky {
-    min-width: 82px;
-    min-height: 62px;
-    padding: 8px 10px;
-  }
-  .sticky-sub {
-    font-size: 8.5px;
-  }
-  .grid-strip {
-    padding: 4px 12px;
     font-size: 7px;
   }
+  .hero-open {
+    height: clamp(220px, 34vh, 270px);
+  }
+  .display-name {
+    font-size: clamp(28px, 8vw, 38px);
+    line-height: 1.05;
+  }
+  .archive-tag {
+    font-size: 7.5px;
+    padding-bottom: 6px;
+    margin-left: 6px;
+  }
+  .sticky-zone {
+    right: 8px;
+    top: 6px;
+    gap: 5px;
+  }
+  .sticky {
+    min-width: 66px;
+    width: 66px;
+    min-height: 48px;
+    padding: 5px 6px;
+  }
+  .sticky-sub {
+    font-size: 7px;
+    letter-spacing: 0.04em;
+  }
+  .grid-strip {
+    padding: 3px 10px;
+    font-size: 6.5px;
+  }
 
+  .sidebar {
+    padding: 10px 8px;
+    gap: 8px;
+  }
   .drawer-container {
-    padding: 10px 8px 18px;
+    min-height: 170vh;
+    padding: 8px 6px 14px;
+    margin-top: 6px;
+    margin-bottom: 16px;
   }
   .drawer-header {
-    margin-bottom: 32px;
+    margin-bottom: 24px;
   }
   .drawer-label {
-    font-size: 14.5px;
+    font-size: 13px;
   }
   .drawer-hint {
-    font-size: 8.5px;
+    font-size: 7.5px;
   }
   .drawer-box {
-    top: 62px;
-    height: calc(100vh - 85px);
-    min-height: 440px;
+    top: 52px;
+    height: calc(100vh - 70px);
+    min-height: 390px;
   }
   .folder-tab {
-    top: -26px;
-    height: 28px;
-    font-size: 8px;
-    padding: 0 2px;
-    letter-spacing: 0.2px;
+    top: -24px;
+    height: 26px;
+    font-size: 7.5px;
+    padding: 0 1px;
+    letter-spacing: 0.1px;
   }
   .folder-content {
-    padding: 10px 10px 16px;
+    padding: 8px 8px 12px;
+  }
+  .folder-meta {
+    font-size: 7.5px;
   }
   .folder-title {
-    font-size: 21px;
+    font-size: 18px;
+    margin: 0 0 2px 0;
   }
   .folder-content p {
-    font-size: 11.5px;
+    font-size: 10.5px;
+    line-height: 1.35;
+    margin-bottom: 4px;
   }
-  .folder-specs {
-    font-size: 8px;
-    padding: 2px 6px;
+  .folder-action-row {
+    margin-bottom: 5px;
     gap: 4px;
   }
+  .folder-specs {
+    font-size: 7px;
+    padding: 2px 5px;
+    gap: 3px;
+  }
   .project-view-btn {
-    font-size: 10px;
-    padding: 4px 10px;
+    font-size: 9px;
+    padding: 3px 8px;
   }
 
+  .project-phone-showcase {
+    gap: 8px;
+    padding-bottom: 6px;
+    margin-top: 2px;
+  }
   .phone-chassis {
-    width: 126px;
-    height: 262px;
-    border-radius: 18px;
-    padding: 4px;
+    width: 98px;
+    height: 206px;
+    border-radius: 14px;
+    padding: 3px;
+    border-width: 1px;
   }
   .phone-screen {
-    width: 118px;
-    height: 254px;
-    border-radius: 14px;
+    width: 92px;
+    height: 200px;
+    border-radius: 11px;
   }
   .phone-island {
-    width: 26px;
-    height: 6px;
+    width: 20px;
+    height: 4.5px;
+    top: 2px;
   }
-  .phone-volume-btn.left-up { top: 48px; height: 18px; }
-  .phone-volume-btn.left-down { top: 70px; height: 18px; }
-  .phone-power-btn.right { top: 56px; height: 24px; }
+  .island-lens {
+    width: 2.5px;
+    height: 2.5px;
+  }
+  .phone-volume-btn.left-up { top: 38px; height: 13px; }
+  .phone-volume-btn.left-down { top: 55px; height: 13px; }
+  .phone-power-btn.right { top: 44px; height: 16px; }
   .phone-caption {
-    font-size: 8px;
+    font-size: 6.8px;
+    margin-top: 3px;
   }
 
+  .start-lights {
+    height: 90vh;
+  }
   .wordmark h1 {
-    font-size: clamp(24px, 7vw, 36px);
+    font-size: clamp(20px, 6vw, 30px);
+    line-height: 1.05;
   }
   .wordmark .sub {
-    font-size: 9.5px;
+    font-size: 8.5px;
   }
   .rig {
-    padding: 8px 10px;
-    gap: 6px;
-    border-radius: 8px;
+    padding: 6px 8px;
+    gap: 5px;
+    border-radius: 6px;
   }
   .light {
-    width: 24px;
-    height: 24px;
+    width: 18px;
+    height: 18px;
   }
   .grid-text {
-    font-size: clamp(24px, 7vw, 38px);
+    font-size: clamp(20px, 5.5vw, 30px);
   }
   .map-text {
-    font-size: 16px;
+    font-size: 13px;
   }
 
   .experience-badge {
-    font-size: 15px;
-    padding: 3px 8px;
-    top: 8px;
-    right: 8px;
+    font-size: 13px;
+    padding: 2px 7px;
+    top: 6px;
+    right: 6px;
   }
   .route-map-container {
-    height: 52px;
-    padding: 0 12px;
-    margin-top: 44px;
+    height: 48px;
+    padding: 0 10px;
+    margin-top: 36px;
   }
   .station-dot {
-    width: 11px;
-    height: 11px;
+    width: 10px;
+    height: 10px;
   }
   .station-label {
-    font-size: 7.5px;
-    top: 15px;
+    font-size: 7px;
+    top: 13px;
   }
   .main-content-area {
-    margin-bottom: 145px;
-    gap: 6px;
-    padding: 0 4px;
+    margin-bottom: 85px;
+    gap: 4px;
+    padding: 0 2px;
   }
   .nav-btn {
-    width: 34px;
-    height: 34px;
-    min-width: 34px;
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    border-width: 2px;
+    box-shadow: 2px 2px 0 #201a14;
+  }
+  .nav-btn svg {
+    width: 15px;
+    height: 15px;
   }
   .board {
-    padding: 12px 14px 18px;
-    min-height: 210px;
+    padding: 10px 10px 14px;
+    min-height: 155px;
+    border-width: 3px;
+    border-radius: 8px;
+  }
+  .board-eyebrow {
+    font-size: 8px;
+    margin-bottom: 2px;
   }
   .board-title {
-    font-size: 22px;
+    font-size: 17px;
+    margin-bottom: 2px;
+  }
+  .board-meta {
+    font-size: 8.5px;
+    margin-bottom: 4px;
   }
   .board-desc {
-    font-size: 11.5px;
+    font-size: 9.8px;
+    line-height: 1.35;
   }
   .bus-figure {
-    width: 155px;
-    bottom: 32px;
+    width: 105px;
+    bottom: 16px;
   }
   .comic-bubble {
-    font-size: 9.5px;
-    padding: 4px 8px;
+    font-size: 7.5px;
+    padding: 2px 5px;
+    bottom: 80%;
+  }
+  .bottom-info-bar {
+    font-size: 6px;
+    height: 22px;
+    padding: 0 2px;
   }
 
+  .now-playing-pill {
+    bottom: 50px;
+    padding: 3px 8px;
+    gap: 4px;
+    font-size: 7px;
+    max-width: 92vw;
+  }
+  #nowPlayingLabel {
+    max-width: 110px;
+  }
+  .audio-ctrl-btn {
+    width: 20px;
+    height: 20px;
+  }
+
+  .glass-taskbar {
+    bottom: 6px;
+    height: 40px;
+    gap: 6px;
+    padding: 3px 8px;
+    border-radius: 14px;
+  }
+  .taskbar-item {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+  }
+  .taskbar-item svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .contact-section .display-name .script-title {
+    font-size: clamp(24px, 7vw, 32px);
+  }
+  .contact-section .display-name .sans-title {
+    font-size: clamp(16px, 4.5vw, 22px);
+  }
+  .contact-section .contact-grid {
+    gap: 16px;
+    padding: 10px 8px;
+  }
+  .contact-section .channels-column {
+    gap: 10px;
+  }
+  .contact-section .channel-card {
+    padding: 10px 10px;
+  }
+  .contact-section .card-val {
+    font-size: 11.5px;
+    margin-bottom: 4px;
+  }
+  .contact-section .card-sub {
+    font-size: 9px;
+  }
+
+  .id-column {
+    margin-top: 6px;
+  }
   .id-card-holder {
-    max-width: 315px;
-    margin-top: 75px;
-    padding: 8px 10px 10px;
+    max-width: 215px;
+    margin-top: 45px;
+    padding: 6px 8px 8px;
   }
   .yellow-lanyard-band {
-    top: -120px;
-    height: 195px;
-    width: 28px;
+    top: -80px;
+    height: 130px;
+    width: 18px;
+  }
+  .yellow-lanyard-band::after {
+    top: 40px;
+    font-size: 6px;
   }
   .lanyard-clip {
-    top: 65px;
+    top: 40px;
   }
   .id-photo-box {
-    width: 65px;
-    height: 75px;
+    width: 46px;
+    height: 54px;
   }
   .id-name {
-    font-size: 13.5px;
+    font-size: 11px;
   }
   .id-role {
-    font-size: 8.5px;
+    font-size: 7px;
   }
   .id-meta {
-    font-size: 8.5px;
+    font-size: 7px;
   }
   .id-modal-card-flipper {
-    width: 310px;
-    height: 190px;
+    width: min(90vw, 260px);
+    height: 160px;
   }
 }
 

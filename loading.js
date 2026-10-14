@@ -24,6 +24,14 @@ setInterval(updateClock, 1000);
 const out = document.getElementById('brief-text');
 const cursor = document.getElementById('cursor');
 const btn = document.getElementById('start-btn');
+const terminalEl = document.querySelector('.terminal');
+
+function autoScrollTerminal() {
+  const el = terminalEl || document.querySelector('.terminal');
+  if (el) {
+    el.scrollTop = el.scrollHeight;
+  }
+}
 
 /* Files to "load" */
 const FILES = [
@@ -70,6 +78,7 @@ function runStep() {
   } else if (step.type === 'button') {
     cursor.style.display = 'none';
     btn.classList.add('show');
+    autoScrollTerminal();
   }
 }
 
@@ -155,50 +164,70 @@ function playMouseClickSound() {
   }
 }
 
-/* 2. Authentic Mechanical Keyboard Typing Sound */
+/* 2. Authentic High-End Mechanical Keyboard Typing Sound */
 function playTypingKeySound(isSpaceOrEnter = false) {
   unlockAudio();
   if (!audioCtx) return;
 
   const startPlay = () => {
     try {
-      const now = audioCtx.currentTime + 0.003;
-      const baseFreq = isSpaceOrEnter ? 320 : 750 + (Math.random() * 400 - 200);
-      const duration = isSpaceOrEnter ? 0.06 : 0.038;
+      const now = audioCtx.currentTime + 0.002;
+      const pitchVar = (Math.random() - 0.5) * 50;
 
-      // Click transient
+      // Layer 1: Crisp Tactile Leaf Click (Filtered shaped noise burst)
+      const bufferSize = Math.floor(audioCtx.sampleRate * (isSpaceOrEnter ? 0.022 : 0.014));
+      const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const output = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        output[i] = Math.random() * 2 - 1;
+      }
+      const noiseSource = audioCtx.createBufferSource();
+      noiseSource.buffer = noiseBuffer;
+
+      const noiseFilter = audioCtx.createBiquadFilter();
+      noiseFilter.type = 'bandpass';
+      noiseFilter.frequency.setValueAtTime(isSpaceOrEnter ? 1500 : 2800 + pitchVar * 6, now);
+      noiseFilter.Q.setValueAtTime(2.2, now);
+
+      const noiseGain = audioCtx.createGain();
+      noiseGain.gain.setValueAtTime(isSpaceOrEnter ? 0.38 : 0.30, now);
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, now + (isSpaceOrEnter ? 0.021 : 0.013));
+
+      noiseSource.connect(noiseFilter);
+      noiseFilter.connect(noiseGain);
+      noiseGain.connect(masterGain || audioCtx.destination);
+      noiseSource.start(now);
+
+      // Layer 2: Resonant Keycap Clack (Acoustic stem strike)
       const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-
-      osc.type = isSpaceOrEnter ? 'triangle' : 'square';
+      const oscGain = audioCtx.createGain();
+      osc.type = 'triangle';
+      const baseFreq = isSpaceOrEnter ? 420 + pitchVar : 720 + pitchVar * 2;
       osc.frequency.setValueAtTime(baseFreq, now);
-      osc.frequency.exponentialRampToValueAtTime(isSpaceOrEnter ? 80 : 120, now + duration);
+      osc.frequency.exponentialRampToValueAtTime(baseFreq * 0.45, now + (isSpaceOrEnter ? 0.032 : 0.020));
 
-      const vol = isSpaceOrEnter ? 0.8 : 0.55;
-      gain.gain.setValueAtTime(vol, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+      oscGain.gain.setValueAtTime(isSpaceOrEnter ? 0.28 : 0.20, now);
+      oscGain.gain.exponentialRampToValueAtTime(0.001, now + (isSpaceOrEnter ? 0.032 : 0.020));
 
-      osc.connect(gain);
-      gain.connect(masterGain || audioCtx.destination);
-
+      osc.connect(oscGain);
+      oscGain.connect(masterGain || audioCtx.destination);
       osc.start(now);
-      osc.stop(now + duration);
+      osc.stop(now + (isSpaceOrEnter ? 0.032 : 0.020));
 
-      // Low housing bottom-out bump
-      const bumpOsc = audioCtx.createOscillator();
-      const bumpGain = audioCtx.createGain();
-      bumpOsc.type = 'sine';
-      bumpOsc.frequency.setValueAtTime(180, now);
-      bumpOsc.frequency.exponentialRampToValueAtTime(50, now + duration + 0.01);
+      // Layer 3: Solid Housing Bottom-Out Bump (Warm low acoustic thud)
+      const thud = audioCtx.createOscillator();
+      const thudGain = audioCtx.createGain();
+      thud.type = 'sine';
+      thud.frequency.setValueAtTime(isSpaceOrEnter ? 120 : 155 + pitchVar * 0.5, now);
+      thud.frequency.exponentialRampToValueAtTime(50, now + (isSpaceOrEnter ? 0.040 : 0.028));
 
-      bumpGain.gain.setValueAtTime(0.4, now);
-      bumpGain.gain.exponentialRampToValueAtTime(0.001, now + duration + 0.01);
+      thudGain.gain.setValueAtTime(isSpaceOrEnter ? 0.35 : 0.22, now);
+      thudGain.gain.exponentialRampToValueAtTime(0.001, now + (isSpaceOrEnter ? 0.040 : 0.028));
 
-      bumpOsc.connect(bumpGain);
-      bumpGain.connect(masterGain || audioCtx.destination);
-
-      bumpOsc.start(now);
-      bumpOsc.stop(now + duration + 0.01);
+      thud.connect(thudGain);
+      thudGain.connect(masterGain || audioCtx.destination);
+      thud.start(now);
+      thud.stop(now + (isSpaceOrEnter ? 0.040 : 0.028));
     } catch (e) {
       console.warn('Typing key sound error:', e);
     }
@@ -223,11 +252,13 @@ function typeText(text, done) {
       i++;
       const ch = text[i - 1];
       playTypingKeySound(ch === ' ' || ch === '\n');
+      autoScrollTerminal();
       const delay = ch === '\n' ? 180
         : ch === '.' ? 140
           : Math.random() * 40 + 22;
       setTimeout(tick, delay);
     } else {
+      autoScrollTerminal();
       done && done();
     }
   }
@@ -251,6 +282,7 @@ function appendFileLine(name, done) {
   row.appendChild(fname);
   row.appendChild(fstatus);
   out.appendChild(row);
+  autoScrollTerminal();
 
   /* animate dots then flip to OK */
   let dots = 0;
@@ -259,10 +291,12 @@ function appendFileLine(name, done) {
   const iv = setInterval(() => {
     fstatus.textContent = dotFrames[frame % dotFrames.length];
     frame++;
+    autoScrollTerminal();
     if (frame >= 9) {
       clearInterval(iv);
       fstatus.textContent = '[ OK ]';
       fstatus.classList.add('ok');
+      autoScrollTerminal();
       setTimeout(done, 120);
     }
   }, 60);
@@ -284,9 +318,14 @@ function initThreeScene() {
   scene = new THREE.Scene();
   scene.background = null;
   const aspect = window.innerWidth / window.innerHeight;
-  const initialFov = aspect < 1 ? Math.min(70, 45 * Math.sqrt(1 / aspect)) : 45;
+  const isMobile = window.innerWidth <= 768 || aspect < 1;
+  const initialFov = isMobile ? 62 : 45;
   camera = new THREE.PerspectiveCamera(initialFov, aspect, 1, 5000);
-  camera.position.set(-1180, 560, 1180);
+  if (isMobile) {
+    camera.position.set(-350, 360, 2800);
+  } else {
+    camera.position.set(-1180, 560, 1180);
+  }
 
   // WebGL Renderer
   glRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
@@ -308,9 +347,13 @@ function initThreeScene() {
   controls.enableDamping = true;
   controls.dampingFactor = 0.05;
   controls.minDistance = 500;
-  controls.maxDistance = 2400;
+  controls.maxDistance = 3800;
   controls.maxPolarAngle = Math.PI / 2 + 0.1;
-  controls.target.set(-20, -140, 200);
+  if (isMobile) {
+    controls.target.set(50, -80, 150);
+  } else {
+    controls.target.set(-20, -140, 200);
+  }
   controls.update();
 
   // Monitor Group
@@ -850,15 +893,21 @@ function initThreeScene() {
 }
 
 function onWindowResize() {
-  if (!camera) return;
+  if (!camera || !controls) return;
   const aspect = window.innerWidth / window.innerHeight;
   camera.aspect = aspect;
-  if (aspect < 1) {
-    camera.fov = Math.min(70, 45 * Math.sqrt(1 / aspect));
+  const isMobile = window.innerWidth <= 768 || aspect < 1;
+  if (isMobile) {
+    camera.fov = 62;
+    camera.position.set(-350, 360, 2800);
+    controls.target.set(50, -80, 150);
   } else {
     camera.fov = 45;
+    camera.position.set(-1180, 560, 1180);
+    controls.target.set(-20, -140, 200);
   }
   camera.updateProjectionMatrix();
+  controls.update();
   if (glRenderer) glRenderer.setSize(window.innerWidth, window.innerHeight);
   if (cssRenderer) cssRenderer.setSize(window.innerWidth, window.innerHeight);
 }

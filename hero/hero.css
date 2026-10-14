@@ -737,16 +737,16 @@ html, body {
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   color: #ffffff;
-  padding: 8px 18px;
-  border-radius: 30px;
+  padding: 5px 13px;
+  border-radius: 20px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   font-family: 'Share Tech Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  box-shadow: 0 8px 24px rgba(18, 18, 176, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  box-shadow: 0 6px 20px rgba(18, 18, 176, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   z-index: 9990;
   opacity: 0;
   pointer-events: none;
@@ -768,37 +768,37 @@ html, body {
 .now-playing-bars {
   display: flex;
   align-items: flex-end;
-  gap: 2.5px;
-  height: 14px;
+  gap: 2px;
+  height: 11px;
   flex-shrink: 0;
 }
 
 .now-playing-bar {
-  width: 2.5px;
+  width: 2px;
   background: #00f0ff;
   border-radius: 1px;
   animation: audioBarAnim 0.75s ease-in-out infinite alternate;
 }
 
-.now-playing-bar:nth-child(1) { height: 6px; animation-delay: 0.1s; }
-.now-playing-bar:nth-child(2) { height: 13px; animation-delay: 0.25s; }
-.now-playing-bar:nth-child(3) { height: 9px; animation-delay: 0.4s; }
-.now-playing-bar:nth-child(4) { height: 14px; animation-delay: 0.15s; }
+.now-playing-bar:nth-child(1) { height: 5px; animation-delay: 0.1s; }
+.now-playing-bar:nth-child(2) { height: 11px; animation-delay: 0.25s; }
+.now-playing-bar:nth-child(3) { height: 7px; animation-delay: 0.4s; }
+.now-playing-bar:nth-child(4) { height: 10px; animation-delay: 0.15s; }
 
 .audio-controls {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   margin-left: auto;
   flex-shrink: 0;
 }
 
 .audio-ctrl-btn {
   background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   color: #ffffff;
-  width: 26px;
-  height: 26px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -1720,12 +1720,14 @@ html, body {
 
 .about-viewport {
   position: relative;
-  width: 100vw;
+  width: 100%;
+  max-width: 100vw;
   height: 100vh;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  touch-action: pan-y;
 }
 
 /* 3D WebGL Canvas Container */
@@ -1733,11 +1735,12 @@ html, body {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   z-index: 1;
   pointer-events: auto;
   background: #ffffff;
+  touch-action: pan-y;
 }
 
 #about-webgl-container canvas {
@@ -1745,6 +1748,7 @@ html, body {
   height: 100% !important;
   display: block;
   filter: contrast(1.08) saturate(1.15);
+  touch-action: pan-y;
 }
 
 /* Frosted Glass Side Panel (Left Side Overlay) */
@@ -2016,7 +2020,9 @@ html, body {
 
 /* View Button */
 .view-btn {
-  display: inline-block !important;
+  display: inline-flex !important;
+  align-items: center;
+  gap: 4px;
   background-color: #f4b400 !important;
   border: 3px solid #f4b400 !important;
   border-radius: 6px;
@@ -2027,7 +2033,7 @@ html, body {
   letter-spacing: 0.1em;
   color: #ffffff !important;
   text-transform: uppercase;
-  text-decoration: none;
+  text-decoration: none !important;
   transform: rotate(-3deg);
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
@@ -2037,6 +2043,7 @@ html, body {
   opacity: 1 !important;
   visibility: visible !important;
   cursor: pointer !important;
+  pointer-events: auto !important;
 }
 .view-btn:hover {
   transform: rotate(0deg) scale(1.05);
@@ -2813,8 +2820,8 @@ html, body {
   }
   .drawer-box {
     top: 60px;
-    height: calc(100vh - 80px);
-    min-height: 440px;
+    height: min(430px, calc(100vh - 85px));
+    min-height: 400px;
   }
   
   /* Responsive Tab Layout - 4 tabs distributed evenly */
@@ -2874,21 +2881,21 @@ html, body {
 
   /* Responsive Phone Chassis & Screen */
   .project-phone-showcase {
-    gap: 10px;
+    gap: 12px;
     padding-bottom: 6px;
     margin-top: 4px;
     -webkit-overflow-scrolling: touch;
   }
   .phone-chassis {
-    width: 114px;
-    height: 236px;
+    width: 130px;
+    height: 270px;
     border-radius: 17px;
     padding: 4px;
     border-width: 1px;
   }
   .phone-screen {
-    width: 106px;
-    height: 228px;
+    width: 122px;
+    height: 262px;
     border-radius: 13px;
   }
   .phone-island {
@@ -2912,7 +2919,7 @@ html, body {
 
   /* 6. Start Lights & Doors */
   .start-lights {
-    height: 100vh;
+    height: 160vh;
   }
   .wordmark .eyebrow {
     font-size: 9px;
@@ -2936,7 +2943,8 @@ html, body {
     height: 22px;
   }
   .grid-text {
-    font-size: clamp(26px, 7vw, 42px);
+    font-size: clamp(44px, 10vw, 64px);
+    line-height: 1.05;
   }
   .map-container svg {
     width: 85%;
@@ -3031,8 +3039,8 @@ html, body {
     line-height: 1.45;
   }
   .bus-figure {
-    width: 135px;
-    bottom: 22px;
+    width: 190px;
+    bottom: 56px;
   }
   .comic-bubble {
     font-size: 9px;
@@ -3051,13 +3059,14 @@ html, body {
   .about-hint {
     top: 12px;
     bottom: auto;
-    font-size: 8px;
-    padding: 4px 10px;
+    font-size: 7.5px;
+    padding: 3px 9px;
     max-width: 92vw;
     text-align: center;
     white-space: normal;
     line-height: 1.35;
     letter-spacing: 0.06em;
+    border-radius: 14px;
   }
   .oryzo-glass-panel {
     max-width: 90vw;
@@ -3072,9 +3081,10 @@ html, body {
   /* 9. Audio Now Playing Toast Pill */
   .now-playing-pill {
     bottom: 58px;
-    padding: 4px 10px;
-    gap: 6px;
-    font-size: 8.5px;
+    padding: 3px 9px;
+    gap: 5px;
+    font-size: 8px;
+    border-radius: 16px;
     max-width: 90vw;
   }
   #nowPlayingLabel {
@@ -3306,8 +3316,8 @@ html, body {
   }
   .drawer-box {
     top: 52px;
-    height: calc(100vh - 70px);
-    min-height: 390px;
+    height: min(390px, calc(100vh - 75px));
+    min-height: 365px;
   }
   .folder-tab {
     top: -24px;
@@ -3346,41 +3356,41 @@ html, body {
   }
 
   .project-phone-showcase {
-    gap: 8px;
-    padding-bottom: 6px;
-    margin-top: 2px;
+    gap: 12px;
+    padding-bottom: 8px;
+    margin-top: 4px;
   }
   .phone-chassis {
-    width: 98px;
-    height: 206px;
-    border-radius: 14px;
-    padding: 3px;
+    width: 120px;
+    height: 252px;
+    border-radius: 16px;
+    padding: 3.5px;
     border-width: 1px;
   }
   .phone-screen {
-    width: 92px;
-    height: 200px;
-    border-radius: 11px;
+    width: 113px;
+    height: 245px;
+    border-radius: 12px;
   }
   .phone-island {
-    width: 20px;
-    height: 4.5px;
-    top: 2px;
+    width: 22px;
+    height: 5px;
+    top: 2.5px;
   }
   .island-lens {
     width: 2.5px;
     height: 2.5px;
   }
-  .phone-volume-btn.left-up { top: 38px; height: 13px; }
-  .phone-volume-btn.left-down { top: 55px; height: 13px; }
-  .phone-power-btn.right { top: 44px; height: 16px; }
+  .phone-volume-btn.left-up { top: 40px; height: 14px; }
+  .phone-volume-btn.left-down { top: 58px; height: 14px; }
+  .phone-power-btn.right { top: 46px; height: 18px; }
   .phone-caption {
-    font-size: 6.8px;
+    font-size: 7.5px;
     margin-top: 3px;
   }
 
   .start-lights {
-    height: 90vh;
+    height: 160vh;
   }
   .wordmark h1 {
     font-size: clamp(20px, 6vw, 30px);
@@ -3399,7 +3409,8 @@ html, body {
     height: 18px;
   }
   .grid-text {
-    font-size: clamp(20px, 5.5vw, 30px);
+    font-size: clamp(38px, 10vw, 52px);
+    line-height: 1.05;
   }
   .map-text {
     font-size: 13px;
@@ -3463,8 +3474,8 @@ html, body {
     line-height: 1.35;
   }
   .bus-figure {
-    width: 105px;
-    bottom: 16px;
+    width: 170px;
+    bottom: 54px;
   }
   .comic-bubble {
     font-size: 7.5px;
@@ -3478,18 +3489,19 @@ html, body {
   }
 
   .now-playing-pill {
-    bottom: 50px;
-    padding: 3px 8px;
-    gap: 4px;
-    font-size: 7px;
+    bottom: 52px;
+    padding: 3px 9px;
+    gap: 5px;
+    font-size: 7.5px;
+    border-radius: 14px;
     max-width: 92vw;
   }
   #nowPlayingLabel {
-    max-width: 110px;
+    max-width: 130px;
   }
   .audio-ctrl-btn {
-    width: 20px;
-    height: 20px;
+    width: 19px;
+    height: 19px;
   }
 
   .glass-taskbar {
@@ -3579,6 +3591,10 @@ html, body {
   }
   .taskbar-item::after {
     display: none !important;
+  }
+  .taskbar-item:hover {
+    background: transparent !important;
+    transform: none !important;
   }
   .sticky {
     cursor: default;

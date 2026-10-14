@@ -454,8 +454,8 @@ function initExperienceBillboard() {
 
     if (busFigure) {
       const isMobile = window.innerWidth <= 768;
-      const startLeft = isMobile ? 3 : 10;
-      const endLeft = isMobile ? 46 : 60;
+      const startLeft = isMobile ? 1 : 10;
+      const endLeft = isMobile ? 40 : 60;
       const targetLeft = startLeft + (activeStop / (STOPS - 1)) * (endLeft - startLeft);
       
       if (window.anime) {
@@ -532,10 +532,19 @@ function initScrollTriggeredDoors() {
   }
 
   function updateScroll(p) {
-    // 1. Lights sequence: 0.0 to 0.35
-    const lightsStep = 0.35 / 5;
+    // 1. Doors ("ENTER BOS SMIT") open from 0.0 to 0.38, sliding smoothly left and right to reveal Lights out at Shillong
+    const doorP = clamp(p / 0.38);
+    const easedDoor = doorP * doorP * (3 - 2 * doorP); // smoothstep
+    if (doorLeft) doorLeft.style.transform = `translateX(${-easedDoor * 160}%)`;
+    if (doorRight) doorRight.style.transform = `translateX(${easedDoor * 160}%)`;
+    if (sceneBg) sceneBg.style.opacity = easedDoor;
+
+    // 2. Lights sequence inside: 0.15 to 0.65 (lights light up red sequentially, then turn green)
+    const lightsStart = 0.15;
+    const lightsSpan = 0.50;
+    const lightsStep = lightsSpan / 5;
     lights.forEach((el, i) => {
-      const onAt = i * lightsStep;
+      const onAt = lightsStart + i * lightsStep;
       const greenAt = onAt + lightsStep * 0.55;
       if (p >= greenAt) {
         el.classList.add('is-green');
@@ -548,23 +557,16 @@ function initScrollTriggeredDoors() {
       }
     });
 
-    // 2. Wordmark fades out: 0.35 to 0.45
-    const fadeP = clamp((p - 0.35) / 0.1);
+    // 3. Wordmark stays fully visible as doors open, then fades out as lights complete: 0.60 to 0.75
+    const fadeP = clamp((p - 0.60) / 0.15);
     if (wordmarkEl) {
       wordmarkEl.style.opacity = 1 - fadeP;
       wordmarkEl.style.transform = `translateY(${fadeP * -18}px)`;
     }
 
-    // 3. Doors open & Bus image reveals: 0.45 to 0.75
-    const doorP = clamp((p - 0.45) / 0.3);
-    const easedDoor = doorP * doorP * (3 - 2 * doorP); // smoothstep
-    if (doorLeft) doorLeft.style.transform = `translateX(${-easedDoor * 150}%)`;
-    if (doorRight) doorRight.style.transform = `translateX(${easedDoor * 150}%)`;
-    if (sceneBg) sceneBg.style.opacity = easedDoor;
-
-    // 4. Map line draw & reveal: 0.75 to 1.0
-    const mapP = clamp((p - 0.75) / 0.25);
-    if (mapContainer) mapContainer.style.opacity = mapP > 0 ? 1 : 0;
+    // 4. Map line draw & reveal: 0.70 to 1.0 leading into Highway section
+    const mapP = clamp((p - 0.70) / 0.30);
+    if (mapContainer) mapContainer.style.opacity = mapP > 0 ? clamp(mapP * 1.5) : 0;
     if (mapRoute && dashoffsetStart) {
       mapRoute.style.strokeDashoffset = dashoffsetStart * (1 - mapP);
     }
@@ -3015,9 +3017,17 @@ function initAboutThreeScene() {
 
   aboutScene = new THREE.Scene();
 
-  aboutCamera = new THREE.PerspectiveCamera(40, w / h, 1, 4000);
-  aboutCamera.position.set(0, 45, 820);
-  aboutCamera.lookAt(0, 45, 0);
+  const aspect = w / h;
+  const isPortrait = aspect < 1;
+  const initialZ = isPortrait
+    ? Math.round(820 * (1.25 / Math.max(aspect, 0.35)))
+    : 820;
+  const initialX = isPortrait ? 60 : 0;
+  const initialY = isPortrait ? 100 : 45;
+
+  aboutCamera = new THREE.PerspectiveCamera(40, aspect, 1, 4500);
+  aboutCamera.position.set(initialX, initialY, initialZ);
+  aboutCamera.lookAt(isPortrait ? 60 : 0, 45, 0);
 
   aboutRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
   aboutRenderer.setSize(w, h);
@@ -3594,17 +3604,18 @@ function initAboutThreeScene() {
       isHeadphonesZoomed = false;
     }
 
+    const isMobileAspect = window.innerWidth <= 768;
     if (isGreenBoardZoomed) {
-      targetGreenBoardPos.copy(zoomedGreenBoardPos);
-      targetGreenBoardScale = 1.05;
+      targetGreenBoardPos.copy(isMobileAspect ? new THREE.Vector3(0, 90, 750) : zoomedGreenBoardPos);
+      targetGreenBoardScale = isMobileAspect ? 1.35 : 1.05;
     } else {
       targetGreenBoardPos.copy(defaultGreenBoardPos);
       targetGreenBoardScale = 1.0;
     }
 
     if (isHeadphonesZoomed) {
-      targetHeadphonesPos.copy(zoomedHeadphonesPos);
-      targetHeadphonesScale = 0.85;
+      targetHeadphonesPos.copy(isMobileAspect ? new THREE.Vector3(0, 140, 850) : zoomedHeadphonesPos);
+      targetHeadphonesScale = isMobileAspect ? 1.15 : 0.85;
     } else {
       targetHeadphonesPos.copy(defaultHeadphonesPos);
       targetHeadphonesScale = 1.0;
@@ -3646,7 +3657,6 @@ function initAboutThreeScene() {
   let touchStartX = 0, touchStartY = 0;
 
   canvasEl.addEventListener('touchstart', (e) => {
-    e.preventDefault();
     const t = e.touches[0];
     touchStartX = t.clientX;
     touchStartY = t.clientY;
@@ -3659,7 +3669,6 @@ function initAboutThreeScene() {
     const hits = raycaster.intersectObjects(interactiveFigurines, true);
 
     if (hits.length > 0) {
-      isDraggingFigurine = true;
       let parentObj = hits[0].object;
       while (parentObj.parent && parentObj.parent !== aboutScene) {
         parentObj = parentObj.parent;
@@ -3672,28 +3681,33 @@ function initAboutThreeScene() {
         offset.copy(intersects[0].point).sub(selectedFigurine.position);
       }
     }
-  }, { passive: false });
+  }, { passive: true });
 
   canvasEl.addEventListener('touchmove', (e) => {
-    e.preventDefault();
-    if (!isDraggingFigurine || !selectedFigurine) return;
+    // On mobile devices, prioritize natural page scrolling over dragging
+    if (window.innerWidth <= 768) return;
+
     const t = e.touches[0];
-    const rect = canvasEl.getBoundingClientRect();
-    mouseVec.x = ((t.clientX - rect.left) / rect.width) * 2 - 1;
-    mouseVec.y = -((t.clientY - rect.top) / rect.height) * 2 + 1;
-    raycaster.setFromCamera(mouseVec, aboutCamera);
-    const intersects = raycaster.intersectObject(dragPlaneMesh);
-    if (intersects.length > 0) {
-      const targetPos = intersects[0].point.sub(offset);
-      dragVelocity.subVectors(targetPos, selectedFigurine.position);
-      selectedFigurine.position.copy(targetPos);
-      selectedFigurine.rotation.z = -dragVelocity.x * 0.04;
-      selectedFigurine.rotation.x = dragVelocity.y * 0.04;
+    const dist = Math.hypot(t.clientX - touchStartX, t.clientY - touchStartY);
+
+    if (selectedFigurine && dist > 18) {
+      isDraggingFigurine = true;
+      const rect = canvasEl.getBoundingClientRect();
+      mouseVec.x = ((t.clientX - rect.left) / rect.width) * 2 - 1;
+      mouseVec.y = -((t.clientY - rect.top) / rect.height) * 2 + 1;
+      raycaster.setFromCamera(mouseVec, aboutCamera);
+      const intersects = raycaster.intersectObject(dragPlaneMesh);
+      if (intersects.length > 0) {
+        const targetPos = intersects[0].point.sub(offset);
+        dragVelocity.subVectors(targetPos, selectedFigurine.position);
+        selectedFigurine.position.copy(targetPos);
+        selectedFigurine.rotation.z = -dragVelocity.x * 0.04;
+        selectedFigurine.rotation.x = dragVelocity.y * 0.04;
+      }
     }
-  }, { passive: false });
+  }, { passive: true });
 
   canvasEl.addEventListener('touchend', (e) => {
-    e.preventDefault();
     const t = e.changedTouches[0];
     const dist = Math.hypot(t.clientX - touchStartX, t.clientY - touchStartY);
 
@@ -3706,8 +3720,8 @@ function initAboutThreeScene() {
       selectedFigurine = null;
     }
 
-    // Treat short touches (< 12px movement) as clicks
-    if (dist < 12) {
+    // Treat short touches (< 16px movement) as taps
+    if (dist < 16) {
       const rect = canvasEl.getBoundingClientRect();
       mouseVec.x = ((t.clientX - rect.left) / rect.width) * 2 - 1;
       mouseVec.y = -((t.clientY - rect.top) / rect.height) * 2 + 1;
@@ -3774,22 +3788,23 @@ function initAboutThreeScene() {
         isHeadphonesZoomed = false;
       }
 
+      const isMobileAspect = window.innerWidth <= 768;
       if (isGreenBoardZoomed) {
-        targetGreenBoardPos.copy(zoomedGreenBoardPos);
-        targetGreenBoardScale = 1.05;
+        targetGreenBoardPos.copy(isMobileAspect ? new THREE.Vector3(0, 90, 750) : zoomedGreenBoardPos);
+        targetGreenBoardScale = isMobileAspect ? 1.35 : 1.05;
       } else {
         targetGreenBoardPos.copy(defaultGreenBoardPos);
         targetGreenBoardScale = 1.0;
       }
       if (isHeadphonesZoomed) {
-        targetHeadphonesPos.copy(zoomedHeadphonesPos);
-        targetHeadphonesScale = 0.85;
+        targetHeadphonesPos.copy(isMobileAspect ? new THREE.Vector3(0, 140, 850) : zoomedHeadphonesPos);
+        targetHeadphonesScale = isMobileAspect ? 1.15 : 0.85;
       } else {
         targetHeadphonesPos.copy(defaultHeadphonesPos);
         targetHeadphonesScale = 1.0;
       }
     }
-  }, { passive: false });
+  }, { passive: true });
 
 
   const laptopScreenCamPos = new THREE.Vector3(190, -18, 225);
@@ -3830,15 +3845,18 @@ function initAboutThreeScene() {
       aboutCamera.lookAt(laptopScreenLookAt);
     } else if (aboutCamera && !isDraggingFigurine && !isGreenBoardZoomed && !isHeadphonesZoomed) {
       // Normal overview camera with subtle mouse parallax
-      const targetX = mouseX * 35;
-      const targetY = 120 - mouseY * 25;
-      const baseZ = window.innerWidth <= 768
-        ? Math.min(1500, Math.round(820 * (650 / Math.max(window.innerWidth, 320))))
+      const aspect = (aboutRenderer.domElement.clientWidth || window.innerWidth) / (aboutRenderer.domElement.clientHeight || window.innerHeight);
+      const isPortrait = aspect < 1;
+      const baseZ = isPortrait
+        ? Math.round(820 * (1.25 / Math.max(aspect, 0.35)))
         : 820;
+      const targetX = isPortrait ? 60 : (mouseX * 35);
+      const targetY = isPortrait ? 100 : (120 - mouseY * 25);
+      const targetLookAt = isPortrait ? new THREE.Vector3(60, 45, 0) : defaultCamLookAt;
       aboutCamera.position.x += (targetX - aboutCamera.position.x) * 0.05;
       aboutCamera.position.y += (targetY - aboutCamera.position.y) * 0.05;
       aboutCamera.position.z += (baseZ - aboutCamera.position.z) * 0.05;
-      aboutCamera.lookAt(defaultCamLookAt);
+      aboutCamera.lookAt(targetLookAt);
     }
     aboutRenderer.render(aboutScene, aboutCamera);
   }
@@ -4266,6 +4284,7 @@ window.setPhoneScreen = function(imgId, src, btn) {
   const maxTranslateY = 18;
 
   dock.addEventListener('mousemove', (e) => {
+    if ('ontouchstart' in window || window.innerWidth <= 768) return;
     const mouseX = e.clientX;
     items.forEach(item => {
       const rect = item.getBoundingClientRect();
@@ -4299,28 +4318,38 @@ window.setPhoneScreen = function(imgId, src, btn) {
     });
   });
 
-  dock.addEventListener('mouseleave', () => {
+  const resetItems = () => {
     if (window.gsap) {
       gsap.to(items, {
         scale: 1,
         y: 0,
-        duration: 0.38,
+        duration: 0.15,
         ease: 'power2.out',
-        stagger: 0.02,
-        overwrite: 'auto'
+        overwrite: 'all'
       });
     }
-  });
+  };
+  dock.addEventListener('mouseleave', resetItems);
+  dock.addEventListener('touchstart', resetItems, { passive: true });
+  dock.addEventListener('touchend', resetItems, { passive: true });
+  dock.addEventListener('touchcancel', resetItems, { passive: true });
 
   // macOS Dock Click Bounce
   items.forEach(item => {
     item.addEventListener('click', (e) => {
+      const isMobile = 'ontouchstart' in window || window.innerWidth <= 768;
       if (window.gsap) {
-        gsap.timeline()
-          .to(item, { y: -24, scale: 1.4, duration: 0.15, ease: 'power2.out' })
-          .to(item, { y: 0, scale: 1.05, duration: 0.22, ease: 'bounce.out' })
-          .to(item, { y: -12, duration: 0.12, ease: 'power2.out' })
-          .to(item, { y: 0, scale: 1, duration: 0.2, ease: 'bounce.out' });
+        if (isMobile) {
+          gsap.to(items, { scale: 1, y: 0, duration: 0.1, overwrite: 'all' });
+        } else {
+          gsap.timeline({
+            onComplete: () => {
+              gsap.to(items, { scale: 1, y: 0, duration: 0.15, overwrite: 'auto' });
+            }
+          })
+            .to(item, { y: -16, scale: 1.25, duration: 0.12, ease: 'power2.out' })
+            .to(item, { y: 0, scale: 1, duration: 0.18, ease: 'bounce.out' });
+        }
       }
 
       // If clicking Experience, About Me or Contact, trigger corresponding SVG shape overlay transition smoothly
@@ -4475,12 +4504,12 @@ function getDrippyShapePath(progress, layerIndex = 0) {
       }
     });
 
-    // Wave 1, 2, 3 sweep UP into white blanket
-    tl.to(trigWave, { val1: 1, duration: 0.40, ease: 'power2.inOut' }, 0)
-      .to(trigWave, { val2: 1, duration: 0.40, ease: 'power2.inOut' }, 0.05)
-      .to(trigWave, { val3: 1, duration: 0.40, ease: 'power2.inOut' }, 0.10)
-      .to(trigWave, { captionAlpha: 1, duration: 0.18 }, 0.18)
-      // Exactly at peak (0.48s): screen is pure white blanket
+    // Wave 1, 2, 3 sweep UP into white blanket (smooth, cinematic pacing)
+    tl.to(trigWave, { val1: 1, duration: 0.72, ease: 'power2.inOut' }, 0)
+      .to(trigWave, { val2: 1, duration: 0.72, ease: 'power2.inOut' }, 0.12)
+      .to(trigWave, { val3: 1, duration: 0.72, ease: 'power2.inOut' }, 0.24)
+      .to(trigWave, { captionAlpha: 1, duration: 0.35 }, 0.32)
+      // Exactly at peak (0.96s): screen is pure white blanket
       .add(() => {
         // Zero out underlying blue/cyan layers completely so NO blue can ever show on exit
         trigWave.val1 = 2;
@@ -4493,10 +4522,10 @@ function getDrippyShapePath(progress, layerIndex = 0) {
           const target = document.getElementById('aboutSection');
           if (target) target.scrollIntoView({ behavior: 'instant' });
         }
-      }, 0.48)
+      }, 0.96)
       // Caption fades out, pure white liquid pulls smoothly away upwards, directly unveiling target section
-      .to(trigWave, { captionAlpha: 0, duration: 0.16 }, 0.50)
-      .to(trigWave, { val3: 2, duration: 0.44, ease: 'power2.inOut' }, 0.50);
+      .to(trigWave, { captionAlpha: 0, duration: 0.28 }, 1.30)
+      .to(trigWave, { val3: 2, duration: 0.76, ease: 'power2.inOut' }, 1.30);
   };
 
   // Automatic triggers for Experience <-> About Me

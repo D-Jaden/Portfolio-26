@@ -3026,14 +3026,14 @@ function initAboutThreeScene() {
   const isPortrait = aspect < 1;
   const isMobile = window.innerWidth <= 768 || isPortrait;
   const initialZ = isMobile
-    ? Math.min(1050, Math.max(860, Math.round(430 / Math.max(aspect, 0.35))))
-    : 820;
+    ? Math.min(1080, Math.max(920, Math.round(470 / Math.max(aspect, 0.35))))
+    : 840;
   const initialX = 0;
   const initialY = isMobile ? 105 : 45;
 
   aboutCamera = new THREE.PerspectiveCamera(40, aspect, 1, 4500);
   aboutCamera.position.set(initialX, initialY, initialZ);
-  aboutCamera.lookAt(0, isMobile ? 30 : 45, 0);
+  aboutCamera.lookAt(0, isMobile ? 32 : 45, 0);
 
   aboutRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
   aboutRenderer.setSize(w, h);
@@ -3235,149 +3235,149 @@ function initAboutThreeScene() {
 
   // ── GREEN BOARD, LAPTOP & HEADPHONES CLICK-TO-FRONT ZOOM INTERACTION ──
   let isGreenBoardZoomed = false;
-  const defaultGreenBoardPos = new THREE.Vector3(-270, 140, -310);
-  const zoomedGreenBoardPos = new THREE.Vector3(0, 45, 320);
+  const defaultGreenBoardPos = new THREE.Vector3(-270, 135, -310);
+  const zoomedGreenBoardPos = new THREE.Vector3(0, 35, 180);
   let targetGreenBoardPos = defaultGreenBoardPos.clone();
-  let targetGreenBoardScale = 1.0;
+  let targetGreenBoardScale = 0.78;
 
   let isLaptopZoomed = false;
   const defaultLaptopPos = new THREE.Vector3(220, -114, 90);
-  const zoomedLaptopPos = new THREE.Vector3(0, 15, 460);
+  const zoomedLaptopPos = new THREE.Vector3(0, 15, 360);
   let targetLaptopPos = defaultLaptopPos.clone();
-  let targetLaptopScale = 1.0;
+  let targetLaptopScale = 0.85;
   let targetLaptopRotX = 0;
   let targetLaptopRotY = -0.12;
 
   let isHeadphonesZoomed = false;
-  const defaultHeadphonesPos = new THREE.Vector3(510, 150, -314);
-  const zoomedHeadphonesPos = new THREE.Vector3(0, 160, 310);
+  const defaultHeadphonesPos = new THREE.Vector3(480, 145, -314);
+  const zoomedHeadphonesPos = new THREE.Vector3(0, 115, 180);
   let targetHeadphonesPos = defaultHeadphonesPos.clone();
-  let targetHeadphonesScale = 1.0;
+  let targetHeadphonesScale = 0.78;
 
   function applyStudioResponsivePositions() {
     const isMobile = window.innerWidth <= 768;
 
     if (isMobile) {
-      // Clustered portrait composition for phones & tablets
-      defaultGreenBoardPos.set(-105, 145, -295);
-      defaultHeadphonesPos.set(110, 145, -295);
+      // Clustered portrait composition for phones & tablets (Scaled down with breathing space)
+      defaultGreenBoardPos.set(-110, 140, -310);
+      defaultHeadphonesPos.set(115, 135, -305);
       defaultLaptopPos.set(0, -114, 85);
 
       if (greenBoard3D && !isGreenBoardZoomed) {
         targetGreenBoardPos.copy(defaultGreenBoardPos);
-        targetGreenBoardScale = 0.82;
+        targetGreenBoardScale = 0.62;
         greenBoard3D.position.copy(defaultGreenBoardPos);
-        greenBoard3D.scale.set(0.82, 0.82, 0.82);
+        greenBoard3D.scale.set(0.62, 0.62, 0.62);
       }
       if (keyboard3D) {
-        keyboard3D.position.set(0, 195, -310);
-        keyboard3D.scale.set(0.70, 0.70, 0.70);
+        keyboard3D.position.set(0, 190, -310);
+        keyboard3D.scale.set(0.52, 0.52, 0.52);
       }
       if (pegHook3D) {
-        pegHook3D.position.set(110, 205, -336);
-        pegHook3D.scale.set(0.85, 0.85, 0.85);
+        pegHook3D.position.set(115, 185, -340);
+        pegHook3D.scale.set(0.65, 0.65, 0.65);
       }
       if (headphones3D && !isHeadphonesZoomed) {
         targetHeadphonesPos.copy(defaultHeadphonesPos);
-        targetHeadphonesScale = 0.85;
+        targetHeadphonesScale = 0.65;
         headphones3D.position.copy(defaultHeadphonesPos);
-        headphones3D.scale.set(0.85, 0.85, 0.85);
+        headphones3D.scale.set(0.65, 0.65, 0.65);
       }
       if (laptop3D && !isLaptopZoomed) {
         laptop3D.position.copy(defaultLaptopPos);
         laptop3D.rotation.y = 0;
-        laptop3D.scale.set(0.88, 0.88, 0.88);
+        laptop3D.scale.set(0.72, 0.72, 0.72);
       }
       if (matMesh) {
         matMesh.position.set(0, -116, 115);
-        matMesh.scale.set(0.65, 0.65, 0.65);
+        matMesh.scale.set(0.52, 0.52, 0.52);
       }
       if (coasterMesh) {
-        coasterMesh.position.set(-135, -113, 150);
-        coasterMesh.scale.set(0.85, 0.85, 0.85);
+        coasterMesh.position.set(-135, -113, 160);
+        coasterMesh.scale.set(0.68, 0.68, 0.68);
       }
       if (cupBodyMesh) {
-        cupBodyMesh.position.set(-135, -38, 150);
-        cupBodyMesh.scale.set(0.85, 0.85, 0.85);
+        cupBodyMesh.position.set(-135, -38, 160);
+        cupBodyMesh.scale.set(0.68, 0.68, 0.68);
       }
       if (cupLidMesh) {
-        cupLidMesh.position.set(-135, 36, 150);
-        cupLidMesh.scale.set(0.85, 0.85, 0.85);
+        cupLidMesh.position.set(-135, 36, 160);
+        cupLidMesh.scale.set(0.68, 0.68, 0.68);
       }
       if (plant3D) {
-        plant3D.position.set(-160, -80, 60);
-        plant3D.scale.set(0.65, 0.65, 0.65);
+        plant3D.position.set(-175, -85, 70);
+        plant3D.scale.set(0.48, 0.48, 0.48);
       }
       if (pencil3D) {
-        pencil3D.position.set(-85, -115, 215);
+        pencil3D.position.set(-80, -115, 215);
         pencil3D.rotation.y = 0.25;
-        pencil3D.scale.set(0.85, 0.85, 0.85);
+        pencil3D.scale.set(0.70, 0.70, 0.70);
       }
       if (knife3D) {
-        knife3D.position.set(85, -114, 215);
+        knife3D.position.set(80, -114, 215);
         knife3D.rotation.y = -0.15;
-        knife3D.scale.set(0.85, 0.85, 0.85);
+        knife3D.scale.set(0.70, 0.70, 0.70);
       }
     } else {
-      // Desktop wide studio composition
-      defaultGreenBoardPos.set(-270, 140, -310);
-      defaultHeadphonesPos.set(510, 150, -314);
+      // Desktop wide studio composition (Clean, spacious, uncrowded)
+      defaultGreenBoardPos.set(-270, 135, -310);
+      defaultHeadphonesPos.set(480, 145, -314);
       defaultLaptopPos.set(220, -114, 90);
 
       if (greenBoard3D && !isGreenBoardZoomed) {
         targetGreenBoardPos.copy(defaultGreenBoardPos);
-        targetGreenBoardScale = 1.0;
+        targetGreenBoardScale = 0.78;
         greenBoard3D.position.copy(defaultGreenBoardPos);
-        greenBoard3D.scale.set(1.0, 1.0, 1.0);
+        greenBoard3D.scale.set(0.78, 0.78, 0.78);
       }
       if (keyboard3D) {
-        keyboard3D.position.set(160, 140, -310);
-        keyboard3D.scale.set(1.0, 1.0, 1.0);
+        keyboard3D.position.set(160, 135, -310);
+        keyboard3D.scale.set(0.72, 0.72, 0.72);
       }
       if (pegHook3D) {
-        pegHook3D.position.set(510, 210, -346);
-        pegHook3D.scale.set(1.0, 1.0, 1.0);
+        pegHook3D.position.set(480, 200, -346);
+        pegHook3D.scale.set(0.78, 0.78, 0.78);
       }
       if (headphones3D && !isHeadphonesZoomed) {
         targetHeadphonesPos.copy(defaultHeadphonesPos);
-        targetHeadphonesScale = 1.0;
+        targetHeadphonesScale = 0.78;
         headphones3D.position.copy(defaultHeadphonesPos);
-        headphones3D.scale.set(1.0, 1.0, 1.0);
+        headphones3D.scale.set(0.78, 0.78, 0.78);
       }
       if (laptop3D && !isLaptopZoomed) {
         laptop3D.position.copy(defaultLaptopPos);
         laptop3D.rotation.y = -0.22;
-        laptop3D.scale.set(1.0, 1.0, 1.0);
+        laptop3D.scale.set(0.85, 0.85, 0.85);
       }
       if (matMesh) {
         matMesh.position.set(220, -116, 120);
-        matMesh.scale.set(1.0, 1.0, 1.0);
+        matMesh.scale.set(0.85, 0.85, 0.85);
       }
       if (coasterMesh) {
-        coasterMesh.position.set(-260, -113, 180);
-        coasterMesh.scale.set(1.0, 1.0, 1.0);
+        coasterMesh.position.set(-240, -113, 180);
+        coasterMesh.scale.set(0.82, 0.82, 0.82);
       }
       if (cupBodyMesh) {
-        cupBodyMesh.position.set(-260, -38, 180);
-        cupBodyMesh.scale.set(1.0, 1.0, 1.0);
+        cupBodyMesh.position.set(-240, -38, 180);
+        cupBodyMesh.scale.set(0.82, 0.82, 0.82);
       }
       if (cupLidMesh) {
-        cupLidMesh.position.set(-260, 36, 180);
-        cupLidMesh.scale.set(1.0, 1.0, 1.0);
+        cupLidMesh.position.set(-240, 36, 180);
+        cupLidMesh.scale.set(0.82, 0.82, 0.82);
       }
       if (plant3D) {
-        plant3D.position.set(-370, -70, 130);
-        plant3D.scale.set(1.0, 1.0, 1.0);
+        plant3D.position.set(-340, -75, 130);
+        plant3D.scale.set(0.72, 0.72, 0.72);
       }
       if (pencil3D) {
         pencil3D.position.set(-80, -115, 200);
         pencil3D.rotation.y = 0.35;
-        pencil3D.scale.set(1.0, 1.0, 1.0);
+        pencil3D.scale.set(0.85, 0.85, 0.85);
       }
       if (knife3D) {
         knife3D.position.set(40, -114, 220);
         knife3D.rotation.y = 0.15;
-        knife3D.scale.set(1.0, 1.0, 1.0);
+        knife3D.scale.set(0.85, 0.85, 0.85);
       }
     }
   }
@@ -3595,12 +3595,19 @@ function initAboutThreeScene() {
     const hits = raycaster.intersectObjects(interactiveFigurines, true);
     const isMobileMode = window.innerWidth <= 768;
     const getBaseScale = (fig) => {
-      if (!isMobileMode) return 1.0;
-      if (fig === greenBoard3D) return 0.82;
-      if (fig === headphones3D) return 0.85;
-      if (fig === laptop3D) return 0.88;
-      if (fig === keyboard3D) return 0.70;
-      return 1.0;
+      if (isMobileMode) {
+        if (fig === greenBoard3D) return 0.62;
+        if (fig === headphones3D) return 0.65;
+        if (fig === laptop3D) return 0.72;
+        if (fig === keyboard3D) return 0.52;
+        return 1.0;
+      } else {
+        if (fig === greenBoard3D) return 0.78;
+        if (fig === headphones3D) return 0.78;
+        if (fig === laptop3D) return 0.85;
+        if (fig === keyboard3D) return 0.72;
+        return 1.0;
+      }
     };
 
     if (hits.length > 0) {
@@ -3642,7 +3649,10 @@ function initAboutThreeScene() {
     }
   });
 
+  let lastTouchEndTime = 0;
+
   canvasEl.addEventListener('mousedown', (e) => {
+    if (Date.now() - lastTouchEndTime < 700) return;
     mouseDownX = e.clientX;
     mouseDownY = e.clientY;
 
@@ -3673,6 +3683,7 @@ function initAboutThreeScene() {
   });
 
   canvasEl.addEventListener('click', (e) => {
+    if (Date.now() - lastTouchEndTime < 700) return;
     const clickDist = Math.hypot(e.clientX - mouseDownX, e.clientY - mouseDownY);
     if (clickDist > 6) return; // ignore if user was dragging
 
@@ -3753,19 +3764,19 @@ function initAboutThreeScene() {
 
     const isMobileAspect = window.innerWidth <= 768;
     if (isGreenBoardZoomed) {
-      targetGreenBoardPos.copy(isMobileAspect ? new THREE.Vector3(0, 65, 520) : zoomedGreenBoardPos);
-      targetGreenBoardScale = isMobileAspect ? 1.25 : 1.05;
+      targetGreenBoardPos.copy(isMobileAspect ? new THREE.Vector3(0, 45, 260) : zoomedGreenBoardPos);
+      targetGreenBoardScale = 0.95;
     } else {
       targetGreenBoardPos.copy(defaultGreenBoardPos);
-      targetGreenBoardScale = isMobileAspect ? 0.82 : 1.0;
+      targetGreenBoardScale = isMobileAspect ? 0.62 : 0.78;
     }
 
     if (isHeadphonesZoomed) {
-      targetHeadphonesPos.copy(isMobileAspect ? new THREE.Vector3(0, 110, 560) : zoomedHeadphonesPos);
-      targetHeadphonesScale = isMobileAspect ? 1.15 : 0.85;
+      targetHeadphonesPos.copy(isMobileAspect ? new THREE.Vector3(0, 75, 270) : zoomedHeadphonesPos);
+      targetHeadphonesScale = isMobileAspect ? 0.88 : 0.82;
     } else {
       targetHeadphonesPos.copy(defaultHeadphonesPos);
-      targetHeadphonesScale = isMobileAspect ? 0.85 : 1.0;
+      targetHeadphonesScale = isMobileAspect ? 0.65 : 0.78;
     }
   });
 
@@ -3775,7 +3786,7 @@ function initAboutThreeScene() {
       if (isGreenBoardZoomed) {
         isGreenBoardZoomed = false;
         targetGreenBoardPos.copy(defaultGreenBoardPos);
-        targetGreenBoardScale = isMobileAspect ? 0.82 : 1.0;
+        targetGreenBoardScale = isMobileAspect ? 0.62 : 0.78;
       }
       if (isLaptopZoomed) {
         isLaptopZoomed = false;
@@ -3784,7 +3795,7 @@ function initAboutThreeScene() {
         isHeadphonesZoomed = false;
         stopHeadphonesAudio();
         targetHeadphonesPos.copy(defaultHeadphonesPos);
-        targetHeadphonesScale = isMobileAspect ? 0.85 : 1.0;
+        targetHeadphonesScale = isMobileAspect ? 0.65 : 0.78;
       }
     }
   });
@@ -3856,6 +3867,7 @@ function initAboutThreeScene() {
   }, { passive: true });
 
   canvasEl.addEventListener('touchend', (e) => {
+    lastTouchEndTime = Date.now();
     const t = e.changedTouches[0];
     const dist = Math.hypot(t.clientX - touchStartX, t.clientY - touchStartY);
 
@@ -3868,8 +3880,8 @@ function initAboutThreeScene() {
       selectedFigurine = null;
     }
 
-    // Treat short touches (< 16px movement) as taps
-    if (dist < 16) {
+    // Treat short touches (< 22px movement) as taps
+    if (dist < 22) {
       const rect = canvasEl.getBoundingClientRect();
       mouseVec.x = ((t.clientX - rect.left) / rect.width) * 2 - 1;
       mouseVec.y = -((t.clientY - rect.top) / rect.height) * 2 + 1;
@@ -3938,25 +3950,25 @@ function initAboutThreeScene() {
 
       const isMobileAspect = window.innerWidth <= 768;
       if (isGreenBoardZoomed) {
-        targetGreenBoardPos.copy(isMobileAspect ? new THREE.Vector3(0, 65, 520) : zoomedGreenBoardPos);
-        targetGreenBoardScale = isMobileAspect ? 1.25 : 1.05;
+        targetGreenBoardPos.copy(isMobileAspect ? new THREE.Vector3(0, 45, 260) : zoomedGreenBoardPos);
+        targetGreenBoardScale = 0.95;
       } else {
         targetGreenBoardPos.copy(defaultGreenBoardPos);
-        targetGreenBoardScale = isMobileAspect ? 0.82 : 1.0;
+        targetGreenBoardScale = isMobileAspect ? 0.62 : 0.78;
       }
       if (isHeadphonesZoomed) {
-        targetHeadphonesPos.copy(isMobileAspect ? new THREE.Vector3(0, 110, 560) : zoomedHeadphonesPos);
-        targetHeadphonesScale = isMobileAspect ? 1.15 : 0.85;
+        targetHeadphonesPos.copy(isMobileAspect ? new THREE.Vector3(0, 75, 270) : zoomedHeadphonesPos);
+        targetHeadphonesScale = isMobileAspect ? 0.88 : 0.82;
       } else {
         targetHeadphonesPos.copy(defaultHeadphonesPos);
-        targetHeadphonesScale = isMobileAspect ? 0.85 : 1.0;
+        targetHeadphonesScale = isMobileAspect ? 0.65 : 0.78;
       }
     }
   }, { passive: true });
 
 
-  const laptopScreenCamPos = new THREE.Vector3(190, -18, 225);
-  const laptopScreenLookAt = new THREE.Vector3(238, -18, 10);
+  const laptopScreenCamPos = new THREE.Vector3(170, 15, 320);
+  const laptopScreenLookAt = new THREE.Vector3(220, -35, 90);
   const defaultCamLookAt = new THREE.Vector3(0, 20, 0);
 
   function animateAboutScene() {
@@ -3988,10 +4000,10 @@ function initAboutThreeScene() {
     }
 
     if (isLaptopZoomed && aboutCamera) {
-      // Fly camera directly into the laptop display screen
+      // Fly camera to comfortable laptop inspection view
       const isMobileAspect = window.innerWidth <= 768;
-      const targetLaptopCamPos = isMobileAspect ? new THREE.Vector3(0, -25, 220) : laptopScreenCamPos;
-      const targetLaptopLookAt = isMobileAspect ? new THREE.Vector3(0, -25, 0) : laptopScreenLookAt;
+      const targetLaptopCamPos = isMobileAspect ? new THREE.Vector3(0, 15, 340) : laptopScreenCamPos;
+      const targetLaptopLookAt = isMobileAspect ? new THREE.Vector3(0, -35, 80) : laptopScreenLookAt;
       aboutCamera.position.lerp(targetLaptopCamPos, 0.08);
       aboutCamera.lookAt(targetLaptopLookAt);
     } else if (aboutCamera && !isDraggingFigurine && !isGreenBoardZoomed && !isHeadphonesZoomed) {
@@ -4000,16 +4012,16 @@ function initAboutThreeScene() {
       const isPortrait = aspect < 1;
       const isMobile = window.innerWidth <= 768 || isPortrait;
       if (isMobile) {
-        const baseZ = Math.min(1050, Math.max(860, Math.round(430 / Math.max(aspect, 0.35))));
+        const baseZ = Math.min(1080, Math.max(920, Math.round(470 / Math.max(aspect, 0.35))));
         const targetX = 0;
         const targetY = 105;
-        const targetLookAt = new THREE.Vector3(0, 30, 0);
+        const targetLookAt = new THREE.Vector3(0, 32, 0);
         aboutCamera.position.x += (targetX - aboutCamera.position.x) * 0.05;
         aboutCamera.position.y += (targetY - aboutCamera.position.y) * 0.05;
         aboutCamera.position.z += (baseZ - aboutCamera.position.z) * 0.05;
         aboutCamera.lookAt(targetLookAt);
       } else {
-        const baseZ = 820;
+        const baseZ = 840;
         const targetX = mouseX * 35;
         const targetY = 120 - mouseY * 25;
         aboutCamera.position.x += (targetX - aboutCamera.position.x) * 0.05;

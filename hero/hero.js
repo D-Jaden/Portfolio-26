@@ -3138,7 +3138,7 @@ function initAboutThreeScene() {
     polygonOffsetUnits: -2
   });
   const matMesh = new THREE.Mesh(matGeo, matMat);
-  matMesh.position.set(220, -116, 120);
+  matMesh.position.set(0, -116, 95);
   matMesh.rotation.x = -Math.PI / 2;
   matMesh.receiveShadow = true;
   aboutScene.add(matMesh);
@@ -3147,7 +3147,7 @@ function initAboutThreeScene() {
   const coasterGeo = new THREE.CylinderGeometry(80, 80, 14, 32);
   const coasterMat = new THREE.MeshStandardMaterial({ color: 0xc29357, roughness: 0.9 });
   const coasterMesh = new THREE.Mesh(coasterGeo, coasterMat);
-  coasterMesh.position.set(-260, -113, 180);
+  coasterMesh.position.set(-200, -116, 130);
   coasterMesh.castShadow = true;
   coasterMesh.receiveShadow = true;
   aboutScene.add(coasterMesh);
@@ -3161,7 +3161,7 @@ function initAboutThreeScene() {
     metalness: 0.05
   });
   const cupBodyMesh = new THREE.Mesh(cupBodyGeo, cupBodyMat);
-  cupBodyMesh.position.set(-260, -38, 180);
+  cupBodyMesh.position.set(-200, -71, 130);
   cupBodyMesh.rotation.y = Math.PI / 2; // Rotate so 'Jaden' marker name faces camera directly!
   cupBodyMesh.castShadow = true;
   aboutScene.add(cupBodyMesh);
@@ -3170,29 +3170,29 @@ function initAboutThreeScene() {
   const cupLidGeo = new THREE.CylinderGeometry(62, 62, 16, 32);
   const cupLidMat = new THREE.MeshStandardMaterial({ color: 0x050505, roughness: 0.2 });
   const cupLidMesh = new THREE.Mesh(cupLidGeo, cupLidMat);
-  cupLidMesh.position.set(-260, 36, 180);
+  cupLidMesh.position.set(-200, -24, 130);
   cupLidMesh.castShadow = true;
   aboutScene.add(cupLidMesh);
 
   // 6. High-Quality Studio Props: Realistic Organic Bonsai Plant & Designer Stationery
   const plant3D = createNormalOrganicBonsaiPlant();
-  plant3D.position.set(-370, -70, 130);
+  plant3D.position.set(-240, -120, -20);
   aboutScene.add(plant3D);
 
   const pencil3D = createHighQualityCraftsmanPencil();
-  pencil3D.position.set(-80, -115, 200);
-  pencil3D.rotation.y = 0.35;
+  pencil3D.position.set(200, -115, 110);
+  pencil3D.rotation.y = 0.05;
   aboutScene.add(pencil3D);
 
   const knife3D = createHighQualityUtilityKnife();
-  knife3D.position.set(40, -114, 220);
-  knife3D.rotation.y = 0.15;
+  knife3D.position.set(230, -114, 115);
+  knife3D.rotation.y = 0.05;
   aboutScene.add(knife3D);
 
   // 6b. Liquid Metallic Chrome 3D Laptop resting on cutting mat
   const laptop3D = create3DDeskOpenLaptop(sharedStudioEnvMap);
-  laptop3D.position.set(220, -114, 90);
-  laptop3D.rotation.y = -0.22; // Angled slightly towards the left facing the coffee cup
+  laptop3D.position.set(0, -114, 85);
+  laptop3D.rotation.y = 0;
   laptop3D.name = 'laptop';
   aboutScene.add(laptop3D);
 
@@ -3201,25 +3201,25 @@ function initAboutThreeScene() {
 
   // 1. High-Quality 3D Framed Street-Art Sticker Board (Wall-Mounted to the Left)
   const greenBoard3D = create3DGreenBoard(sharedStudioEnvMap);
-  greenBoard3D.position.set(-270, 140, -310);
+  greenBoard3D.position.set(-240, 145, -310);
   greenBoard3D.name = 'greenBoard';
   aboutScene.add(greenBoard3D);
   interactiveFigurines.push(greenBoard3D);
 
-  // 2. High-Quality 3D Mechanical Keyboard (Wall-Mounted to the Right)
+  // 2. High-Quality 3D Mechanical Keyboard (Wall-Mounted in Center above Laptop)
   const keyboard3D = createHighQuality3DKeyboard();
-  keyboard3D.position.set(160, 140, -310);
+  keyboard3D.position.set(0, 190, -310);
   keyboard3D.name = 'keyboard';
   aboutScene.add(keyboard3D);
   interactiveFigurines.push(keyboard3D);
 
-  // 3. Ultra-Realistic Chromish Studio Headphones (Mounted Further to the Right on Peg Hook)
+  // 3. Ultra-Realistic Chromish Studio Headphones (Mounted to the Right on Peg Hook)
   const pegHook3D = create3DWallPegHook(sharedStudioEnvMap);
-  pegHook3D.position.set(510, 210, -346);
+  pegHook3D.position.set(240, 205, -346);
   aboutScene.add(pegHook3D);
 
   const headphones3D = create3DChromeHeadphones(sharedStudioEnvMap);
-  headphones3D.position.set(510, 150, -314);
+  headphones3D.position.set(240, 145, -314);
   headphones3D.name = 'headphones';
   aboutScene.add(headphones3D);
   interactiveFigurines.push(headphones3D);
@@ -3239,149 +3239,149 @@ function initAboutThreeScene() {
 
   // ── GREEN BOARD, LAPTOP & HEADPHONES CLICK-TO-FRONT ZOOM INTERACTION ──
   let isGreenBoardZoomed = false;
-  const defaultGreenBoardPos = new THREE.Vector3(-270, 135, -310);
+  const defaultGreenBoardPos = new THREE.Vector3(-240, 145, -310);
   const zoomedGreenBoardPos = new THREE.Vector3(0, 35, 180);
   let targetGreenBoardPos = defaultGreenBoardPos.clone();
-  let targetGreenBoardScale = 0.78;
+  let targetGreenBoardScale = 0.60;
 
   let isLaptopZoomed = false;
-  const defaultLaptopPos = new THREE.Vector3(220, -114, 90);
+  const defaultLaptopPos = new THREE.Vector3(0, -114, 85);
   const zoomedLaptopPos = new THREE.Vector3(0, 15, 360);
   let targetLaptopPos = defaultLaptopPos.clone();
-  let targetLaptopScale = 0.85;
+  let targetLaptopScale = 0.72;
   let targetLaptopRotX = 0;
-  let targetLaptopRotY = -0.12;
+  let targetLaptopRotY = 0;
 
   let isHeadphonesZoomed = false;
-  const defaultHeadphonesPos = new THREE.Vector3(440, 145, -314);
+  const defaultHeadphonesPos = new THREE.Vector3(240, 145, -314);
   const zoomedHeadphonesPos = new THREE.Vector3(0, 115, 180);
   let targetHeadphonesPos = defaultHeadphonesPos.clone();
-  let targetHeadphonesScale = 0.68;
+  let targetHeadphonesScale = 0.65;
 
   function applyStudioResponsivePositions() {
     const isMobile = window.innerWidth <= 768;
 
     if (isMobile) {
-      // Clustered portrait composition for phones & tablets (Scaled down with generous breathing space)
-      defaultGreenBoardPos.set(-110, 145, -310);
-      defaultHeadphonesPos.set(115, 135, -305);
+      // Clustered portrait composition for phones & tablets (Symmetrical, uncluttered, airy)
+      defaultGreenBoardPos.set(-95, 145, -310);
+      defaultHeadphonesPos.set(95, 140, -305);
       defaultLaptopPos.set(0, -114, 85);
 
       if (greenBoard3D && !isGreenBoardZoomed) {
         targetGreenBoardPos.copy(defaultGreenBoardPos);
-        targetGreenBoardScale = 0.44;
+        targetGreenBoardScale = 0.42;
         greenBoard3D.position.copy(defaultGreenBoardPos);
-        greenBoard3D.scale.set(0.44, 0.44, 0.44);
+        greenBoard3D.scale.set(0.42, 0.42, 0.42);
       }
       if (keyboard3D) {
         keyboard3D.position.set(0, 215, -310);
-        keyboard3D.scale.set(0.38, 0.38, 0.38);
+        keyboard3D.scale.set(0.35, 0.35, 0.35);
       }
       if (pegHook3D) {
-        pegHook3D.position.set(115, 180, -340);
-        pegHook3D.scale.set(0.50, 0.50, 0.50);
+        pegHook3D.position.set(95, 190, -340);
+        pegHook3D.scale.set(0.46, 0.46, 0.46);
       }
       if (headphones3D && !isHeadphonesZoomed) {
         targetHeadphonesPos.copy(defaultHeadphonesPos);
-        targetHeadphonesScale = 0.50;
+        targetHeadphonesScale = 0.46;
         headphones3D.position.copy(defaultHeadphonesPos);
-        headphones3D.scale.set(0.50, 0.50, 0.50);
+        headphones3D.scale.set(0.46, 0.46, 0.46);
       }
       if (laptop3D && !isLaptopZoomed) {
         laptop3D.position.copy(defaultLaptopPos);
         laptop3D.rotation.y = 0;
-        laptop3D.scale.set(0.62, 0.62, 0.62);
+        laptop3D.scale.set(0.58, 0.58, 0.58);
       }
       if (matMesh) {
-        matMesh.position.set(0, -116, 115);
-        matMesh.scale.set(0.44, 0.44, 0.44);
+        matMesh.position.set(0, -116, 95);
+        matMesh.scale.set(0.40, 0.40, 0.40);
       }
       if (coasterMesh) {
-        coasterMesh.position.set(-125, -117, 160);
-        coasterMesh.scale.set(0.46, 0.46, 0.46);
+        coasterMesh.position.set(-125, -117, 130);
+        coasterMesh.scale.set(0.44, 0.44, 0.44);
       }
       if (cupBodyMesh) {
-        cupBodyMesh.position.set(-125, -83, 160);
-        cupBodyMesh.scale.set(0.46, 0.46, 0.46);
+        cupBodyMesh.position.set(-125, -83, 130);
+        cupBodyMesh.scale.set(0.44, 0.44, 0.44);
       }
       if (cupLidMesh) {
-        cupLidMesh.position.set(-125, -47, 160);
-        cupLidMesh.scale.set(0.46, 0.46, 0.46);
+        cupLidMesh.position.set(-125, -47, 130);
+        cupLidMesh.scale.set(0.44, 0.44, 0.44);
       }
       if (plant3D) {
-        plant3D.position.set(-170, -120, 70);
-        plant3D.scale.set(0.34, 0.34, 0.34);
+        plant3D.position.set(-135, -120, -10);
+        plant3D.scale.set(0.32, 0.32, 0.32);
       }
       if (pencil3D) {
-        pencil3D.position.set(-75, -115, 215);
-        pencil3D.rotation.y = 0.25;
-        pencil3D.scale.set(0.55, 0.55, 0.55);
+        pencil3D.position.set(120, -115, 110);
+        pencil3D.rotation.y = 0.05;
+        pencil3D.scale.set(0.48, 0.48, 0.48);
       }
       if (knife3D) {
-        knife3D.position.set(75, -114, 215);
-        knife3D.rotation.y = -0.15;
-        knife3D.scale.set(0.55, 0.55, 0.55);
+        knife3D.position.set(138, -114, 115);
+        knife3D.rotation.y = 0.05;
+        knife3D.scale.set(0.48, 0.48, 0.48);
       }
     } else {
-      // Desktop wide studio composition (Clean, spacious, uncrowded)
-      defaultGreenBoardPos.set(-290, 140, -310);
-      defaultHeadphonesPos.set(440, 145, -314);
-      defaultLaptopPos.set(210, -114, 90);
+      // Desktop wide studio composition (Architectural balance, rule of thirds, clean workspace)
+      defaultGreenBoardPos.set(-240, 145, -310);
+      defaultHeadphonesPos.set(240, 145, -314);
+      defaultLaptopPos.set(0, -114, 85);
 
       if (greenBoard3D && !isGreenBoardZoomed) {
         targetGreenBoardPos.copy(defaultGreenBoardPos);
-        targetGreenBoardScale = 0.62;
+        targetGreenBoardScale = 0.60;
         greenBoard3D.position.copy(defaultGreenBoardPos);
-        greenBoard3D.scale.set(0.62, 0.62, 0.62);
+        greenBoard3D.scale.set(0.60, 0.60, 0.60);
       }
       if (keyboard3D) {
-        keyboard3D.position.set(120, 155, -310);
-        keyboard3D.scale.set(0.58, 0.58, 0.58);
+        keyboard3D.position.set(0, 190, -310);
+        keyboard3D.scale.set(0.55, 0.55, 0.55);
       }
       if (pegHook3D) {
-        pegHook3D.position.set(440, 205, -346);
-        pegHook3D.scale.set(0.65, 0.65, 0.65);
+        pegHook3D.position.set(240, 205, -346);
+        pegHook3D.scale.set(0.62, 0.62, 0.62);
       }
       if (headphones3D && !isHeadphonesZoomed) {
         targetHeadphonesPos.copy(defaultHeadphonesPos);
-        targetHeadphonesScale = 0.68;
+        targetHeadphonesScale = 0.65;
         headphones3D.position.copy(defaultHeadphonesPos);
-        headphones3D.scale.set(0.68, 0.68, 0.68);
+        headphones3D.scale.set(0.65, 0.65, 0.65);
       }
       if (laptop3D && !isLaptopZoomed) {
         laptop3D.position.copy(defaultLaptopPos);
-        laptop3D.rotation.y = -0.22;
-        laptop3D.scale.set(0.78, 0.78, 0.78);
+        laptop3D.rotation.y = 0;
+        laptop3D.scale.set(0.72, 0.72, 0.72);
       }
       if (matMesh) {
-        matMesh.position.set(210, -116, 120);
-        matMesh.scale.set(0.75, 0.75, 0.75);
+        matMesh.position.set(0, -116, 95);
+        matMesh.scale.set(0.65, 0.65, 0.65);
       }
       if (coasterMesh) {
-        coasterMesh.position.set(-250, -116, 180);
-        coasterMesh.scale.set(0.60, 0.60, 0.60);
+        coasterMesh.position.set(-200, -116, 130);
+        coasterMesh.scale.set(0.58, 0.58, 0.58);
       }
       if (cupBodyMesh) {
-        cupBodyMesh.position.set(-250, -71, 180);
-        cupBodyMesh.scale.set(0.60, 0.60, 0.60);
+        cupBodyMesh.position.set(-200, -71, 130);
+        cupBodyMesh.scale.set(0.58, 0.58, 0.58);
       }
       if (cupLidMesh) {
-        cupLidMesh.position.set(-250, -24, 180);
-        cupLidMesh.scale.set(0.60, 0.60, 0.60);
+        cupLidMesh.position.set(-200, -24, 130);
+        cupLidMesh.scale.set(0.58, 0.58, 0.58);
       }
       if (plant3D) {
-        plant3D.position.set(-360, -120, 130);
-        plant3D.scale.set(0.50, 0.50, 0.50);
+        plant3D.position.set(-240, -120, -20);
+        plant3D.scale.set(0.45, 0.45, 0.45);
       }
       if (pencil3D) {
-        pencil3D.position.set(-75, -115, 200);
-        pencil3D.rotation.y = 0.35;
-        pencil3D.scale.set(0.70, 0.70, 0.70);
+        pencil3D.position.set(200, -115, 110);
+        pencil3D.rotation.y = 0.05;
+        pencil3D.scale.set(0.65, 0.65, 0.65);
       }
       if (knife3D) {
-        knife3D.position.set(40, -114, 220);
-        knife3D.rotation.y = 0.15;
-        knife3D.scale.set(0.70, 0.70, 0.70);
+        knife3D.position.set(230, -114, 115);
+        knife3D.rotation.y = 0.05;
+        knife3D.scale.set(0.65, 0.65, 0.65);
       }
     }
   }
@@ -3600,16 +3600,16 @@ function initAboutThreeScene() {
     const isMobileMode = window.innerWidth <= 768;
     const getBaseScale = (fig) => {
       if (isMobileMode) {
-        if (fig === greenBoard3D) return 0.44;
-        if (fig === headphones3D) return 0.50;
-        if (fig === laptop3D) return 0.62;
-        if (fig === keyboard3D) return 0.38;
+        if (fig === greenBoard3D) return 0.42;
+        if (fig === headphones3D) return 0.46;
+        if (fig === laptop3D) return 0.58;
+        if (fig === keyboard3D) return 0.35;
         return 1.0;
       } else {
-        if (fig === greenBoard3D) return 0.62;
-        if (fig === headphones3D) return 0.68;
-        if (fig === laptop3D) return 0.78;
-        if (fig === keyboard3D) return 0.58;
+        if (fig === greenBoard3D) return 0.60;
+        if (fig === headphones3D) return 0.65;
+        if (fig === laptop3D) return 0.72;
+        if (fig === keyboard3D) return 0.55;
         return 1.0;
       }
     };
@@ -3772,7 +3772,7 @@ function initAboutThreeScene() {
       targetGreenBoardScale = isMobileAspect ? 0.72 : 0.85;
     } else {
       targetGreenBoardPos.copy(defaultGreenBoardPos);
-      targetGreenBoardScale = isMobileAspect ? 0.44 : 0.62;
+      targetGreenBoardScale = isMobileAspect ? 0.42 : 0.60;
     }
 
     if (isHeadphonesZoomed) {
@@ -3780,7 +3780,7 @@ function initAboutThreeScene() {
       targetHeadphonesScale = isMobileAspect ? 0.68 : 0.75;
     } else {
       targetHeadphonesPos.copy(defaultHeadphonesPos);
-      targetHeadphonesScale = isMobileAspect ? 0.50 : 0.68;
+      targetHeadphonesScale = isMobileAspect ? 0.46 : 0.65;
     }
   });
 
@@ -3790,7 +3790,7 @@ function initAboutThreeScene() {
       if (isGreenBoardZoomed) {
         isGreenBoardZoomed = false;
         targetGreenBoardPos.copy(defaultGreenBoardPos);
-        targetGreenBoardScale = isMobileAspect ? 0.44 : 0.62;
+        targetGreenBoardScale = isMobileAspect ? 0.42 : 0.60;
       }
       if (isLaptopZoomed) {
         isLaptopZoomed = false;
@@ -3799,7 +3799,7 @@ function initAboutThreeScene() {
         isHeadphonesZoomed = false;
         stopHeadphonesAudio();
         targetHeadphonesPos.copy(defaultHeadphonesPos);
-        targetHeadphonesScale = isMobileAspect ? 0.50 : 0.68;
+        targetHeadphonesScale = isMobileAspect ? 0.46 : 0.65;
       }
     }
   });
@@ -3958,21 +3958,21 @@ function initAboutThreeScene() {
         targetGreenBoardScale = isMobileAspect ? 0.72 : 0.85;
       } else {
         targetGreenBoardPos.copy(defaultGreenBoardPos);
-        targetGreenBoardScale = isMobileAspect ? 0.44 : 0.62;
+        targetGreenBoardScale = isMobileAspect ? 0.42 : 0.60;
       }
       if (isHeadphonesZoomed) {
         targetHeadphonesPos.copy(isMobileAspect ? new THREE.Vector3(0, 70, 180) : new THREE.Vector3(0, 75, 160));
         targetHeadphonesScale = isMobileAspect ? 0.68 : 0.75;
       } else {
         targetHeadphonesPos.copy(defaultHeadphonesPos);
-        targetHeadphonesScale = isMobileAspect ? 0.50 : 0.68;
+        targetHeadphonesScale = isMobileAspect ? 0.46 : 0.65;
       }
     }
   }, { passive: true });
 
 
-  const laptopScreenCamPos = new THREE.Vector3(170, 15, 320);
-  const laptopScreenLookAt = new THREE.Vector3(220, -35, 90);
+  const laptopScreenCamPos = new THREE.Vector3(0, 25, 380);
+  const laptopScreenLookAt = new THREE.Vector3(0, -40, 85);
   const defaultCamLookAt = new THREE.Vector3(0, 20, 0);
 
   function animateAboutScene() {
@@ -4006,8 +4006,8 @@ function initAboutThreeScene() {
     if (isLaptopZoomed && aboutCamera) {
       // Fly camera to comfortable laptop inspection view
       const isMobileAspect = window.innerWidth <= 768;
-      const targetLaptopCamPos = isMobileAspect ? new THREE.Vector3(0, 25, 400) : laptopScreenCamPos;
-      const targetLaptopLookAt = isMobileAspect ? new THREE.Vector3(0, -35, 80) : laptopScreenLookAt;
+      const targetLaptopCamPos = isMobileAspect ? new THREE.Vector3(0, 30, 440) : laptopScreenCamPos;
+      const targetLaptopLookAt = isMobileAspect ? new THREE.Vector3(0, -40, 85) : laptopScreenLookAt;
       aboutCamera.position.lerp(targetLaptopCamPos, 0.08);
       aboutCamera.lookAt(targetLaptopLookAt);
     } else if (aboutCamera && !isDraggingFigurine && !isGreenBoardZoomed && !isHeadphonesZoomed) {
@@ -4367,10 +4367,6 @@ function openIDBadgeModal() {
                   <div><span>STATUS:</span> ACTIVE // OPEN</div>
                 </div>
               </div>
-              <div class="id-seal-stamp" title="Security Clearance Official Seal">
-                <img src="${sealPath}" alt="Batman Official Seal" class="id-seal-img" />
-                <span class="id-seal-text">OFFICIAL SEAL</span>
-              </div>
             </div>
             <div class="id-card-footer">
               <div class="barcode">
@@ -4635,6 +4631,7 @@ function getDrippyShapePath(progress, layerIndex = 0) {
   if (!transitionSection || !p1 || !p2 || !p3) return;
 
   let isPlaying = false;
+  window.isTransitionOverlayActive = false;
 
   function renderPaths(trigWave) {
     if (trigWave.val1 < 2) {
@@ -4657,7 +4654,7 @@ function getDrippyShapePath(progress, layerIndex = 0) {
 
   // Programmatic & Auto-scroll trigger
   window.triggerShapeOverlays = function(callback, customTitle, customTag) {
-    if (isPlaying) {
+    if (isPlaying || window.isTransitionOverlayActive) {
       if (callback) callback();
       return;
     }
@@ -4674,6 +4671,7 @@ function getDrippyShapePath(progress, layerIndex = 0) {
     }
 
     isPlaying = true;
+    window.isTransitionOverlayActive = true;
     transitionSection.classList.add('is-active');
 
     const trigWave = { val1: 0, val2: 0, val3: 0, captionAlpha: 0 };
@@ -4687,6 +4685,7 @@ function getDrippyShapePath(progress, layerIndex = 0) {
         renderPaths(trigWave);
         setTimeout(() => {
           isPlaying = false;
+          window.isTransitionOverlayActive = false;
         }, 350);
       }
     });
@@ -4722,7 +4721,7 @@ function getDrippyShapePath(progress, layerIndex = 0) {
       trigger: '#highwaySection',
       start: 'bottom 85%',
       onEnter: () => {
-        if (!isPlaying && !window.isProgrammaticScroll) {
+        if (!isPlaying && !window.isProgrammaticScroll && !window.isTransitionOverlayActive) {
           window.isProgrammaticScroll = true;
           window.triggerShapeOverlays(() => {
             const target = document.getElementById('aboutSection');
@@ -4737,16 +4736,20 @@ function getDrippyShapePath(progress, layerIndex = 0) {
     ScrollTrigger.create({
       trigger: '#aboutSection',
       start: 'top 20%',
-      onEnterBack: () => {
-        if (!isPlaying && !window.isProgrammaticScroll) {
+      onLeaveBack: () => {
+        if (!isPlaying && !window.isProgrammaticScroll && !window.isTransitionOverlayActive) {
+          const aboutSec = document.getElementById('aboutSection');
+          if (!aboutSec) return;
+          const rect = aboutSec.getBoundingClientRect();
+          // Safety: only trigger if viewport is actually at the top of aboutSection,
+          // never if we are below it in contact section!
+          if (rect.top < -window.innerHeight * 0.3) return;
+
           window.isProgrammaticScroll = true;
           window.triggerShapeOverlays(() => {
             const target = document.getElementById('highwaySection');
-            if (target) {
-              const targetTop = target.offsetTop + Math.max(0, target.offsetHeight - window.innerHeight);
-              window.scrollTo({ top: targetTop, behavior: 'instant' });
-            }
-            setTimeout(() => { window.isProgrammaticScroll = false; }, 1000);
+            if (target) target.scrollIntoView({ behavior: 'instant' });
+            setTimeout(() => { window.isProgrammaticScroll = false; }, 1200);
           }, 'ENTERING NH 6 HIGHWAY', 'HIGHWAY ROUTE // ARCHIVE VOL.01');
         }
       }
@@ -4789,7 +4792,7 @@ function getDrippyShapePath(progress, layerIndex = 0) {
 
   // Programmatic & Auto-scroll trigger
   window.triggerContactShapeOverlays = function(callback, customTitle, customTag) {
-    if (isPlaying) {
+    if (isPlaying || window.isTransitionOverlayActive) {
       if (callback) callback();
       return;
     }
@@ -4806,6 +4809,7 @@ function getDrippyShapePath(progress, layerIndex = 0) {
     }
 
     isPlaying = true;
+    window.isTransitionOverlayActive = true;
     transitionSection.classList.add('is-active');
 
     const trigWave = { val1: 0, val2: 0, val3: 0, captionAlpha: 0 };
@@ -4819,6 +4823,7 @@ function getDrippyShapePath(progress, layerIndex = 0) {
         renderPaths(trigWave);
         setTimeout(() => {
           isPlaying = false;
+          window.isTransitionOverlayActive = false;
         }, 350);
       }
     });
@@ -4854,7 +4859,7 @@ function getDrippyShapePath(progress, layerIndex = 0) {
       trigger: '#aboutSection',
       start: 'bottom 85%',
       onEnter: () => {
-        if (!isPlaying && !window.isProgrammaticScroll) {
+        if (!isPlaying && !window.isProgrammaticScroll && !window.isTransitionOverlayActive) {
           window.isProgrammaticScroll = true;
           window.triggerContactShapeOverlays(() => {
             const target = document.getElementById('contactSection');
@@ -4868,21 +4873,18 @@ function getDrippyShapePath(progress, layerIndex = 0) {
     // 2. Scrolling UP from Contact back to About Me
     ScrollTrigger.create({
       trigger: '#contactSection',
-      start: 'top 20%',
-      onEnterBack: () => {
-        if (!isPlaying && !window.isProgrammaticScroll) {
+      start: 'top 15%',
+      onLeaveBack: () => {
+        if (!isPlaying && !window.isProgrammaticScroll && !window.isTransitionOverlayActive) {
           window.isProgrammaticScroll = true;
           window.triggerContactShapeOverlays(() => {
             const target = document.getElementById('aboutSection');
             if (target) {
-              // Position near bottom of aboutSection so user stays in 3D studio
-              // and does not trigger highway's top 20% onEnterBack
-              const targetTop = target.offsetTop + Math.max(0, target.offsetHeight - window.innerHeight);
-              window.scrollTo({ top: targetTop, behavior: 'instant' });
+              target.scrollIntoView({ behavior: 'instant' });
             }
             setTimeout(() => {
               window.isProgrammaticScroll = false;
-            }, 1200);
+            }, 1500);
           }, 'ENTERING 3D STUDIO DESKTOP', 'SYSTEM SHIFT // ARCHIVE VOL.01');
         }
       }

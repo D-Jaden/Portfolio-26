@@ -270,17 +270,31 @@ function initStickyDrag() {
       }
     }, { passive: true });
 
+    function navigateToContact() {
+      const contactSec = document.getElementById('contactSection');
+      if (window.triggerContactShapeOverlays) {
+        window.isProgrammaticScroll = true;
+        window.triggerContactShapeOverlays(() => {
+          if (contactSec) {
+            contactSec.scrollIntoView({ behavior: 'instant' });
+          }
+          setTimeout(() => { window.isProgrammaticScroll = false; }, 1000);
+        }, 'ENTERING CONTACT CONSOLE', 'COMMUNICATION PROTOCOL // ARCHIVE VOL.01');
+      } else if (contactSec) {
+        window.isProgrammaticScroll = true;
+        contactSec.scrollIntoView({ behavior: 'smooth' });
+        setTimeout(() => { window.isProgrammaticScroll = false; }, 1200);
+      } else {
+        window.location.href = '../contact/contact.html';
+      }
+    }
+
     el.addEventListener('touchend', () => {
       if (!dragged) {
         if (el.id === 'sticky-resume') {
           window.open('CV.pdf', '_blank');
         } else if (el.id === 'sticky-contact') {
-          const contactSec = document.getElementById('contactSection');
-          if (contactSec) {
-            contactSec.scrollIntoView({ behavior: 'smooth' });
-          } else {
-            window.location.href = '../contact/contact.html';
-          }
+          navigateToContact();
         }
       }
     });
@@ -289,12 +303,7 @@ function initStickyDrag() {
       if (el.id === 'sticky-resume') {
         window.open('CV.pdf', '_blank');
       } else if (el.id === 'sticky-contact') {
-        const contactSec = document.getElementById('contactSection');
-        if (contactSec) {
-          contactSec.scrollIntoView({ behavior: 'smooth' });
-        } else {
-          window.location.href = '../contact/contact.html';
-        }
+        navigateToContact();
       }
     });
 
@@ -302,12 +311,7 @@ function initStickyDrag() {
       if (el.id === 'sticky-resume') {
         window.open('CV.pdf', '_blank');
       } else {
-        const contactSec = document.getElementById('contactSection');
-        if (contactSec) {
-          contactSec.scrollIntoView({ behavior: 'smooth' });
-        } else {
-          window.location.href = '../contact/contact.html';
-        }
+        navigateToContact();
       }
     });
   });
@@ -419,7 +423,7 @@ function initExperienceBillboard() {
   function goToStop(index) {
     if (index < 0 || index >= STOPS) return;
     
-    if (index > activeStop) {
+    if (index !== activeStop) {
       playTuTuDuDu();
     }
     
@@ -3249,19 +3253,80 @@ function initAboutThreeScene() {
   let targetLaptopRotY = -0.12;
 
   let isHeadphonesZoomed = false;
-  const defaultHeadphonesPos = new THREE.Vector3(480, 145, -314);
+  const defaultHeadphonesPos = new THREE.Vector3(440, 145, -314);
   const zoomedHeadphonesPos = new THREE.Vector3(0, 115, 180);
   let targetHeadphonesPos = defaultHeadphonesPos.clone();
-  let targetHeadphonesScale = 0.78;
+  let targetHeadphonesScale = 0.68;
 
   function applyStudioResponsivePositions() {
     const isMobile = window.innerWidth <= 768;
 
     if (isMobile) {
-      // Clustered portrait composition for phones & tablets (Scaled down with breathing space)
-      defaultGreenBoardPos.set(-110, 140, -310);
+      // Clustered portrait composition for phones & tablets (Scaled down with generous breathing space)
+      defaultGreenBoardPos.set(-110, 145, -310);
       defaultHeadphonesPos.set(115, 135, -305);
       defaultLaptopPos.set(0, -114, 85);
+
+      if (greenBoard3D && !isGreenBoardZoomed) {
+        targetGreenBoardPos.copy(defaultGreenBoardPos);
+        targetGreenBoardScale = 0.44;
+        greenBoard3D.position.copy(defaultGreenBoardPos);
+        greenBoard3D.scale.set(0.44, 0.44, 0.44);
+      }
+      if (keyboard3D) {
+        keyboard3D.position.set(0, 215, -310);
+        keyboard3D.scale.set(0.38, 0.38, 0.38);
+      }
+      if (pegHook3D) {
+        pegHook3D.position.set(115, 180, -340);
+        pegHook3D.scale.set(0.50, 0.50, 0.50);
+      }
+      if (headphones3D && !isHeadphonesZoomed) {
+        targetHeadphonesPos.copy(defaultHeadphonesPos);
+        targetHeadphonesScale = 0.50;
+        headphones3D.position.copy(defaultHeadphonesPos);
+        headphones3D.scale.set(0.50, 0.50, 0.50);
+      }
+      if (laptop3D && !isLaptopZoomed) {
+        laptop3D.position.copy(defaultLaptopPos);
+        laptop3D.rotation.y = 0;
+        laptop3D.scale.set(0.62, 0.62, 0.62);
+      }
+      if (matMesh) {
+        matMesh.position.set(0, -116, 115);
+        matMesh.scale.set(0.44, 0.44, 0.44);
+      }
+      if (coasterMesh) {
+        coasterMesh.position.set(-125, -117, 160);
+        coasterMesh.scale.set(0.46, 0.46, 0.46);
+      }
+      if (cupBodyMesh) {
+        cupBodyMesh.position.set(-125, -83, 160);
+        cupBodyMesh.scale.set(0.46, 0.46, 0.46);
+      }
+      if (cupLidMesh) {
+        cupLidMesh.position.set(-125, -47, 160);
+        cupLidMesh.scale.set(0.46, 0.46, 0.46);
+      }
+      if (plant3D) {
+        plant3D.position.set(-170, -120, 70);
+        plant3D.scale.set(0.34, 0.34, 0.34);
+      }
+      if (pencil3D) {
+        pencil3D.position.set(-75, -115, 215);
+        pencil3D.rotation.y = 0.25;
+        pencil3D.scale.set(0.55, 0.55, 0.55);
+      }
+      if (knife3D) {
+        knife3D.position.set(75, -114, 215);
+        knife3D.rotation.y = -0.15;
+        knife3D.scale.set(0.55, 0.55, 0.55);
+      }
+    } else {
+      // Desktop wide studio composition (Clean, spacious, uncrowded)
+      defaultGreenBoardPos.set(-290, 140, -310);
+      defaultHeadphonesPos.set(440, 145, -314);
+      defaultLaptopPos.set(210, -114, 90);
 
       if (greenBoard3D && !isGreenBoardZoomed) {
         targetGreenBoardPos.copy(defaultGreenBoardPos);
@@ -3270,114 +3335,53 @@ function initAboutThreeScene() {
         greenBoard3D.scale.set(0.62, 0.62, 0.62);
       }
       if (keyboard3D) {
-        keyboard3D.position.set(0, 190, -310);
-        keyboard3D.scale.set(0.52, 0.52, 0.52);
+        keyboard3D.position.set(120, 155, -310);
+        keyboard3D.scale.set(0.58, 0.58, 0.58);
       }
       if (pegHook3D) {
-        pegHook3D.position.set(115, 185, -340);
+        pegHook3D.position.set(440, 205, -346);
         pegHook3D.scale.set(0.65, 0.65, 0.65);
       }
       if (headphones3D && !isHeadphonesZoomed) {
         targetHeadphonesPos.copy(defaultHeadphonesPos);
-        targetHeadphonesScale = 0.65;
+        targetHeadphonesScale = 0.68;
         headphones3D.position.copy(defaultHeadphonesPos);
-        headphones3D.scale.set(0.65, 0.65, 0.65);
-      }
-      if (laptop3D && !isLaptopZoomed) {
-        laptop3D.position.copy(defaultLaptopPos);
-        laptop3D.rotation.y = 0;
-        laptop3D.scale.set(0.72, 0.72, 0.72);
-      }
-      if (matMesh) {
-        matMesh.position.set(0, -116, 115);
-        matMesh.scale.set(0.52, 0.52, 0.52);
-      }
-      if (coasterMesh) {
-        coasterMesh.position.set(-135, -113, 160);
-        coasterMesh.scale.set(0.68, 0.68, 0.68);
-      }
-      if (cupBodyMesh) {
-        cupBodyMesh.position.set(-135, -38, 160);
-        cupBodyMesh.scale.set(0.68, 0.68, 0.68);
-      }
-      if (cupLidMesh) {
-        cupLidMesh.position.set(-135, 36, 160);
-        cupLidMesh.scale.set(0.68, 0.68, 0.68);
-      }
-      if (plant3D) {
-        plant3D.position.set(-175, -85, 70);
-        plant3D.scale.set(0.48, 0.48, 0.48);
-      }
-      if (pencil3D) {
-        pencil3D.position.set(-80, -115, 215);
-        pencil3D.rotation.y = 0.25;
-        pencil3D.scale.set(0.70, 0.70, 0.70);
-      }
-      if (knife3D) {
-        knife3D.position.set(80, -114, 215);
-        knife3D.rotation.y = -0.15;
-        knife3D.scale.set(0.70, 0.70, 0.70);
-      }
-    } else {
-      // Desktop wide studio composition (Clean, spacious, uncrowded)
-      defaultGreenBoardPos.set(-270, 135, -310);
-      defaultHeadphonesPos.set(480, 145, -314);
-      defaultLaptopPos.set(220, -114, 90);
-
-      if (greenBoard3D && !isGreenBoardZoomed) {
-        targetGreenBoardPos.copy(defaultGreenBoardPos);
-        targetGreenBoardScale = 0.78;
-        greenBoard3D.position.copy(defaultGreenBoardPos);
-        greenBoard3D.scale.set(0.78, 0.78, 0.78);
-      }
-      if (keyboard3D) {
-        keyboard3D.position.set(160, 135, -310);
-        keyboard3D.scale.set(0.72, 0.72, 0.72);
-      }
-      if (pegHook3D) {
-        pegHook3D.position.set(480, 200, -346);
-        pegHook3D.scale.set(0.78, 0.78, 0.78);
-      }
-      if (headphones3D && !isHeadphonesZoomed) {
-        targetHeadphonesPos.copy(defaultHeadphonesPos);
-        targetHeadphonesScale = 0.78;
-        headphones3D.position.copy(defaultHeadphonesPos);
-        headphones3D.scale.set(0.78, 0.78, 0.78);
+        headphones3D.scale.set(0.68, 0.68, 0.68);
       }
       if (laptop3D && !isLaptopZoomed) {
         laptop3D.position.copy(defaultLaptopPos);
         laptop3D.rotation.y = -0.22;
-        laptop3D.scale.set(0.85, 0.85, 0.85);
+        laptop3D.scale.set(0.78, 0.78, 0.78);
       }
       if (matMesh) {
-        matMesh.position.set(220, -116, 120);
-        matMesh.scale.set(0.85, 0.85, 0.85);
+        matMesh.position.set(210, -116, 120);
+        matMesh.scale.set(0.75, 0.75, 0.75);
       }
       if (coasterMesh) {
-        coasterMesh.position.set(-240, -113, 180);
-        coasterMesh.scale.set(0.82, 0.82, 0.82);
+        coasterMesh.position.set(-250, -116, 180);
+        coasterMesh.scale.set(0.60, 0.60, 0.60);
       }
       if (cupBodyMesh) {
-        cupBodyMesh.position.set(-240, -38, 180);
-        cupBodyMesh.scale.set(0.82, 0.82, 0.82);
+        cupBodyMesh.position.set(-250, -71, 180);
+        cupBodyMesh.scale.set(0.60, 0.60, 0.60);
       }
       if (cupLidMesh) {
-        cupLidMesh.position.set(-240, 36, 180);
-        cupLidMesh.scale.set(0.82, 0.82, 0.82);
+        cupLidMesh.position.set(-250, -24, 180);
+        cupLidMesh.scale.set(0.60, 0.60, 0.60);
       }
       if (plant3D) {
-        plant3D.position.set(-340, -75, 130);
-        plant3D.scale.set(0.72, 0.72, 0.72);
+        plant3D.position.set(-360, -120, 130);
+        plant3D.scale.set(0.50, 0.50, 0.50);
       }
       if (pencil3D) {
-        pencil3D.position.set(-80, -115, 200);
+        pencil3D.position.set(-75, -115, 200);
         pencil3D.rotation.y = 0.35;
-        pencil3D.scale.set(0.85, 0.85, 0.85);
+        pencil3D.scale.set(0.70, 0.70, 0.70);
       }
       if (knife3D) {
         knife3D.position.set(40, -114, 220);
         knife3D.rotation.y = 0.15;
-        knife3D.scale.set(0.85, 0.85, 0.85);
+        knife3D.scale.set(0.70, 0.70, 0.70);
       }
     }
   }
@@ -3596,16 +3600,16 @@ function initAboutThreeScene() {
     const isMobileMode = window.innerWidth <= 768;
     const getBaseScale = (fig) => {
       if (isMobileMode) {
-        if (fig === greenBoard3D) return 0.62;
-        if (fig === headphones3D) return 0.65;
-        if (fig === laptop3D) return 0.72;
-        if (fig === keyboard3D) return 0.52;
+        if (fig === greenBoard3D) return 0.44;
+        if (fig === headphones3D) return 0.50;
+        if (fig === laptop3D) return 0.62;
+        if (fig === keyboard3D) return 0.38;
         return 1.0;
       } else {
-        if (fig === greenBoard3D) return 0.78;
-        if (fig === headphones3D) return 0.78;
-        if (fig === laptop3D) return 0.85;
-        if (fig === keyboard3D) return 0.72;
+        if (fig === greenBoard3D) return 0.62;
+        if (fig === headphones3D) return 0.68;
+        if (fig === laptop3D) return 0.78;
+        if (fig === keyboard3D) return 0.58;
         return 1.0;
       }
     };
@@ -3764,19 +3768,19 @@ function initAboutThreeScene() {
 
     const isMobileAspect = window.innerWidth <= 768;
     if (isGreenBoardZoomed) {
-      targetGreenBoardPos.copy(isMobileAspect ? new THREE.Vector3(0, 45, 260) : zoomedGreenBoardPos);
-      targetGreenBoardScale = 0.95;
+      targetGreenBoardPos.copy(isMobileAspect ? new THREE.Vector3(0, 40, 160) : new THREE.Vector3(0, 50, 140));
+      targetGreenBoardScale = isMobileAspect ? 0.72 : 0.85;
     } else {
       targetGreenBoardPos.copy(defaultGreenBoardPos);
-      targetGreenBoardScale = isMobileAspect ? 0.62 : 0.78;
+      targetGreenBoardScale = isMobileAspect ? 0.44 : 0.62;
     }
 
     if (isHeadphonesZoomed) {
-      targetHeadphonesPos.copy(isMobileAspect ? new THREE.Vector3(0, 75, 270) : zoomedHeadphonesPos);
-      targetHeadphonesScale = isMobileAspect ? 0.88 : 0.82;
+      targetHeadphonesPos.copy(isMobileAspect ? new THREE.Vector3(0, 70, 180) : new THREE.Vector3(0, 75, 160));
+      targetHeadphonesScale = isMobileAspect ? 0.68 : 0.75;
     } else {
       targetHeadphonesPos.copy(defaultHeadphonesPos);
-      targetHeadphonesScale = isMobileAspect ? 0.65 : 0.78;
+      targetHeadphonesScale = isMobileAspect ? 0.50 : 0.68;
     }
   });
 
@@ -3786,7 +3790,7 @@ function initAboutThreeScene() {
       if (isGreenBoardZoomed) {
         isGreenBoardZoomed = false;
         targetGreenBoardPos.copy(defaultGreenBoardPos);
-        targetGreenBoardScale = isMobileAspect ? 0.62 : 0.78;
+        targetGreenBoardScale = isMobileAspect ? 0.44 : 0.62;
       }
       if (isLaptopZoomed) {
         isLaptopZoomed = false;
@@ -3795,7 +3799,7 @@ function initAboutThreeScene() {
         isHeadphonesZoomed = false;
         stopHeadphonesAudio();
         targetHeadphonesPos.copy(defaultHeadphonesPos);
-        targetHeadphonesScale = isMobileAspect ? 0.65 : 0.78;
+        targetHeadphonesScale = isMobileAspect ? 0.50 : 0.68;
       }
     }
   });
@@ -3950,18 +3954,18 @@ function initAboutThreeScene() {
 
       const isMobileAspect = window.innerWidth <= 768;
       if (isGreenBoardZoomed) {
-        targetGreenBoardPos.copy(isMobileAspect ? new THREE.Vector3(0, 45, 260) : zoomedGreenBoardPos);
-        targetGreenBoardScale = 0.95;
+        targetGreenBoardPos.copy(isMobileAspect ? new THREE.Vector3(0, 40, 160) : new THREE.Vector3(0, 50, 140));
+        targetGreenBoardScale = isMobileAspect ? 0.72 : 0.85;
       } else {
         targetGreenBoardPos.copy(defaultGreenBoardPos);
-        targetGreenBoardScale = isMobileAspect ? 0.62 : 0.78;
+        targetGreenBoardScale = isMobileAspect ? 0.44 : 0.62;
       }
       if (isHeadphonesZoomed) {
-        targetHeadphonesPos.copy(isMobileAspect ? new THREE.Vector3(0, 75, 270) : zoomedHeadphonesPos);
-        targetHeadphonesScale = isMobileAspect ? 0.88 : 0.82;
+        targetHeadphonesPos.copy(isMobileAspect ? new THREE.Vector3(0, 70, 180) : new THREE.Vector3(0, 75, 160));
+        targetHeadphonesScale = isMobileAspect ? 0.68 : 0.75;
       } else {
         targetHeadphonesPos.copy(defaultHeadphonesPos);
-        targetHeadphonesScale = isMobileAspect ? 0.65 : 0.78;
+        targetHeadphonesScale = isMobileAspect ? 0.50 : 0.68;
       }
     }
   }, { passive: true });
@@ -4002,7 +4006,7 @@ function initAboutThreeScene() {
     if (isLaptopZoomed && aboutCamera) {
       // Fly camera to comfortable laptop inspection view
       const isMobileAspect = window.innerWidth <= 768;
-      const targetLaptopCamPos = isMobileAspect ? new THREE.Vector3(0, 15, 340) : laptopScreenCamPos;
+      const targetLaptopCamPos = isMobileAspect ? new THREE.Vector3(0, 25, 400) : laptopScreenCamPos;
       const targetLaptopLookAt = isMobileAspect ? new THREE.Vector3(0, -35, 80) : laptopScreenLookAt;
       aboutCamera.position.lerp(targetLaptopCamPos, 0.08);
       aboutCamera.lookAt(targetLaptopLookAt);
@@ -4012,18 +4016,18 @@ function initAboutThreeScene() {
       const isPortrait = aspect < 1;
       const isMobile = window.innerWidth <= 768 || isPortrait;
       if (isMobile) {
-        const baseZ = Math.min(1080, Math.max(920, Math.round(470 / Math.max(aspect, 0.35))));
+        const baseZ = Math.min(1250, Math.max(1040, Math.round(540 / Math.max(aspect, 0.35))));
         const targetX = 0;
-        const targetY = 105;
-        const targetLookAt = new THREE.Vector3(0, 32, 0);
+        const targetY = 110;
+        const targetLookAt = new THREE.Vector3(0, 30, 0);
         aboutCamera.position.x += (targetX - aboutCamera.position.x) * 0.05;
         aboutCamera.position.y += (targetY - aboutCamera.position.y) * 0.05;
         aboutCamera.position.z += (baseZ - aboutCamera.position.z) * 0.05;
         aboutCamera.lookAt(targetLookAt);
       } else {
-        const baseZ = 840;
+        const baseZ = 880;
         const targetX = mouseX * 35;
-        const targetY = 120 - mouseY * 25;
+        const targetY = 125 - mouseY * 25;
         aboutCamera.position.x += (targetX - aboutCamera.position.x) * 0.05;
         aboutCamera.position.y += (targetY - aboutCamera.position.y) * 0.05;
         aboutCamera.position.z += (baseZ - aboutCamera.position.z) * 0.05;
@@ -4533,21 +4537,27 @@ window.setPhoneScreen = function(imgId, src, btn) {
       const href = item.getAttribute('href');
       if (href === '#aboutSection' && window.triggerShapeOverlays) {
         e.preventDefault();
+        window.isProgrammaticScroll = true;
         window.triggerShapeOverlays(() => {
           const target = document.getElementById('aboutSection');
           if (target) target.scrollIntoView({ behavior: 'instant' });
+          setTimeout(() => { window.isProgrammaticScroll = false; }, 1000);
         }, 'ENTERING 3D STUDIO DESKTOP', 'SYSTEM SHIFT // ARCHIVE VOL.01');
       } else if (href === '#contactSection' && window.triggerContactShapeOverlays) {
         e.preventDefault();
+        window.isProgrammaticScroll = true;
         window.triggerContactShapeOverlays(() => {
           const target = document.getElementById('contactSection');
           if (target) target.scrollIntoView({ behavior: 'instant' });
+          setTimeout(() => { window.isProgrammaticScroll = false; }, 1000);
         }, 'ENTERING CONTACT CONSOLE', 'COMMUNICATION PROTOCOL // ARCHIVE VOL.01');
       } else if (href === '#highwaySection' && window.triggerShapeOverlays) {
         e.preventDefault();
+        window.isProgrammaticScroll = true;
         window.triggerShapeOverlays(() => {
           const target = document.getElementById('highwaySection');
           if (target) target.scrollIntoView({ behavior: 'instant' });
+          setTimeout(() => { window.isProgrammaticScroll = false; }, 1000);
         }, 'ENTERING NH 6 HIGHWAY', 'HIGHWAY ROUTE // ARCHIVE VOL.01');
       }
     });
@@ -4712,10 +4722,12 @@ function getDrippyShapePath(progress, layerIndex = 0) {
       trigger: '#highwaySection',
       start: 'bottom 85%',
       onEnter: () => {
-        if (!isPlaying) {
+        if (!isPlaying && !window.isProgrammaticScroll) {
+          window.isProgrammaticScroll = true;
           window.triggerShapeOverlays(() => {
             const target = document.getElementById('aboutSection');
             if (target) target.scrollIntoView({ behavior: 'instant' });
+            setTimeout(() => { window.isProgrammaticScroll = false; }, 1000);
           }, 'ENTERING 3D STUDIO DESKTOP', 'SYSTEM SHIFT // ARCHIVE VOL.01');
         }
       }
@@ -4726,10 +4738,15 @@ function getDrippyShapePath(progress, layerIndex = 0) {
       trigger: '#aboutSection',
       start: 'top 20%',
       onEnterBack: () => {
-        if (!isPlaying) {
+        if (!isPlaying && !window.isProgrammaticScroll) {
+          window.isProgrammaticScroll = true;
           window.triggerShapeOverlays(() => {
             const target = document.getElementById('highwaySection');
-            if (target) target.scrollIntoView({ behavior: 'instant' });
+            if (target) {
+              const targetTop = target.offsetTop + Math.max(0, target.offsetHeight - window.innerHeight);
+              window.scrollTo({ top: targetTop, behavior: 'instant' });
+            }
+            setTimeout(() => { window.isProgrammaticScroll = false; }, 1000);
           }, 'ENTERING NH 6 HIGHWAY', 'HIGHWAY ROUTE // ARCHIVE VOL.01');
         }
       }
@@ -4837,10 +4854,12 @@ function getDrippyShapePath(progress, layerIndex = 0) {
       trigger: '#aboutSection',
       start: 'bottom 85%',
       onEnter: () => {
-        if (!isPlaying) {
+        if (!isPlaying && !window.isProgrammaticScroll) {
+          window.isProgrammaticScroll = true;
           window.triggerContactShapeOverlays(() => {
             const target = document.getElementById('contactSection');
             if (target) target.scrollIntoView({ behavior: 'instant' });
+            setTimeout(() => { window.isProgrammaticScroll = false; }, 1000);
           }, 'ENTERING CONTACT CONSOLE', 'COMMUNICATION PROTOCOL // ARCHIVE VOL.01');
         }
       }
@@ -4851,10 +4870,19 @@ function getDrippyShapePath(progress, layerIndex = 0) {
       trigger: '#contactSection',
       start: 'top 20%',
       onEnterBack: () => {
-        if (!isPlaying) {
+        if (!isPlaying && !window.isProgrammaticScroll) {
+          window.isProgrammaticScroll = true;
           window.triggerContactShapeOverlays(() => {
             const target = document.getElementById('aboutSection');
-            if (target) target.scrollIntoView({ behavior: 'instant' });
+            if (target) {
+              // Position near bottom of aboutSection so user stays in 3D studio
+              // and does not trigger highway's top 20% onEnterBack
+              const targetTop = target.offsetTop + Math.max(0, target.offsetHeight - window.innerHeight);
+              window.scrollTo({ top: targetTop, behavior: 'instant' });
+            }
+            setTimeout(() => {
+              window.isProgrammaticScroll = false;
+            }, 1200);
           }, 'ENTERING 3D STUDIO DESKTOP', 'SYSTEM SHIFT // ARCHIVE VOL.01');
         }
       }

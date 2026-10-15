@@ -19,9 +19,41 @@ let isAnimating = false;
 
 const stopNames = ['NIC', 'NEHU', 'KCG', 'TERMINUS']; // Next stop labels
 
+function playTuTuDuDu() {
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) return;
+    const ctx = new AudioContext();
+    
+    const playNote = (freq, time, dur) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = 'triangle';
+      osc.frequency.value = freq;
+      
+      gain.gain.setValueAtTime(0.1, ctx.currentTime + time);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + time + dur);
+      
+      osc.start(ctx.currentTime + time);
+      osc.stop(ctx.currentTime + time + dur);
+    };
+
+    playNote(349.23, 0, 0.15);   // F4
+    playNote(349.23, 0.15, 0.15); // F4
+    playNote(440.00, 0.3, 0.15); // A4
+    playNote(293.66, 0.45, 0.3); // D4
+  } catch (e) {
+    console.warn("Audio playback failed:", e);
+  }
+}
+
 function goToStop(index) {
   if (index < 0 || index >= STOPS) return;
-  
+  if (index !== activeStop) {
+    playTuTuDuDu();
+  }
   activeStop = index;
   
   // Update buttons

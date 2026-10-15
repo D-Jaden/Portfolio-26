@@ -426,10 +426,10 @@ html, body {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  gap: 15px;
+  gap: 20px;
   overflow-x: auto;
   overflow-y: hidden;
-  padding-bottom: 6px;
+  padding-bottom: 8px;
   padding-top: 2px;
   width: 100%;
   scrollbar-width: thin;
@@ -470,11 +470,11 @@ html, body {
 
 .phone-chassis {
   position: relative;
-  width: 174px;
-  height: 362px;
+  width: 168px;
+  height: 336px;
   background: #151922;
-  border-radius: 25px;
-  padding: 6px;
+  border-radius: 24px;
+  padding: 5px;
   box-shadow: 
     0 16px 36px -8px rgba(18, 18, 176, 0.24),
     0 8px 18px -4px rgba(15, 23, 42, 0.24),
@@ -506,8 +506,8 @@ html, body {
 
 .phone-screen {
   position: relative;
-  width: 162px;
-  height: 350px;
+  width: 158px;
+  height: 326px;
   border-radius: 19px;
   overflow: hidden;
   display: block;
@@ -555,10 +555,10 @@ html, body {
 .phone-screen-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center top;
   display: block;
-  background: #0f172a;
+  background: #000000;
 }
 
 .phone-home-indicator {
@@ -2664,22 +2664,23 @@ html, body {
 }
 
 .id-back-magstripe {
-  height: 38px;
+  height: clamp(24px, 5vw, 38px);
   background: #1e293b;
   width: 100%;
-  margin-top: 16px;
+  margin-top: clamp(8px, 2vw, 16px);
 }
 
 .id-back-body {
-  padding: 14px 20px;
+  padding: clamp(6px, 2vw, 14px) clamp(10px, 3vw, 20px);
   display: flex;
-  gap: 16px;
+  gap: clamp(8px, 2vw, 16px);
   align-items: center;
+  flex: 1;
 }
 
 .id-hologram-bat {
-  width: 65px;
-  height: 65px;
+  width: clamp(44px, 11vw, 65px);
+  height: clamp(44px, 11vw, 65px);
   border-radius: 50%;
   background: #000000;
   border: 2px solid #1e293b;
@@ -2689,9 +2690,16 @@ html, body {
   justify-content: center;
   font-family: 'Poppins', sans-serif;
   font-weight: 700;
-  font-size: 7.5px;
+  font-size: clamp(6px, 1.6vw, 7.5px);
   color: #94a3b8;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  flex-shrink: 0;
+}
+
+.id-hologram-bat img {
+  width: clamp(32px, 8vw, 52px) !important;
+  height: clamp(18px, 4.5vw, 30px) !important;
+  object-fit: contain;
 }
 
 .bat-logo-icon {
@@ -2703,16 +2711,21 @@ html, body {
   flex: 1;
   font-family: 'Poppins', sans-serif !important;
   font-weight: 700;
-  font-size: 11px;
+  font-size: clamp(8px, 2.3vw, 11px) !important;
   color: #334155;
-  line-height: 1.35;
+  line-height: 1.25 !important;
+}
+
+.id-back-text p {
+  margin: 0 0 clamp(2px, 0.6vw, 4px) 0;
 }
 
 .id-back-signature {
-  margin-top: 6px;
+  margin-top: clamp(1px, 0.8vw, 6px);
   font-family: 'Luxurious Script', cursive;
-  font-size: 20px;
+  font-size: clamp(13px, 3.4vw, 20px) !important;
   color: #1212B0;
+  line-height: 1;
 }
 
 .id-modal-hint {
@@ -2929,8 +2942,8 @@ html, body {
 
   /* Responsive Phone Chassis & Screen */
   .project-phone-showcase {
-    gap: 16px;
-    padding: 6px 6px 14px;
+    gap: 18px;
+    padding: 6px 8px 14px;
     margin-top: 6px;
     -webkit-overflow-scrolling: touch;
     scroll-snap-type: x mandatory;
@@ -2939,15 +2952,15 @@ html, body {
     scroll-snap-align: center;
   }
   .phone-chassis {
-    width: 160px;
-    height: 330px;
+    width: 154px;
+    height: 308px;
     border-radius: 20px;
-    padding: 4px;
+    padding: 4.5px;
     border-width: 1px;
   }
   .phone-screen {
-    width: 152px;
-    height: 322px;
+    width: 145px;
+    height: 299px;
     border-radius: 16px;
   }
   .phone-island {
@@ -3272,8 +3285,36 @@ html, body {
     max-width: 92vw;
   }
   .id-modal-card-flipper {
-    width: min(92vw, 290px);
-    height: 180px;
+    width: min(92vw, 300px);
+    height: 195px;
+  }
+  .id-back-magstripe {
+    height: 24px;
+    margin-top: 8px;
+  }
+  .id-back-body {
+    padding: 6px 12px;
+    gap: 10px;
+  }
+  .id-hologram-bat {
+    width: 46px;
+    height: 46px;
+    font-size: 6px;
+  }
+  .id-hologram-bat img {
+    width: 36px !important;
+    height: 20px !important;
+  }
+  .id-back-text {
+    font-size: clamp(8px, 2.3vw, 9.5px) !important;
+    line-height: 1.22 !important;
+  }
+  .id-back-text p {
+    margin: 0 0 2px 0;
+  }
+  .id-back-signature {
+    margin-top: 2px !important;
+    font-size: 14px !important;
   }
   .id-modal-btn {
     padding: 5px 12px;
@@ -3367,8 +3408,8 @@ html, body {
   }
   .drawer-box {
     top: 52px;
-    height: min(450px, calc(100vh - 70px));
-    min-height: 415px;
+    height: min(475px, calc(100vh - 65px));
+    min-height: 425px;
   }
   .folder-tab {
     top: -24px;
@@ -3407,8 +3448,8 @@ html, body {
   }
 
   .project-phone-showcase {
-    gap: 14px;
-    padding: 4px 4px 10px;
+    gap: 16px;
+    padding: 6px 8px 12px;
     margin-top: 4px;
     -webkit-overflow-scrolling: touch;
     scroll-snap-type: x mandatory;
@@ -3417,15 +3458,15 @@ html, body {
     scroll-snap-align: center;
   }
   .phone-chassis {
-    width: 150px;
-    height: 310px;
+    width: 140px;
+    height: 278px;
     border-radius: 18px;
     padding: 3.5px;
     border-width: 1px;
   }
   .phone-screen {
-    width: 143px;
-    height: 303px;
+    width: 133px;
+    height: 271px;
     border-radius: 14px;
   }
   .phone-island {
@@ -3640,8 +3681,32 @@ html, body {
     font-size: 7px;
   }
   .id-modal-card-flipper {
-    width: min(90vw, 260px);
-    height: 160px;
+    width: min(94vw, 280px);
+    height: 185px;
+  }
+  .id-back-magstripe {
+    height: 20px;
+    margin-top: 6px;
+  }
+  .id-back-body {
+    padding: 4px 10px;
+    gap: 8px;
+  }
+  .id-hologram-bat {
+    width: 40px;
+    height: 40px;
+  }
+  .id-hologram-bat img {
+    width: 30px !important;
+    height: 17px !important;
+  }
+  .id-back-text {
+    font-size: 8px !important;
+    line-height: 1.18 !important;
+  }
+  .id-back-signature {
+    font-size: 13px !important;
+    margin-top: 1px !important;
   }
 }
 

@@ -1257,44 +1257,56 @@ function create3DWallPegHook(sharedEnvMap) {
 // ── PROCEDURAL STUDIO SOFTBOX ENVIRONMENT MAP (FOR LIQUID MIRROR CHROME REFLECTIONS) ──
 function createStudioChromeEnvMap() {
   const canvas = document.createElement('canvas');
-  canvas.width = 512;
-  canvas.height = 256;
+  canvas.width = 1024;
+  canvas.height = 512;
   const ctx = canvas.getContext('2d');
 
-  // Deep studio gradient background
-  const bg = ctx.createLinearGradient(0, 0, 0, 256);
-  bg.addColorStop(0, '#0f172a');
-  bg.addColorStop(0.35, '#334155');
-  bg.addColorStop(0.7, '#1e293b');
-  bg.addColorStop(1, '#020617');
+  // Deep studio gradient background with subtle spherical curvature
+  const bg = ctx.createLinearGradient(0, 0, 0, 512);
+  bg.addColorStop(0, '#0a0f1d');
+  bg.addColorStop(0.35, '#24334a');
+  bg.addColorStop(0.65, '#151e2e');
+  bg.addColorStop(0.85, '#281a10'); // Warm oak bounce in lower hemisphere
+  bg.addColorStop(1, '#110a05');
   ctx.fillStyle = bg;
-  ctx.fillRect(0, 0, 512, 256);
+  ctx.fillRect(0, 0, 1024, 512);
 
   // Softbox 1: Overhead primary bright white diffuse light panel
-  const softbox1 = ctx.createLinearGradient(0, 15, 0, 95);
+  const softbox1 = ctx.createLinearGradient(0, 25, 0, 190);
   softbox1.addColorStop(0, 'rgba(255, 255, 255, 0)');
-  softbox1.addColorStop(0.5, 'rgba(255, 255, 255, 1)');
+  softbox1.addColorStop(0.2, 'rgba(255, 255, 255, 0.95)');
+  softbox1.addColorStop(0.8, 'rgba(255, 255, 255, 0.95)');
   softbox1.addColorStop(1, 'rgba(255, 255, 255, 0)');
   ctx.fillStyle = softbox1;
-  ctx.fillRect(50, 15, 260, 80);
+  ctx.fillRect(100, 25, 520, 165);
 
-  // Softbox 2: Sharp kicker rim reflection strip
-  const softbox2 = ctx.createLinearGradient(340, 0, 480, 0);
+  // Softbox 2: Lateral fill softbox
+  const softbox2 = ctx.createLinearGradient(680, 0, 960, 0);
   softbox2.addColorStop(0, 'rgba(255, 255, 255, 0)');
-  softbox2.addColorStop(0.5, 'rgba(255, 255, 255, 0.95)');
+  softbox2.addColorStop(0.5, 'rgba(255, 255, 255, 0.92)');
   softbox2.addColorStop(1, 'rgba(255, 255, 255, 0)');
   ctx.fillStyle = softbox2;
-  ctx.fillRect(340, 60, 140, 140);
+  ctx.fillRect(680, 120, 280, 280);
 
   // Softbox 3: Warm golden key fill reflection strip matching room lighting
-  const softbox3 = ctx.createRadialGradient(256, 170, 10, 256, 170, 110);
-  softbox3.addColorStop(0, 'rgba(255, 250, 237, 0.9)');
-  softbox3.addColorStop(1, 'rgba(255, 250, 237, 0)');
+  const softbox3 = ctx.createRadialGradient(512, 340, 20, 512, 340, 220);
+  softbox3.addColorStop(0, 'rgba(255, 248, 230, 0.88)');
+  softbox3.addColorStop(0.7, 'rgba(255, 225, 185, 0.35)');
+  softbox3.addColorStop(1, 'rgba(255, 225, 185, 0)');
   ctx.fillStyle = softbox3;
-  ctx.fillRect(160, 110, 200, 110);
+  ctx.fillRect(320, 220, 400, 220);
+
+  // Softbox 4: Cool cyan rim strip
+  const softbox4 = ctx.createLinearGradient(0, 180, 180, 180);
+  softbox4.addColorStop(0, 'rgba(56, 189, 248, 0.85)');
+  softbox4.addColorStop(1, 'rgba(56, 189, 248, 0)');
+  ctx.fillStyle = softbox4;
+  ctx.fillRect(0, 180, 180, 180);
 
   const tex = new THREE.CanvasTexture(canvas);
   tex.mapping = THREE.EquirectangularReflectionMapping;
+  if (THREE.SRGBColorSpace) tex.colorSpace = THREE.SRGBColorSpace;
+  else if (THREE.sRGBEncoding) tex.encoding = THREE.sRGBEncoding;
   return tex;
 }
 
@@ -2824,15 +2836,31 @@ function create3DDeskOpenLaptop(sharedStudioEnvMap) {
 }
 
 // ── REALISTIC ORGANIC BONSAI TREE (SMOOTH GNARLED WOOD TRUNK & FULL CANOPY) ──
-function createNormalOrganicBonsaiPlant() {
+function createNormalOrganicBonsaiPlant(sharedEnvMap) {
   const group = new THREE.Group();
+  const envMap = sharedEnvMap || createStudioChromeEnvMap();
+
+  // 0. Soft Ground Contact Ambient Occlusion Shadow Disc
+  const potShadowGeo = new THREE.CircleGeometry(65, 32);
+  potShadowGeo.rotateX(-Math.PI / 2);
+  const potShadowMat = new THREE.MeshBasicMaterial({
+    color: 0x050403,
+    transparent: true,
+    opacity: 0.42,
+    depthWrite: false
+  });
+  const potShadowMesh = new THREE.Mesh(potShadowGeo, potShadowMat);
+  potShadowMesh.position.y = 0.2;
+  group.add(potShadowMesh);
 
   // 1. Glazed Navy Ceramic Planter Trough
   const potGeo = new THREE.CylinderGeometry(68, 54, 44, 32);
   const potMat = new THREE.MeshStandardMaterial({
-    color: 0x16202c,
-    roughness: 0.2,
-    metalness: 0.15
+    color: 0x141f2d,
+    roughness: 0.16,
+    metalness: 0.18,
+    envMap: envMap,
+    envMapIntensity: 0.70
   });
   const potMesh = new THREE.Mesh(potGeo, potMat);
   potMesh.position.y = 22;
@@ -3008,6 +3036,696 @@ function createHighQualityUtilityKnife() {
   return group;
 }
 
+// ── MUSEUM-GRADE ARTISAN WOODEN CHESSBOARD WITH 3D STAUNTON PIECES ──
+function createProceduralChessboardTexture() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1024;
+  canvas.height = 1024;
+  const ctx = canvas.getContext('2d');
+
+  // 1. Rich Smoked Walnut Frame Base
+  const frameGrad = ctx.createLinearGradient(0, 0, 1024, 1024);
+  frameGrad.addColorStop(0, '#26140b');
+  frameGrad.addColorStop(0.5, '#341c10');
+  frameGrad.addColorStop(1, '#1e0e07');
+  ctx.fillStyle = frameGrad;
+  ctx.fillRect(0, 0, 1024, 1024);
+
+  // Organic wood grain ripples across the walnut frame
+  ctx.lineWidth = 2;
+  for (let y = 0; y < 1024; y += 4) {
+    const wave = Math.sin(y * 0.04) * 8 + Math.cos(y * 0.09) * 4;
+    ctx.strokeStyle = y % 12 === 0 ? 'rgba(210, 155, 95, 0.09)' : 'rgba(10, 5, 2, 0.22)';
+    ctx.beginPath();
+    ctx.moveTo(0, y + wave);
+    ctx.bezierCurveTo(340, y + wave + 6, 680, y + wave - 6, 1024, y + wave);
+    ctx.stroke();
+  }
+
+  const margin = 96;
+  const innerSize = 1024 - margin * 2; // 832px
+  const sqSize = innerSize / 8; // 104px per square
+
+  // 2. Inlaid Boxwood & Polished Brass Stringing Frame
+  // Outer Inlaid Maple Stringing
+  ctx.strokeStyle = '#ecd7ba';
+  ctx.lineWidth = 2.5;
+  ctx.strokeRect(margin - 12, margin - 12, innerSize + 24, innerSize + 24);
+
+  // Ebony Separator Line
+  ctx.strokeStyle = '#120a06';
+  ctx.lineWidth = 1.5;
+  ctx.strokeRect(margin - 8.5, margin - 8.5, innerSize + 17, innerSize + 17);
+
+  // Polished Inlaid Metallic Brass Stripe
+  const brassGrad = ctx.createLinearGradient(margin, margin, margin + innerSize, margin + innerSize);
+  brassGrad.addColorStop(0, '#e5c068');
+  brassGrad.addColorStop(0.3, '#f9df98');
+  brassGrad.addColorStop(0.7, '#c29640');
+  brassGrad.addColorStop(1, '#eed282');
+  ctx.strokeStyle = brassGrad;
+  ctx.lineWidth = 4;
+  ctx.strokeRect(margin - 5, margin - 5, innerSize + 10, innerSize + 10);
+
+  // Inner Dark Walnut Border Line
+  ctx.strokeStyle = '#1a0d06';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(margin - 1, margin - 1, innerSize + 2, innerSize + 2);
+
+  // 3. 64 Precision-Inlaid Artisan Chess Squares
+  const files = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+  const ranks = ['8', '7', '6', '5', '4', '3', '2', '1'];
+
+  for (let r = 0; r < 8; r++) {
+    for (let c = 0; c < 8; c++) {
+      const isLight = (r + c) % 2 === 0;
+      const x = margin + c * sqSize;
+      const y = margin + r * sqSize;
+
+      if (isLight) {
+        // Natural Birdseye Maple / Italian Boxwood Light Square
+        const lightGrad = ctx.createLinearGradient(x, y, x + sqSize, y + sqSize);
+        lightGrad.addColorStop(0, '#f2e2cb');
+        lightGrad.addColorStop(0.5, '#edd7b7');
+        lightGrad.addColorStop(1, '#e3cbb0');
+        ctx.fillStyle = lightGrad;
+        ctx.fillRect(x, y, sqSize, sqSize);
+
+        // Subtle fine vertical wood rays
+        ctx.fillStyle = 'rgba(180, 138, 92, 0.08)';
+        for (let gx = 3; gx < sqSize; gx += 4) {
+          ctx.fillRect(x + gx, y, 1.2, sqSize);
+        }
+
+        // Faint wavy growth grain
+        ctx.strokeStyle = 'rgba(195, 150, 105, 0.12)';
+        ctx.lineWidth = 1;
+        for (let gy = 8; gy < sqSize; gy += 16) {
+          ctx.beginPath();
+          ctx.moveTo(x, y + gy + Math.sin(gy * 0.2) * 3);
+          ctx.lineTo(x + sqSize, y + gy + Math.cos(gy * 0.2) * 3);
+          ctx.stroke();
+        }
+
+        // Subtle bevel border giving individual tile inlay appearance
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(x + 0.5, y + 0.5, sqSize - 1, sqSize - 1);
+      } else {
+        // Smoked Walnut / East Indian Rosewood Dark Square
+        const darkGrad = ctx.createLinearGradient(x, y, x + sqSize, y + sqSize);
+        darkGrad.addColorStop(0, '#532e18');
+        darkGrad.addColorStop(0.5, '#442312');
+        darkGrad.addColorStop(1, '#391b0c');
+        ctx.fillStyle = darkGrad;
+        ctx.fillRect(x, y, sqSize, sqSize);
+
+        // Rich curly walnut grain waves
+        ctx.strokeStyle = 'rgba(20, 10, 4, 0.26)';
+        ctx.lineWidth = 1.6;
+        for (let gy = 6; gy < sqSize; gy += 10) {
+          ctx.beginPath();
+          ctx.moveTo(x, y + gy + Math.sin((x + gy) * 0.1) * 4);
+          ctx.bezierCurveTo(x + sqSize * 0.4, y + gy + 5, x + sqSize * 0.7, y + gy - 4, x + sqSize, y + gy);
+          ctx.stroke();
+        }
+
+        // Amber pores
+        ctx.fillStyle = 'rgba(195, 115, 60, 0.10)';
+        for (let gx = 6; gx < sqSize; gx += 8) {
+          ctx.fillRect(x + gx, y + 4, 1.2, sqSize - 8);
+        }
+
+        // Inlay perimeter shadow
+        ctx.strokeStyle = 'rgba(0, 0, 0, 0.38)';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(x + 0.5, y + 0.5, sqSize - 1, sqSize - 1);
+      }
+    }
+  }
+
+  // 4. Inlaid Corner Rosette Accents
+  const cornerDist = margin / 2 + 2;
+  const drawCornerRosette = (cx, cy) => {
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.strokeStyle = '#c5a059';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(0, 0, 10, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.fillStyle = '#edd28a';
+    ctx.beginPath();
+    ctx.arc(0, 0, 3.5, 0, Math.PI * 2);
+    ctx.fill();
+    for (let a = 0; a < 4; a++) {
+      ctx.rotate(Math.PI / 2);
+      ctx.beginPath();
+      ctx.moveTo(0, 10);
+      ctx.lineTo(0, 16);
+      ctx.stroke();
+    }
+    ctx.restore();
+  };
+  drawCornerRosette(cornerDist, cornerDist);
+  drawCornerRosette(1024 - cornerDist, cornerDist);
+  drawCornerRosette(cornerDist, 1024 - cornerDist);
+  drawCornerRosette(1024 - cornerDist, 1024 - cornerDist);
+
+  // 5. Crisp Engraved Notation Labels (Files a-h, Ranks 1-8)
+  ctx.fillStyle = '#dfbe86';
+  ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
+  ctx.shadowBlur = 3;
+  ctx.shadowOffsetX = 1;
+  ctx.shadowOffsetY = 1;
+  ctx.font = '700 24px "Space Grotesk", "Share Tech Mono", monospace, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+
+  for (let c = 0; c < 8; c++) {
+    const x = margin + c * sqSize + sqSize / 2;
+    ctx.fillText(files[c], x, margin / 2 + 12);
+    ctx.fillText(files[c], x, 1024 - margin / 2 - 12);
+  }
+
+  for (let r = 0; r < 8; r++) {
+    const y = margin + r * sqSize + sqSize / 2;
+    ctx.fillText(ranks[r], margin / 2 - 12, y);
+    ctx.fillText(ranks[r], 1024 - margin / 2 + 12, y);
+  }
+  ctx.shadowColor = 'transparent';
+
+  const tex = new THREE.CanvasTexture(canvas);
+  if (THREE.SRGBColorSpace) tex.colorSpace = THREE.SRGBColorSpace;
+  else if (THREE.sRGBEncoding) tex.encoding = THREE.sRGBEncoding;
+  return tex;
+}
+
+function createHighQuality3DChessboard(sharedStudioEnvMap) {
+  const group = new THREE.Group();
+  const envMap = sharedStudioEnvMap || createStudioChromeEnvMap();
+
+  // 0. Soft Ground Contact Ambient Occlusion Shadow Plane directly under board on desk
+  const aoCanvas = document.createElement('canvas');
+  aoCanvas.width = 256;
+  aoCanvas.height = 256;
+  const aoCtx = aoCanvas.getContext('2d');
+  const aoGrad = aoCtx.createRadialGradient(128, 128, 60, 128, 128, 128);
+  aoGrad.addColorStop(0, 'rgba(0, 0, 0, 0.65)');
+  aoGrad.addColorStop(0.65, 'rgba(0, 0, 0, 0.35)');
+  aoGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+  aoCtx.fillStyle = aoGrad;
+  aoCtx.fillRect(0, 0, 256, 256);
+  const aoTex = new THREE.CanvasTexture(aoCanvas);
+
+  const boardShadowGeo = new THREE.PlaneGeometry(245, 245);
+  const boardShadowMat = new THREE.MeshBasicMaterial({
+    map: aoTex,
+    transparent: true,
+    opacity: 0.65,
+    depthWrite: false
+  });
+  const boardShadowMesh = new THREE.Mesh(boardShadowGeo, boardShadowMat);
+  boardShadowMesh.rotation.x = -Math.PI / 2;
+  boardShadowMesh.position.y = 0.2;
+  group.add(boardShadowMesh);
+
+  // 1. Turned Brass & Non-Slip Rubber Riser Feet (Lifting board realistically)
+  const footBrassMat = new THREE.MeshStandardMaterial({
+    color: 0xd4af37,
+    metalness: 0.88,
+    roughness: 0.22,
+    envMap: envMap,
+    envMapIntensity: 0.8
+  });
+  const footRubberMat = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.9 });
+  const footGeo = new THREE.CylinderGeometry(6, 7.5, 3.2, 16);
+  const rubberGeo = new THREE.CylinderGeometry(5.2, 5.2, 0.8, 16);
+  [[-96, -96], [96, -96], [-96, 96], [96, 96]].forEach(([fx, fz]) => {
+    const fMesh = new THREE.Mesh(footGeo, footBrassMat);
+    fMesh.position.set(fx, 1.6, fz);
+    fMesh.castShadow = true;
+    group.add(fMesh);
+    const rMesh = new THREE.Mesh(rubberGeo, footRubberMat);
+    rMesh.position.set(fx, 0.4, fz);
+    group.add(rMesh);
+  });
+
+  // 2. Multi-Tiered Routed Walnut Plinth (Lower Base & Riser)
+  const basePlinthGeo = new THREE.BoxGeometry(216, 3.5, 216);
+  const riserPlinthGeo = new THREE.BoxGeometry(208, 8.5, 208);
+  const plinthMat = new THREE.MeshStandardMaterial({
+    color: 0x2e190e,
+    roughness: 0.32,
+    metalness: 0.04,
+    envMap: envMap,
+    envMapIntensity: 0.35
+  });
+  const basePlinthMesh = new THREE.Mesh(basePlinthGeo, plinthMat);
+  basePlinthMesh.position.y = 4.75;
+  basePlinthMesh.castShadow = true;
+  basePlinthMesh.receiveShadow = true;
+  group.add(basePlinthMesh);
+
+  const riserPlinthMesh = new THREE.Mesh(riserPlinthGeo, plinthMat);
+  riserPlinthMesh.position.y = 10.75;
+  riserPlinthMesh.castShadow = true;
+  riserPlinthMesh.receiveShadow = true;
+  group.add(riserPlinthMesh);
+
+  // 3. High-Res Inlaid Playing Field Top Surface
+  const topGeo = new THREE.PlaneGeometry(208, 208);
+  const topMat = new THREE.MeshStandardMaterial({
+    map: createProceduralChessboardTexture(),
+    roughness: 0.26,
+    metalness: 0.05,
+    envMap: envMap,
+    envMapIntensity: 0.45
+  });
+  const topMesh = new THREE.Mesh(topGeo, topMat);
+  topMesh.rotation.x = -Math.PI / 2;
+  topMesh.position.y = 15.02;
+  topMesh.receiveShadow = true;
+  group.add(topMesh);
+
+  // 4. Routed Cove Molding Trim Frame Lip around border
+  const trimMat = new THREE.MeshStandardMaterial({
+    color: 0x221108,
+    roughness: 0.28,
+    metalness: 0.06,
+    envMap: envMap,
+    envMapIntensity: 0.4
+  });
+  const sideW = new THREE.BoxGeometry(214, 12, 3.5);
+  const sideH = new THREE.BoxGeometry(3.5, 12, 207);
+
+  const t1 = new THREE.Mesh(sideW, trimMat); t1.position.set(0, 10, 105.25); group.add(t1);
+  const t2 = new THREE.Mesh(sideW, trimMat); t2.position.set(0, 10, -105.25); group.add(t2);
+  const t3 = new THREE.Mesh(sideH, trimMat); t3.position.set(105.25, 10, 0); group.add(t3);
+  const t4 = new THREE.Mesh(sideH, trimMat); t4.position.set(-105.25, 10, 0); group.add(t4);
+
+  // 5. Polished Cast Brass Corner Brackets with Dome Rivets
+  const cornerBracketMat = new THREE.MeshStandardMaterial({
+    color: 0xdfb746,
+    metalness: 0.92,
+    roughness: 0.18,
+    envMap: envMap,
+    envMapIntensity: 0.85
+  });
+  const rivetGeo = new THREE.SphereGeometry(1.2, 12, 12);
+
+  [[-105, -105], [105, -105], [-105, 105], [105, 105]].forEach(([cx, cz]) => {
+    const cGeo = new THREE.BoxGeometry(8, 12.5, 8);
+    const cMesh = new THREE.Mesh(cGeo, cornerBracketMat);
+    cMesh.position.set(cx, 10, cz);
+    cMesh.castShadow = true;
+    group.add(cMesh);
+
+    // Decorative polished rivets on corner brackets
+    const signX = Math.sign(cx) || 1;
+    const signZ = Math.sign(cz) || 1;
+
+    const rTop = new THREE.Mesh(rivetGeo, cornerBracketMat);
+    rTop.position.set(cx, 15.6, cz);
+    group.add(rTop);
+
+    const rSideX = new THREE.Mesh(rivetGeo, cornerBracketMat);
+    rSideX.position.set(cx + signX * 3.8, 11, cz);
+    group.add(rSideX);
+
+    const rSideZ = new THREE.Mesh(rivetGeo, cornerBracketMat);
+    rSideZ.position.set(cx, 11, cz + signZ * 3.8);
+    group.add(rSideZ);
+  });
+
+  // 6. Luxury Hand-Polished Staunton Tournament Chess Pieces
+  // Natural Boxwood White Pieces
+  const whiteMat = new THREE.MeshStandardMaterial({
+    color: 0xf5ebdc,
+    roughness: 0.17,
+    metalness: 0.04,
+    envMap: envMap,
+    envMapIntensity: 0.65
+  });
+
+  // Smoked Rosewood / Ebony Black Pieces
+  const blackMat = new THREE.MeshStandardMaterial({
+    color: 0x1b1310,
+    roughness: 0.20,
+    metalness: 0.07,
+    envMap: envMap,
+    envMapIntensity: 0.70
+  });
+
+  // Green Billiard Felt Base Material
+  const feltMat = new THREE.MeshBasicMaterial({ color: 0x164227 });
+
+  // Ground Contact Ambient Occlusion Shadow Disc Material for Pieces
+  const pieceShadowMat = new THREE.MeshBasicMaterial({
+    color: 0x020101,
+    transparent: true,
+    opacity: 0.38,
+    depthWrite: false
+  });
+
+  function addFeltAndShadow(pGroup, baseRadius) {
+    // Contact shadow on square surface
+    const cGeo = new THREE.CircleGeometry(baseRadius * 1.15, 16);
+    cGeo.rotateX(-Math.PI / 2);
+    const cMesh = new THREE.Mesh(cGeo, pieceShadowMat);
+    cMesh.position.y = 0.03;
+    pGroup.add(cMesh);
+
+    // Green billiard felt pad under piece
+    const fGeo = new THREE.CylinderGeometry(baseRadius * 0.94, baseRadius * 0.94, 0.35, 16);
+    const fMesh = new THREE.Mesh(fGeo, feltMat);
+    fMesh.position.y = 0.2;
+    pGroup.add(fMesh);
+  }
+
+  // ── PAWN ──
+  const pawnPoints = [
+    new THREE.Vector2(0, 0),
+    new THREE.Vector2(6.2, 0),
+    new THREE.Vector2(6.6, 0.7),
+    new THREE.Vector2(6.0, 1.6),
+    new THREE.Vector2(5.2, 2.7),
+    new THREE.Vector2(4.4, 4.0),
+    new THREE.Vector2(3.5, 7.2),
+    new THREE.Vector2(2.8, 10.2),
+    new THREE.Vector2(3.8, 10.9),
+    new THREE.Vector2(4.2, 11.4),
+    new THREE.Vector2(3.0, 12.0),
+    new THREE.Vector2(0, 12.1)
+  ];
+  const pawnBodyGeo = new THREE.LatheGeometry(pawnPoints, 24);
+  const pawnHeadGeo = new THREE.SphereGeometry(3.6, 20, 20);
+  const pawnPipGeo = new THREE.SphereGeometry(0.8, 10, 10);
+
+  function createPawnMesh(mat) {
+    const pGroup = new THREE.Group();
+    addFeltAndShadow(pGroup, 6.2);
+    const body = new THREE.Mesh(pawnBodyGeo, mat);
+    body.castShadow = true;
+    pGroup.add(body);
+    const head = new THREE.Mesh(pawnHeadGeo, mat);
+    head.position.y = 14.8;
+    head.castShadow = true;
+    pGroup.add(head);
+    const pip = new THREE.Mesh(pawnPipGeo, mat);
+    pip.position.y = 18.2;
+    pGroup.add(pip);
+    return pGroup;
+  }
+
+  // ── ROOK ──
+  const rookPoints = [
+    new THREE.Vector2(0, 0),
+    new THREE.Vector2(7.2, 0),
+    new THREE.Vector2(7.6, 0.8),
+    new THREE.Vector2(6.8, 1.8),
+    new THREE.Vector2(6.0, 3.0),
+    new THREE.Vector2(5.3, 5.0),
+    new THREE.Vector2(4.7, 8.8),
+    new THREE.Vector2(4.5, 12.0),
+    new THREE.Vector2(5.2, 13.2),
+    new THREE.Vector2(6.2, 14.2),
+    new THREE.Vector2(7.0, 15.0),
+    new THREE.Vector2(7.0, 18.2),
+    new THREE.Vector2(5.0, 18.2),
+    new THREE.Vector2(5.0, 16.2),
+    new THREE.Vector2(0, 16.2)
+  ];
+  const rookBodyGeo = new THREE.LatheGeometry(rookPoints, 24);
+  const rookCrenelGeo = new THREE.BoxGeometry(2.5, 2.2, 2.4);
+
+  function createRookMesh(mat) {
+    const rGroup = new THREE.Group();
+    addFeltAndShadow(rGroup, 7.2);
+    const body = new THREE.Mesh(rookBodyGeo, mat);
+    body.castShadow = true;
+    rGroup.add(body);
+    for (let i = 0; i < 4; i++) {
+      const cr = new THREE.Mesh(rookCrenelGeo, mat);
+      const ang = (i * Math.PI) / 2;
+      cr.position.set(Math.cos(ang) * 5.9, 19.3, Math.sin(ang) * 5.9);
+      cr.castShadow = true;
+      rGroup.add(cr);
+    }
+    return rGroup;
+  }
+
+  // ── KNIGHT (SCULPTED STAUNTON STALLION) ──
+  const knightBasePoints = [
+    new THREE.Vector2(0, 0),
+    new THREE.Vector2(7.2, 0),
+    new THREE.Vector2(7.6, 0.8),
+    new THREE.Vector2(6.8, 1.8),
+    new THREE.Vector2(6.0, 3.0),
+    new THREE.Vector2(5.2, 5.0),
+    new THREE.Vector2(5.0, 6.5),
+    new THREE.Vector2(5.8, 7.6),
+    new THREE.Vector2(0, 7.6)
+  ];
+  const knightBaseGeo = new THREE.LatheGeometry(knightBasePoints, 24);
+  const knightNeckGeo = new THREE.CylinderGeometry(4.2, 5.2, 9, 16);
+  const knightHeadGeo = new THREE.BoxGeometry(5.2, 7.5, 7.8);
+  const knightSnoutGeo = new THREE.BoxGeometry(4.4, 4.4, 6.2);
+  const knightEarGeo = new THREE.ConeGeometry(1.2, 3.8, 8);
+  const knightManeGeo = new THREE.BoxGeometry(1.8, 3.2, 3.2);
+
+  function createKnightMesh(mat, isBlack) {
+    const kGroup = new THREE.Group();
+    addFeltAndShadow(kGroup, 7.2);
+    const base = new THREE.Mesh(knightBaseGeo, mat);
+    base.castShadow = true;
+    kGroup.add(base);
+
+    // Muscular arched neck leaning toward opponent
+    const neck = new THREE.Mesh(knightNeckGeo, mat);
+    neck.position.set(0, 11.2, isBlack ? -0.8 : 0.8);
+    neck.rotation.x = isBlack ? -0.22 : 0.22;
+    neck.castShadow = true;
+    kGroup.add(neck);
+
+    // Sculpted head
+    const head = new THREE.Mesh(knightHeadGeo, mat);
+    head.position.set(0, 16.2, isBlack ? -1.0 : 1.0);
+    head.rotation.x = isBlack ? -0.15 : 0.15;
+    head.castShadow = true;
+    kGroup.add(head);
+
+    // Muzzle & Snout
+    const snout = new THREE.Mesh(knightSnoutGeo, mat);
+    snout.position.set(0, 14.0, isBlack ? -5.2 : 5.2);
+    snout.rotation.x = isBlack ? 0.12 : -0.12;
+    snout.castShadow = true;
+    kGroup.add(snout);
+
+    // Pricked ears
+    [-1.7, 1.7].forEach(ex => {
+      const ear = new THREE.Mesh(knightEarGeo, mat);
+      ear.position.set(ex, 20.2, isBlack ? 1.0 : -1.0);
+      ear.rotation.x = isBlack ? 0.25 : -0.25;
+      kGroup.add(ear);
+    });
+
+    // Carved mane crest down back of neck
+    [0, 1, 2].forEach(mIdx => {
+      const mane = new THREE.Mesh(knightManeGeo, mat);
+      const mY = 17.5 - mIdx * 3.0;
+      const mZ = isBlack ? (2.8 + mIdx * 1.0) : (-2.8 - mIdx * 1.0);
+      mane.position.set(0, mY, mZ);
+      kGroup.add(mane);
+    });
+
+    return kGroup;
+  }
+
+  // ── BISHOP (MITER WITH CROSS-SLIT) ──
+  const bishopPoints = [
+    new THREE.Vector2(0, 0),
+    new THREE.Vector2(6.8, 0),
+    new THREE.Vector2(7.2, 0.9),
+    new THREE.Vector2(6.4, 2.0),
+    new THREE.Vector2(5.6, 3.2),
+    new THREE.Vector2(4.6, 5.5),
+    new THREE.Vector2(3.6, 9.5),
+    new THREE.Vector2(3.0, 13.5),
+    new THREE.Vector2(4.0, 14.5),
+    new THREE.Vector2(4.4, 15.2),
+    new THREE.Vector2(3.2, 15.8),
+    new THREE.Vector2(0, 15.9)
+  ];
+  const bishopBodyGeo = new THREE.LatheGeometry(bishopPoints, 24);
+  const bishopMiterGeo = new THREE.SphereGeometry(4.4, 20, 20);
+  bishopMiterGeo.scale(0.85, 1.45, 0.85);
+  const bishopSlitGeo = new THREE.BoxGeometry(0.8, 4.6, 6.8);
+  const bishopSlitMat = new THREE.MeshStandardMaterial({ color: 0x050505, roughness: 0.9 });
+  const bishopFinialGeo = new THREE.SphereGeometry(1.4, 14, 14);
+
+  function createBishopMesh(mat) {
+    const bGroup = new THREE.Group();
+    addFeltAndShadow(bGroup, 6.8);
+    const body = new THREE.Mesh(bishopBodyGeo, mat);
+    body.castShadow = true;
+    bGroup.add(body);
+    const miter = new THREE.Mesh(bishopMiterGeo, mat);
+    miter.position.y = 19.2;
+    miter.castShadow = true;
+    bGroup.add(miter);
+    const slit = new THREE.Mesh(bishopSlitGeo, bishopSlitMat);
+    slit.position.y = 19.8;
+    slit.rotation.z = -0.42;
+    bGroup.add(slit);
+    const finial = new THREE.Mesh(bishopFinialGeo, mat);
+    finial.position.y = 24.6;
+    finial.castShadow = true;
+    bGroup.add(finial);
+    return bGroup;
+  }
+
+  // ── QUEEN (8-PEARL CORONET) ──
+  const queenPoints = [
+    new THREE.Vector2(0, 0),
+    new THREE.Vector2(7.6, 0),
+    new THREE.Vector2(8.0, 0.9),
+    new THREE.Vector2(7.2, 2.1),
+    new THREE.Vector2(6.4, 3.4),
+    new THREE.Vector2(5.2, 6.0),
+    new THREE.Vector2(4.0, 11.5),
+    new THREE.Vector2(3.4, 16.5),
+    new THREE.Vector2(4.6, 18.0),
+    new THREE.Vector2(5.0, 18.8),
+    new THREE.Vector2(4.0, 19.5),
+    new THREE.Vector2(0, 19.6)
+  ];
+  const queenBodyGeo = new THREE.LatheGeometry(queenPoints, 24);
+  const queenCoronetGeo = new THREE.CylinderGeometry(7.2, 4.0, 4.2, 24);
+  const queenPearlGeo = new THREE.SphereGeometry(1.0, 12, 12);
+  const queenOrbGeo = new THREE.SphereGeometry(1.8, 16, 16);
+
+  function createQueenMesh(mat) {
+    const qGroup = new THREE.Group();
+    addFeltAndShadow(qGroup, 7.6);
+    const body = new THREE.Mesh(queenBodyGeo, mat);
+    body.castShadow = true;
+    qGroup.add(body);
+    const coronet = new THREE.Mesh(queenCoronetGeo, mat);
+    coronet.position.y = 21.2;
+    coronet.castShadow = true;
+    qGroup.add(coronet);
+    for (let i = 0; i < 8; i++) {
+      const pearl = new THREE.Mesh(queenPearlGeo, mat);
+      const ang = (i * Math.PI) / 4;
+      pearl.position.set(Math.cos(ang) * 7.1, 23.4, Math.sin(ang) * 7.1);
+      qGroup.add(pearl);
+    }
+    const orb = new THREE.Mesh(queenOrbGeo, mat);
+    orb.position.y = 24.8;
+    orb.castShadow = true;
+    qGroup.add(orb);
+    return qGroup;
+  }
+
+  // ── KING (IMPERIAL CROWN & MALTESE CROSS) ──
+  const kingPoints = [
+    new THREE.Vector2(0, 0),
+    new THREE.Vector2(8.0, 0),
+    new THREE.Vector2(8.4, 1.0),
+    new THREE.Vector2(7.6, 2.2),
+    new THREE.Vector2(6.6, 3.6),
+    new THREE.Vector2(5.4, 6.5),
+    new THREE.Vector2(4.4, 12.5),
+    new THREE.Vector2(3.8, 18.0),
+    new THREE.Vector2(5.2, 19.8),
+    new THREE.Vector2(5.6, 20.6),
+    new THREE.Vector2(4.6, 21.4),
+    new THREE.Vector2(0, 21.5)
+  ];
+  const kingBodyGeo = new THREE.LatheGeometry(kingPoints, 24);
+  const kingGalleryGeo = new THREE.CylinderGeometry(7.4, 4.6, 4.2, 24);
+  const kingDomeGeo = new THREE.SphereGeometry(6.4, 20, 14);
+  kingDomeGeo.scale(1, 0.45, 1);
+  const crossVGeo = new THREE.BoxGeometry(1.4, 5.2, 1.2);
+  const crossHGeo = new THREE.BoxGeometry(4.2, 1.4, 1.2);
+
+  function createKingMesh(mat) {
+    const kGroup = new THREE.Group();
+    addFeltAndShadow(kGroup, 8.0);
+    const body = new THREE.Mesh(kingBodyGeo, mat);
+    body.castShadow = true;
+    kGroup.add(body);
+    const gallery = new THREE.Mesh(kingGalleryGeo, mat);
+    gallery.position.y = 23.2;
+    gallery.castShadow = true;
+    kGroup.add(gallery);
+    const dome = new THREE.Mesh(kingDomeGeo, mat);
+    dome.position.y = 25.2;
+    dome.castShadow = true;
+    kGroup.add(dome);
+    const cv = new THREE.Mesh(crossVGeo, mat);
+    cv.position.y = 29.2;
+    cv.castShadow = true;
+    kGroup.add(cv);
+    const ch = new THREE.Mesh(crossHGeo, mat);
+    ch.position.y = 29.8;
+    ch.castShadow = true;
+    kGroup.add(ch);
+    return kGroup;
+  }
+
+  // 7. Assemble Italian Game (Giuoco Piano) setup on 8x8 Board
+  const sq = 21.125;
+  const getX = (fileIdx) => -73.9375 + fileIdx * sq;
+  const getZ = (rankIdx) => -73.9375 + rankIdx * sq;
+
+  function placePiece(mesh, fileIdx, rankIdx) {
+    mesh.position.set(getX(fileIdx), 15.02, getZ(rankIdx));
+    group.add(mesh);
+  }
+
+  // White Pieces
+  placePiece(createPawnMesh(whiteMat), 0, 6);
+  placePiece(createPawnMesh(whiteMat), 1, 6);
+  placePiece(createPawnMesh(whiteMat), 2, 5); // c3
+  placePiece(createPawnMesh(whiteMat), 3, 4); // d4
+  placePiece(createPawnMesh(whiteMat), 4, 4); // e4
+  placePiece(createPawnMesh(whiteMat), 5, 6);
+  placePiece(createPawnMesh(whiteMat), 6, 6);
+  placePiece(createPawnMesh(whiteMat), 7, 6);
+
+  placePiece(createRookMesh(whiteMat), 0, 7); // Ra1
+  placePiece(createRookMesh(whiteMat), 5, 7); // Rf1 (castled)
+  placePiece(createKnightMesh(whiteMat, false), 1, 7); // Nb1
+  placePiece(createKnightMesh(whiteMat, false), 5, 5); // Nf3
+  placePiece(createBishopMesh(whiteMat), 2, 7); // Bc1
+  placePiece(createBishopMesh(whiteMat), 2, 4); // Bc4 (Italian bishop)
+  placePiece(createQueenMesh(whiteMat), 3, 7);  // Qd1
+  placePiece(createKingMesh(whiteMat), 6, 7);   // Kg1 (castled king)
+
+  // Black Pieces
+  placePiece(createPawnMesh(blackMat), 0, 1);
+  placePiece(createPawnMesh(blackMat), 1, 1);
+  placePiece(createPawnMesh(blackMat), 2, 2); // c6
+  placePiece(createPawnMesh(blackMat), 3, 2); // d6
+  placePiece(createPawnMesh(blackMat), 4, 3); // e5
+  placePiece(createPawnMesh(blackMat), 5, 1);
+  placePiece(createPawnMesh(blackMat), 6, 1);
+  placePiece(createPawnMesh(blackMat), 7, 1);
+
+  placePiece(createRookMesh(blackMat), 0, 0); // Ra8
+  placePiece(createRookMesh(blackMat), 7, 0); // Rh8
+  placePiece(createKnightMesh(blackMat, true), 1, 2); // Nc6
+  placePiece(createKnightMesh(blackMat, true), 5, 2); // Nf6
+  placePiece(createBishopMesh(blackMat), 2, 3); // Bc5
+  placePiece(createBishopMesh(blackMat), 4, 1); // Be7
+  placePiece(createQueenMesh(blackMat), 3, 0);  // Qd8
+  placePiece(createKingMesh(blackMat), 4, 0);   // Ke8
+
+  return group;
+}
+
 let isAboutThreeInitialized = false;
 
 function initAboutThreeScene() {
@@ -3046,6 +3764,11 @@ function initAboutThreeScene() {
   aboutRenderer.shadowMap.type = THREE.PCFSoftShadowMap;
   aboutRenderer.toneMapping = THREE.ACESFilmicToneMapping;
   aboutRenderer.toneMappingExposure = 1.18;
+  if (aboutRenderer.outputColorSpace !== undefined) {
+    aboutRenderer.outputColorSpace = THREE.SRGBColorSpace;
+  } else if (aboutRenderer.outputEncoding !== undefined) {
+    aboutRenderer.outputEncoding = THREE.sRGBEncoding;
+  }
 
   container.appendChild(aboutRenderer.domElement);
 
@@ -3056,12 +3779,19 @@ function initAboutThreeScene() {
   const ambLight = new THREE.AmbientLight(0xfff8ed, 0.85);
   aboutScene.add(ambLight);
 
-  const sunLight = new THREE.DirectionalLight(0xfffaed, 1.55);
-  sunLight.position.set(400, 950, 650);
+  const sunLight = new THREE.DirectionalLight(0xfffaed, 1.65);
+  sunLight.position.set(420, 950, 650);
   sunLight.castShadow = true;
   sunLight.shadow.mapSize.width = 2048;
   sunLight.shadow.mapSize.height = 2048;
-  sunLight.shadow.bias = -0.0001;
+  sunLight.shadow.camera.left = -650;
+  sunLight.shadow.camera.right = 650;
+  sunLight.shadow.camera.top = 650;
+  sunLight.shadow.camera.bottom = -650;
+  sunLight.shadow.camera.near = 100;
+  sunLight.shadow.camera.far = 2500;
+  sunLight.shadow.bias = -0.0003;
+  sunLight.shadow.radius = 2.2;
   aboutScene.add(sunLight);
 
   const fillLight = new THREE.DirectionalLight(0xd0e0ff, 0.55);
@@ -3079,6 +3809,7 @@ function initAboutThreeScene() {
 
   // Procedural Studio Softbox Reflection Map shared across all studio objects
   const sharedStudioEnvMap = createStudioChromeEnvMap();
+  aboutScene.environment = sharedStudioEnvMap;
 
   // 1. Rich Scandinavian Honey Oak Studio Table Top with Natural Grain Sheen (Slightly Darker Walnut Finish)
   const tableGeo = new THREE.BoxGeometry(2400, 80, 850);
@@ -3144,6 +3875,14 @@ function initAboutThreeScene() {
   aboutScene.add(matMesh);
 
   // 5. PURE WHITE CERAMIC COFFEE CUP WITH BLACK SHARPIE MARKER NAME 'JADEN' (NO EMOJI) & CORK COASTER
+  // Soft Ground Contact Ambient Occlusion under coaster
+  const coasterAoGeo = new THREE.CircleGeometry(84, 32);
+  coasterAoGeo.rotateX(-Math.PI / 2);
+  const coasterAoMat = new THREE.MeshBasicMaterial({ color: 0x050403, transparent: true, opacity: 0.35, depthWrite: false });
+  const coasterAoMesh = new THREE.Mesh(coasterAoGeo, coasterAoMat);
+  coasterAoMesh.position.set(-200, -116.8, 130);
+  aboutScene.add(coasterAoMesh);
+
   const coasterGeo = new THREE.CylinderGeometry(80, 80, 14, 32);
   const coasterMat = new THREE.MeshStandardMaterial({ color: 0xc29357, roughness: 0.9 });
   const coasterMesh = new THREE.Mesh(coasterGeo, coasterMat);
@@ -3157,8 +3896,10 @@ function initAboutThreeScene() {
   const cupBodyMat = new THREE.MeshStandardMaterial({
     color: 0xffffff,
     map: createProceduralCoffeeCupTexture(),
-    roughness: 0.15,
-    metalness: 0.05
+    roughness: 0.12,
+    metalness: 0.04,
+    envMap: sharedStudioEnvMap,
+    envMapIntensity: 0.65
   });
   const cupBodyMesh = new THREE.Mesh(cupBodyGeo, cupBodyMat);
   cupBodyMesh.position.set(-200, -71, 130);
@@ -3174,22 +3915,34 @@ function initAboutThreeScene() {
   cupLidMesh.castShadow = true;
   aboutScene.add(cupLidMesh);
 
-  // 6. High-Quality Studio Props: Realistic Organic Bonsai Plant & Designer Stationery
-  const plant3D = createNormalOrganicBonsaiPlant();
-  plant3D.position.set(-240, -120, -20);
+  // 6. High-Quality Studio Props: Realistic Chessboard, Organic Bonsai Plant & Designer Stationery
+  const chessboard3D = createHighQuality3DChessboard(sharedStudioEnvMap);
+  chessboard3D.position.set(245, -115, 125);
+  aboutScene.add(chessboard3D);
+
+  const plant3D = createNormalOrganicBonsaiPlant(sharedStudioEnvMap);
+  plant3D.position.set(245, -120, -35); // Placed to the right directly behind the chessboard
   aboutScene.add(plant3D);
 
   const pencil3D = createHighQualityCraftsmanPencil();
-  pencil3D.position.set(200, -115, 110);
-  pencil3D.rotation.y = 0.05;
+  pencil3D.position.set(-145, -115, 140);
+  pencil3D.rotation.y = -0.12;
   aboutScene.add(pencil3D);
 
   const knife3D = createHighQualityUtilityKnife();
-  knife3D.position.set(230, -114, 115);
-  knife3D.rotation.y = 0.05;
+  knife3D.position.set(-115, -114, 145);
+  knife3D.rotation.y = -0.12;
   aboutScene.add(knife3D);
 
   // 6b. Liquid Metallic Chrome 3D Laptop resting on cutting mat
+  // Soft Ground Contact Ambient Occlusion Plane under Laptop Base
+  const laptopAoGeo = new THREE.PlaneGeometry(330, 230);
+  laptopAoGeo.rotateX(-Math.PI / 2);
+  const laptopAoMat = new THREE.MeshBasicMaterial({ color: 0x020305, transparent: true, opacity: 0.35, depthWrite: false });
+  const laptopAoMesh = new THREE.Mesh(laptopAoGeo, laptopAoMat);
+  laptopAoMesh.position.set(0, -114.8, 85);
+  aboutScene.add(laptopAoMesh);
+
   const laptop3D = create3DDeskOpenLaptop(sharedStudioEnvMap);
   laptop3D.position.set(0, -114, 85);
   laptop3D.rotation.y = 0;
@@ -3263,29 +4016,29 @@ function initAboutThreeScene() {
 
     if (isMobile) {
       // Clustered portrait composition for phones & tablets (Symmetrical, uncluttered, airy)
-      defaultGreenBoardPos.set(-95, 145, -310);
-      defaultHeadphonesPos.set(95, 140, -305);
+      defaultGreenBoardPos.set(-105, 140, -310);
+      defaultHeadphonesPos.set(105, 140, -314);
       defaultLaptopPos.set(0, -114, 85);
 
       if (greenBoard3D && !isGreenBoardZoomed) {
         targetGreenBoardPos.copy(defaultGreenBoardPos);
-        targetGreenBoardScale = 0.42;
+        targetGreenBoardScale = 0.35;
         greenBoard3D.position.copy(defaultGreenBoardPos);
-        greenBoard3D.scale.set(0.42, 0.42, 0.42);
+        greenBoard3D.scale.set(0.35, 0.35, 0.35);
       }
       if (keyboard3D) {
-        keyboard3D.position.set(0, 215, -310);
-        keyboard3D.scale.set(0.35, 0.35, 0.35);
+        keyboard3D.position.set(0, 140, -310);
+        keyboard3D.scale.set(0.30, 0.30, 0.30);
       }
       if (pegHook3D) {
-        pegHook3D.position.set(95, 190, -340);
-        pegHook3D.scale.set(0.46, 0.46, 0.46);
+        pegHook3D.position.set(105, 195, -344);
+        pegHook3D.scale.set(0.40, 0.40, 0.40);
       }
       if (headphones3D && !isHeadphonesZoomed) {
         targetHeadphonesPos.copy(defaultHeadphonesPos);
-        targetHeadphonesScale = 0.46;
+        targetHeadphonesScale = 0.38;
         headphones3D.position.copy(defaultHeadphonesPos);
-        headphones3D.scale.set(0.46, 0.46, 0.46);
+        headphones3D.scale.set(0.38, 0.38, 0.38);
       }
       if (laptop3D && !isLaptopZoomed) {
         laptop3D.position.copy(defaultLaptopPos);
@@ -3295,6 +4048,10 @@ function initAboutThreeScene() {
       if (matMesh) {
         matMesh.position.set(0, -116, 95);
         matMesh.scale.set(0.40, 0.40, 0.40);
+      }
+      if (coasterAoMesh) {
+        coasterAoMesh.position.set(-125, -117.8, 130);
+        coasterAoMesh.scale.set(0.44, 0.44, 0.44);
       }
       if (coasterMesh) {
         coasterMesh.position.set(-125, -117, 130);
@@ -3308,19 +4065,27 @@ function initAboutThreeScene() {
         cupLidMesh.position.set(-125, -47, 130);
         cupLidMesh.scale.set(0.44, 0.44, 0.44);
       }
+      if (laptopAoMesh) {
+        laptopAoMesh.position.set(0, -114.8, 85);
+        laptopAoMesh.scale.set(0.58, 0.58, 0.58);
+      }
+      if (chessboard3D) {
+        chessboard3D.position.set(120, -115, 125);
+        chessboard3D.scale.set(0.46, 0.46, 0.46);
+      }
       if (plant3D) {
-        plant3D.position.set(-135, -120, -10);
-        plant3D.scale.set(0.32, 0.32, 0.32);
+        plant3D.position.set(120, -120, -25);
+        plant3D.scale.set(0.33, 0.33, 0.33);
       }
       if (pencil3D) {
-        pencil3D.position.set(120, -115, 110);
-        pencil3D.rotation.y = 0.05;
-        pencil3D.scale.set(0.48, 0.48, 0.48);
+        pencil3D.position.set(-78, -115, 142);
+        pencil3D.rotation.y = -0.10;
+        pencil3D.scale.set(0.45, 0.45, 0.45);
       }
       if (knife3D) {
-        knife3D.position.set(138, -114, 115);
-        knife3D.rotation.y = 0.05;
-        knife3D.scale.set(0.48, 0.48, 0.48);
+        knife3D.position.set(-58, -114, 148);
+        knife3D.rotation.y = -0.10;
+        knife3D.scale.set(0.45, 0.45, 0.45);
       }
     } else {
       // Desktop wide studio composition (Architectural balance, rule of thirds, clean workspace)
@@ -3353,9 +4118,17 @@ function initAboutThreeScene() {
         laptop3D.rotation.y = 0;
         laptop3D.scale.set(0.72, 0.72, 0.72);
       }
+      if (laptopAoMesh) {
+        laptopAoMesh.position.set(0, -114.8, 85);
+        laptopAoMesh.scale.set(0.72, 0.72, 0.72);
+      }
       if (matMesh) {
         matMesh.position.set(0, -116, 95);
         matMesh.scale.set(0.65, 0.65, 0.65);
+      }
+      if (coasterAoMesh) {
+        coasterAoMesh.position.set(-200, -116.8, 130);
+        coasterAoMesh.scale.set(0.58, 0.58, 0.58);
       }
       if (coasterMesh) {
         coasterMesh.position.set(-200, -116, 130);
@@ -3369,18 +4142,22 @@ function initAboutThreeScene() {
         cupLidMesh.position.set(-200, -24, 130);
         cupLidMesh.scale.set(0.58, 0.58, 0.58);
       }
+      if (chessboard3D) {
+        chessboard3D.position.set(245, -115, 125);
+        chessboard3D.scale.set(0.68, 0.68, 0.68);
+      }
       if (plant3D) {
-        plant3D.position.set(-240, -120, -20);
+        plant3D.position.set(245, -120, -35);
         plant3D.scale.set(0.45, 0.45, 0.45);
       }
       if (pencil3D) {
-        pencil3D.position.set(200, -115, 110);
-        pencil3D.rotation.y = 0.05;
+        pencil3D.position.set(-145, -115, 140);
+        pencil3D.rotation.y = -0.12;
         pencil3D.scale.set(0.65, 0.65, 0.65);
       }
       if (knife3D) {
-        knife3D.position.set(230, -114, 115);
-        knife3D.rotation.y = 0.05;
+        knife3D.position.set(-115, -114, 145);
+        knife3D.rotation.y = -0.12;
         knife3D.scale.set(0.65, 0.65, 0.65);
       }
     }
@@ -3600,10 +4377,10 @@ function initAboutThreeScene() {
     const isMobileMode = window.innerWidth <= 768;
     const getBaseScale = (fig) => {
       if (isMobileMode) {
-        if (fig === greenBoard3D) return 0.42;
-        if (fig === headphones3D) return 0.46;
+        if (fig === greenBoard3D) return 0.35;
+        if (fig === headphones3D) return 0.38;
         if (fig === laptop3D) return 0.58;
-        if (fig === keyboard3D) return 0.35;
+        if (fig === keyboard3D) return 0.30;
         return 1.0;
       } else {
         if (fig === greenBoard3D) return 0.60;
@@ -3772,7 +4549,7 @@ function initAboutThreeScene() {
       targetGreenBoardScale = isMobileAspect ? 0.72 : 0.85;
     } else {
       targetGreenBoardPos.copy(defaultGreenBoardPos);
-      targetGreenBoardScale = isMobileAspect ? 0.42 : 0.60;
+      targetGreenBoardScale = isMobileAspect ? 0.35 : 0.60;
     }
 
     if (isHeadphonesZoomed) {
@@ -3780,7 +4557,7 @@ function initAboutThreeScene() {
       targetHeadphonesScale = isMobileAspect ? 0.68 : 0.75;
     } else {
       targetHeadphonesPos.copy(defaultHeadphonesPos);
-      targetHeadphonesScale = isMobileAspect ? 0.46 : 0.65;
+      targetHeadphonesScale = isMobileAspect ? 0.38 : 0.65;
     }
   });
 
@@ -3790,7 +4567,7 @@ function initAboutThreeScene() {
       if (isGreenBoardZoomed) {
         isGreenBoardZoomed = false;
         targetGreenBoardPos.copy(defaultGreenBoardPos);
-        targetGreenBoardScale = isMobileAspect ? 0.42 : 0.60;
+        targetGreenBoardScale = isMobileAspect ? 0.35 : 0.60;
       }
       if (isLaptopZoomed) {
         isLaptopZoomed = false;
@@ -3799,7 +4576,7 @@ function initAboutThreeScene() {
         isHeadphonesZoomed = false;
         stopHeadphonesAudio();
         targetHeadphonesPos.copy(defaultHeadphonesPos);
-        targetHeadphonesScale = isMobileAspect ? 0.46 : 0.65;
+        targetHeadphonesScale = isMobileAspect ? 0.38 : 0.65;
       }
     }
   });
@@ -3958,14 +4735,14 @@ function initAboutThreeScene() {
         targetGreenBoardScale = isMobileAspect ? 0.72 : 0.85;
       } else {
         targetGreenBoardPos.copy(defaultGreenBoardPos);
-        targetGreenBoardScale = isMobileAspect ? 0.42 : 0.60;
+        targetGreenBoardScale = isMobileAspect ? 0.35 : 0.60;
       }
       if (isHeadphonesZoomed) {
         targetHeadphonesPos.copy(isMobileAspect ? new THREE.Vector3(0, 70, 180) : new THREE.Vector3(0, 75, 160));
         targetHeadphonesScale = isMobileAspect ? 0.68 : 0.75;
       } else {
         targetHeadphonesPos.copy(defaultHeadphonesPos);
-        targetHeadphonesScale = isMobileAspect ? 0.46 : 0.65;
+        targetHeadphonesScale = isMobileAspect ? 0.38 : 0.65;
       }
     }
   }, { passive: true });

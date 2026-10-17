@@ -631,11 +631,11 @@ function createProceduralPegboardTexture() {
   canvas.height = 1024;
   const ctx = canvas.getContext('2d');
 
-  // Pure Brilliant Studio White Base with subtle powder-coat micro-texture
+  // Crisp Pure Studio White Pegboard Base (Authentic Scandinavian Powder-Coated White)
   ctx.fillStyle = '#fafbfc';
   ctx.fillRect(0, 0, 1024, 1024);
 
-  // Subtle powder-coat eggshell stipple
+  // Subtle powder-coat eggshell micro-stipple
   ctx.fillStyle = 'rgba(0, 0, 0, 0.015)';
   for (let i = 0; i < 4000; i++) {
     const rx = Math.random() * 1024;
@@ -666,13 +666,13 @@ function createProceduralPegboardTexture() {
     const yStart = isOddCol ? 32 : 0;
 
     for (let y = yStart; y < 1024; y += rowSpacing) {
-      // 1. Soft top ambient drop shadow rim
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.12)';
+      // 1. Soft top ambient drop shadow rim inside hole
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.20)';
       drawSlotCapsule(x - slotW / 2 - 1, y - slotH / 2 - 1, slotW + 2, slotH + 2, cornerR + 1);
       ctx.fill();
 
-      // 2. Interior slot cavity (deep studio slate depth)
-      ctx.fillStyle = '#1e242d';
+      // 2. Interior slot cavity (deep dark studio slate depth)
+      ctx.fillStyle = '#1a1f28';
       drawSlotCapsule(x - slotW / 2, y - slotH / 2, slotW, slotH, cornerR);
       ctx.fill();
 
@@ -698,38 +698,38 @@ function createProceduralWoodTexture() {
   canvas.height = 1024;
   const ctx = canvas.getContext('2d');
 
-  // Deep Rich Walnut / Smoked Oak Base
+  // Deep Rich Dark Smoked Walnut & Honey Oak Base (Deep Warm Saturated Amber Finish)
   const bgGrad = ctx.createLinearGradient(0, 0, 0, 1024);
-  bgGrad.addColorStop(0, '#53351f');
-  bgGrad.addColorStop(0.3, '#664227');
-  bgGrad.addColorStop(0.6, '#573720');
-  bgGrad.addColorStop(1, '#442a17');
+  bgGrad.addColorStop(0, '#2e170a');
+  bgGrad.addColorStop(0.3, '#46230f');
+  bgGrad.addColorStop(0.6, '#381a0b');
+  bgGrad.addColorStop(1, '#1e0c04');
   ctx.fillStyle = bgGrad;
   ctx.fillRect(0, 0, 1024, 1024);
 
-  // Soft organic wood growth rings & grain waves
-  ctx.lineWidth = 2.5;
+  // Rich organic wood growth rings & dark espresso grain waves
+  ctx.lineWidth = 2.8;
   for (let y = 0; y < 1024; y += 8) {
     const wave = Math.sin(y * 0.02) * 12 + Math.cos(y * 0.04) * 6;
-    ctx.strokeStyle = y % 24 === 0 ? 'rgba(28, 14, 6, 0.45)' : 'rgba(38, 19, 9, 0.32)';
+    ctx.strokeStyle = y % 24 === 0 ? 'rgba(8, 3, 1, 0.68)' : 'rgba(16, 6, 2, 0.50)';
     ctx.beginPath();
     ctx.moveTo(0, y + wave);
     ctx.bezierCurveTo(340, y + wave + 18, 680, y + wave - 12, 1024, y + Math.sin(y * 0.03) * 10);
     ctx.stroke();
   }
 
-  // Warm subtle highlight streaks (satin varnish sheen)
-  ctx.lineWidth = 1.8;
+  // Warm saturated golden amber highlight streaks (satin lacquer sheen)
+  ctx.lineWidth = 2.2;
   for (let y = 6; y < 1024; y += 18) {
-    ctx.strokeStyle = 'rgba(180, 125, 80, 0.22)';
+    ctx.strokeStyle = 'rgba(235, 145, 55, 0.36)';
     ctx.beginPath();
     ctx.moveTo(0, y + Math.cos(y * 0.025) * 8);
     ctx.lineTo(1024, y + Math.sin(y * 0.035) * 8);
     ctx.stroke();
   }
 
-  // Fine wood pores
-  ctx.fillStyle = 'rgba(20, 10, 4, 0.35)';
+  // Fine dark wood pores
+  ctx.fillStyle = 'rgba(12, 5, 2, 0.42)';
   for (let i = 0; i < 3000; i++) {
     const px = Math.random() * 1024;
     const py = Math.random() * 1024;
@@ -1052,6 +1052,17 @@ function createHighQuality3DKeyboard() {
   caseMesh.castShadow = true;
   caseMesh.receiveShadow = true;
   group.add(caseMesh);
+
+  // Subtle dark frame rim behind case to give razor-sharp separation on white pegboard
+  const caseBorderGeo = new THREE.BoxGeometry(374, 149, 4);
+  const caseBorderMat = new THREE.MeshStandardMaterial({
+    color: 0x181c24,
+    roughness: 0.5,
+    metalness: 0.2
+  });
+  const caseBorderMesh = new THREE.Mesh(caseBorderGeo, caseBorderMat);
+  caseBorderMesh.position.set(0, 0, -12);
+  group.add(caseBorderMesh);
 
   // Pure White Inner Switch Plate
   const plateGeo = new THREE.BoxGeometry(348, 124, 6);
@@ -3103,22 +3114,22 @@ function createProceduralChessboardTexture() {
       const y = margin + r * sqSize;
 
       if (isLight) {
-        // Natural Birdseye Maple / Italian Boxwood Light Square
+        // Natural Birdseye Maple / Italian Boxwood Light Square (Rich Saturated Honey Tone)
         const lightGrad = ctx.createLinearGradient(x, y, x + sqSize, y + sqSize);
-        lightGrad.addColorStop(0, '#f2e2cb');
-        lightGrad.addColorStop(0.5, '#edd7b7');
-        lightGrad.addColorStop(1, '#e3cbb0');
+        lightGrad.addColorStop(0, '#ebd4b0');
+        lightGrad.addColorStop(0.5, '#dfc194');
+        lightGrad.addColorStop(1, '#d2b07f');
         ctx.fillStyle = lightGrad;
         ctx.fillRect(x, y, sqSize, sqSize);
 
         // Subtle fine vertical wood rays
-        ctx.fillStyle = 'rgba(180, 138, 92, 0.08)';
+        ctx.fillStyle = 'rgba(165, 115, 65, 0.12)';
         for (let gx = 3; gx < sqSize; gx += 4) {
           ctx.fillRect(x + gx, y, 1.2, sqSize);
         }
 
         // Faint wavy growth grain
-        ctx.strokeStyle = 'rgba(195, 150, 105, 0.12)';
+        ctx.strokeStyle = 'rgba(180, 130, 85, 0.16)';
         ctx.lineWidth = 1;
         for (let gy = 8; gy < sqSize; gy += 16) {
           ctx.beginPath();
@@ -3132,11 +3143,11 @@ function createProceduralChessboardTexture() {
         ctx.lineWidth = 1;
         ctx.strokeRect(x + 0.5, y + 0.5, sqSize - 1, sqSize - 1);
       } else {
-        // Smoked Walnut / East Indian Rosewood Dark Square
+        // Smoked Walnut / East Indian Rosewood Dark Square (Deep Espresso Obsidian)
         const darkGrad = ctx.createLinearGradient(x, y, x + sqSize, y + sqSize);
-        darkGrad.addColorStop(0, '#532e18');
-        darkGrad.addColorStop(0.5, '#442312');
-        darkGrad.addColorStop(1, '#391b0c');
+        darkGrad.addColorStop(0, '#381c0c');
+        darkGrad.addColorStop(0.5, '#2c1407');
+        darkGrad.addColorStop(1, '#200d04');
         ctx.fillStyle = darkGrad;
         ctx.fillRect(x, y, sqSize, sqSize);
 
@@ -3359,20 +3370,20 @@ function createHighQuality3DChessboard(sharedStudioEnvMap) {
   });
 
   // 6. Luxury Hand-Polished Staunton Tournament Chess Pieces
-  // Natural Boxwood White Pieces
+  // Natural Boxwood White Pieces (Warm Honey Boxwood)
   const whiteMat = new THREE.MeshStandardMaterial({
-    color: 0xf5ebdc,
-    roughness: 0.17,
+    color: 0xead4b4,
+    roughness: 0.18,
     metalness: 0.04,
     envMap: envMap,
     envMapIntensity: 0.65
   });
 
-  // Smoked Rosewood / Ebony Black Pieces
+  // Smoked Rosewood / Ebony Black Pieces (Deep Obsidian Jet Ebony)
   const blackMat = new THREE.MeshStandardMaterial({
-    color: 0x1b1310,
+    color: 0x110c08,
     roughness: 0.20,
-    metalness: 0.07,
+    metalness: 0.08,
     envMap: envMap,
     envMapIntensity: 0.70
   });
@@ -3763,7 +3774,7 @@ function initAboutThreeScene() {
   aboutRenderer.shadowMap.enabled = true;
   aboutRenderer.shadowMap.type = THREE.PCFSoftShadowMap;
   aboutRenderer.toneMapping = THREE.ACESFilmicToneMapping;
-  aboutRenderer.toneMappingExposure = 1.18;
+  aboutRenderer.toneMappingExposure = 0.92;
   if (aboutRenderer.outputColorSpace !== undefined) {
     aboutRenderer.outputColorSpace = THREE.SRGBColorSpace;
   } else if (aboutRenderer.outputEncoding !== undefined) {
@@ -3775,11 +3786,11 @@ function initAboutThreeScene() {
   raycaster = new THREE.Raycaster();
   mouseVec = new THREE.Vector2();
 
-  // Vibrant Studio Lighting (Punchy Dynamic Contrast & Warm Saturation)
-  const ambLight = new THREE.AmbientLight(0xfff8ed, 0.85);
+  // Vibrant Studio Lighting (Deep Dynamic Contrast, Moody Darker Ambience & Warm Saturation)
+  const ambLight = new THREE.AmbientLight(0xffecd6, 0.34);
   aboutScene.add(ambLight);
 
-  const sunLight = new THREE.DirectionalLight(0xfffaed, 1.65);
+  const sunLight = new THREE.DirectionalLight(0xfff4dc, 1.42);
   sunLight.position.set(420, 950, 650);
   sunLight.castShadow = true;
   sunLight.shadow.mapSize.width = 2048;
@@ -3794,16 +3805,16 @@ function initAboutThreeScene() {
   sunLight.shadow.radius = 2.2;
   aboutScene.add(sunLight);
 
-  const fillLight = new THREE.DirectionalLight(0xd0e0ff, 0.55);
+  const fillLight = new THREE.DirectionalLight(0x5a789a, 0.24);
   fillLight.position.set(-500, 600, 450);
   aboutScene.add(fillLight);
 
-  const rimLight = new THREE.DirectionalLight(0xffeedd, 0.70);
+  const rimLight = new THREE.DirectionalLight(0xffd4aa, 0.38);
   rimLight.position.set(0, 750, -280);
   aboutScene.add(rimLight);
 
-  // Dedicated soft warm-white wall wash light ensuring the pegboard is bright, crisp, and vibrant
-  const pegboardWashLight = new THREE.PointLight(0xfffaed, 0.65, 1600);
+  // Subtle warm-white accent light on pegboard (gentle ambient fill without washing out contrast)
+  const pegboardWashLight = new THREE.PointLight(0xfff4e6, 0.05, 1200);
   pegboardWashLight.position.set(0, 260, 50);
   aboutScene.add(pegboardWashLight);
 
@@ -3811,15 +3822,15 @@ function initAboutThreeScene() {
   const sharedStudioEnvMap = createStudioChromeEnvMap();
   aboutScene.environment = sharedStudioEnvMap;
 
-  // 1. Rich Scandinavian Honey Oak Studio Table Top with Natural Grain Sheen (Slightly Darker Walnut Finish)
+  // 1. Rich Scandinavian Honey Oak Studio Table Top with Natural Grain Sheen (Deep Smoked Walnut Saturation)
   const tableGeo = new THREE.BoxGeometry(2400, 80, 850);
   const tableMat = new THREE.MeshStandardMaterial({
-    color: 0xcccccc,
+    color: 0xffffff,
     map: createProceduralWoodTexture(),
-    roughness: 0.34,
+    roughness: 0.32,
     metalness: 0.04,
     envMap: sharedStudioEnvMap,
-    envMapIntensity: 0.32
+    envMapIntensity: 0.35
   });
   const tableMesh = new THREE.Mesh(tableGeo, tableMat);
   tableMesh.position.set(0, -160, 100);
@@ -3830,8 +3841,8 @@ function initAboutThreeScene() {
   // Table Front Lip / Edge
   const lipGeo = new THREE.BoxGeometry(2400, 95, 28);
   const lipMat = new THREE.MeshStandardMaterial({
-    color: 0x482914,
-    roughness: 0.40,
+    color: 0x221006,
+    roughness: 0.35,
     metalness: 0.04,
     envMap: sharedStudioEnvMap,
     envMapIntensity: 0.3
@@ -3840,29 +3851,29 @@ function initAboutThreeScene() {
   lipMesh.position.set(0, -245, 520);
   aboutScene.add(lipMesh);
 
-  // 2. High-Fidelity Studio White Pegboard Wall Background
+  // 2. High-Fidelity Architectural White Pegboard Wall Background
   const pegboardGeo = new THREE.PlaneGeometry(2800, 1400);
   const pegboardMat = new THREE.MeshStandardMaterial({
-    color: 0xfcfdfd,
+    color: 0xffffff,
     map: createProceduralPegboardTexture(),
-    roughness: 0.28,
+    roughness: 0.35,
     metalness: 0.02,
-    emissive: 0xffffff,
-    emissiveIntensity: 0.12,
+    emissive: 0x000000,
+    emissiveIntensity: 0.0,
     envMap: sharedStudioEnvMap,
-    envMapIntensity: 0.25
+    envMapIntensity: 0.15
   });
   const pegboardMesh = new THREE.Mesh(pegboardGeo, pegboardMat);
   pegboardMesh.position.set(0, 240, -350);
   pegboardMesh.receiveShadow = false; // Disables muddy desk shadow falloff on the white wall
   aboutScene.add(pegboardMesh);
 
-  // 4. Elan Dark Forest Green Grid Cutting Mat
+  // 4. Elan Dark Forest Green Grid Cutting Mat (Deep Emerald Contrast)
   const matGeo = new THREE.PlaneGeometry(780, 530);
   const matMat = new THREE.MeshStandardMaterial({
     map: createProceduralCuttingMatTexture(),
-    color: 0x5a7d66,
-    roughness: 0.72,
+    color: 0xffffff,
+    roughness: 0.58,
     metalness: 0.02,
     polygonOffset: true,
     polygonOffsetFactor: -2,
@@ -3884,7 +3895,7 @@ function initAboutThreeScene() {
   aboutScene.add(coasterAoMesh);
 
   const coasterGeo = new THREE.CylinderGeometry(80, 80, 14, 32);
-  const coasterMat = new THREE.MeshStandardMaterial({ color: 0xc29357, roughness: 0.9 });
+  const coasterMat = new THREE.MeshStandardMaterial({ color: 0xab7338, roughness: 0.88 });
   const coasterMesh = new THREE.Mesh(coasterGeo, coasterMat);
   coasterMesh.position.set(-200, -116, 130);
   coasterMesh.castShadow = true;
@@ -3909,7 +3920,7 @@ function initAboutThreeScene() {
 
   // Dark Pitch Black Matte Cup Lid
   const cupLidGeo = new THREE.CylinderGeometry(62, 62, 16, 32);
-  const cupLidMat = new THREE.MeshStandardMaterial({ color: 0x050505, roughness: 0.2 });
+  const cupLidMat = new THREE.MeshStandardMaterial({ color: 0x080808, roughness: 0.22 });
   const cupLidMesh = new THREE.Mesh(cupLidGeo, cupLidMat);
   cupLidMesh.position.set(-200, -24, 130);
   cupLidMesh.castShadow = true;
@@ -3949,30 +3960,30 @@ function initAboutThreeScene() {
   laptop3D.name = 'laptop';
   aboutScene.add(laptop3D);
 
-  // ── 7. HIGH-QUALITY INTERACTIVE STUDIO OBJECTS (GREEN BOARD ON LEFT & KEYBOARD ON RIGHT) ──
+  // ── 7. HIGH-QUALITY INTERACTIVE STUDIO OBJECTS (GREEN BOARD, KEYBOARD, LAPTOP, HEADPHONES) ──
   interactiveFigurines = [];
 
   // 1. High-Quality 3D Framed Street-Art Sticker Board (Wall-Mounted to the Left)
   const greenBoard3D = create3DGreenBoard(sharedStudioEnvMap);
-  greenBoard3D.position.set(-240, 145, -310);
+  greenBoard3D.position.set(-245, 145, -310);
   greenBoard3D.name = 'greenBoard';
   aboutScene.add(greenBoard3D);
   interactiveFigurines.push(greenBoard3D);
 
   // 2. High-Quality 3D Mechanical Keyboard (Wall-Mounted in Center above Laptop)
   const keyboard3D = createHighQuality3DKeyboard();
-  keyboard3D.position.set(0, 190, -310);
+  keyboard3D.position.set(0, 205, -310);
   keyboard3D.name = 'keyboard';
   aboutScene.add(keyboard3D);
   interactiveFigurines.push(keyboard3D);
 
   // 3. Ultra-Realistic Chromish Studio Headphones (Mounted to the Right on Peg Hook)
   const pegHook3D = create3DWallPegHook(sharedStudioEnvMap);
-  pegHook3D.position.set(240, 205, -346);
+  pegHook3D.position.set(245, 205, -346);
   aboutScene.add(pegHook3D);
 
   const headphones3D = create3DChromeHeadphones(sharedStudioEnvMap);
-  headphones3D.position.set(240, 145, -314);
+  headphones3D.position.set(245, 145, -314);
   headphones3D.name = 'headphones';
   aboutScene.add(headphones3D);
   interactiveFigurines.push(headphones3D);
@@ -3990,12 +4001,19 @@ function initAboutThreeScene() {
 
   let offset = new THREE.Vector3();
 
-  // ── GREEN BOARD, LAPTOP & HEADPHONES CLICK-TO-FRONT ZOOM INTERACTION ──
+  // ── GREEN BOARD, KEYBOARD, LAPTOP & HEADPHONES CLICK-TO-FRONT ZOOM INTERACTION ──
   let isGreenBoardZoomed = false;
-  const defaultGreenBoardPos = new THREE.Vector3(-240, 145, -310);
+  const defaultGreenBoardPos = new THREE.Vector3(-245, 145, -310);
   const zoomedGreenBoardPos = new THREE.Vector3(0, 35, 180);
   let targetGreenBoardPos = defaultGreenBoardPos.clone();
-  let targetGreenBoardScale = 0.60;
+  let targetGreenBoardScale = 0.58;
+
+  let isKeyboardZoomed = false;
+  const defaultKeyboardPos = new THREE.Vector3(0, 205, -310);
+  const zoomedKeyboardPos = new THREE.Vector3(0, 45, 170);
+  let targetKeyboardPos = defaultKeyboardPos.clone();
+  let targetKeyboardScale = 0.50;
+  let targetKeyboardRotX = 0;
 
   let isLaptopZoomed = false;
   const defaultLaptopPos = new THREE.Vector3(0, -114, 85);
@@ -4006,39 +4024,42 @@ function initAboutThreeScene() {
   let targetLaptopRotY = 0;
 
   let isHeadphonesZoomed = false;
-  const defaultHeadphonesPos = new THREE.Vector3(240, 145, -314);
+  const defaultHeadphonesPos = new THREE.Vector3(245, 145, -314);
   const zoomedHeadphonesPos = new THREE.Vector3(0, 115, 180);
   let targetHeadphonesPos = defaultHeadphonesPos.clone();
-  let targetHeadphonesScale = 0.65;
+  let targetHeadphonesScale = 0.62;
 
   function applyStudioResponsivePositions() {
-    const isMobile = window.innerWidth <= 768;
+    const isMobile = window.innerWidth <= 820 || (window.innerWidth / window.innerHeight < 1.05);
 
     if (isMobile) {
-      // Clustered portrait composition for phones & tablets (Symmetrical, uncluttered, airy)
-      defaultGreenBoardPos.set(-105, 140, -310);
-      defaultHeadphonesPos.set(105, 140, -314);
+      // Clustered portrait composition for phones & tablets (Symmetrical, clean, zero overlap)
+      defaultGreenBoardPos.set(-124, 138, -310);
+      defaultHeadphonesPos.set(124, 138, -314);
+      defaultKeyboardPos.set(0, 218, -310); // Elevated in upper center: generous vertical & horizontal clearance
       defaultLaptopPos.set(0, -114, 85);
 
       if (greenBoard3D && !isGreenBoardZoomed) {
         targetGreenBoardPos.copy(defaultGreenBoardPos);
-        targetGreenBoardScale = 0.35;
+        targetGreenBoardScale = 0.28;
         greenBoard3D.position.copy(defaultGreenBoardPos);
-        greenBoard3D.scale.set(0.35, 0.35, 0.35);
+        greenBoard3D.scale.set(0.28, 0.28, 0.28);
       }
-      if (keyboard3D) {
-        keyboard3D.position.set(0, 140, -310);
-        keyboard3D.scale.set(0.30, 0.30, 0.30);
+      if (keyboard3D && !isKeyboardZoomed) {
+        targetKeyboardPos.copy(defaultKeyboardPos);
+        targetKeyboardScale = 0.24;
+        keyboard3D.position.copy(defaultKeyboardPos);
+        keyboard3D.scale.set(0.24, 0.24, 0.24);
       }
       if (pegHook3D) {
-        pegHook3D.position.set(105, 195, -344);
-        pegHook3D.scale.set(0.40, 0.40, 0.40);
+        pegHook3D.position.set(124, 192, -344);
+        pegHook3D.scale.set(0.33, 0.33, 0.33);
       }
       if (headphones3D && !isHeadphonesZoomed) {
         targetHeadphonesPos.copy(defaultHeadphonesPos);
-        targetHeadphonesScale = 0.38;
+        targetHeadphonesScale = 0.33;
         headphones3D.position.copy(defaultHeadphonesPos);
-        headphones3D.scale.set(0.38, 0.38, 0.38);
+        headphones3D.scale.set(0.33, 0.33, 0.33);
       }
       if (laptop3D && !isLaptopZoomed) {
         laptop3D.position.copy(defaultLaptopPos);
@@ -4089,29 +4110,32 @@ function initAboutThreeScene() {
       }
     } else {
       // Desktop wide studio composition (Architectural balance, rule of thirds, clean workspace)
-      defaultGreenBoardPos.set(-240, 145, -310);
-      defaultHeadphonesPos.set(240, 145, -314);
+      defaultGreenBoardPos.set(-245, 145, -310);
+      defaultHeadphonesPos.set(245, 145, -314);
+      defaultKeyboardPos.set(0, 205, -310);
       defaultLaptopPos.set(0, -114, 85);
 
       if (greenBoard3D && !isGreenBoardZoomed) {
         targetGreenBoardPos.copy(defaultGreenBoardPos);
-        targetGreenBoardScale = 0.60;
+        targetGreenBoardScale = 0.58;
         greenBoard3D.position.copy(defaultGreenBoardPos);
-        greenBoard3D.scale.set(0.60, 0.60, 0.60);
+        greenBoard3D.scale.set(0.58, 0.58, 0.58);
       }
-      if (keyboard3D) {
-        keyboard3D.position.set(0, 190, -310);
-        keyboard3D.scale.set(0.55, 0.55, 0.55);
+      if (keyboard3D && !isKeyboardZoomed) {
+        targetKeyboardPos.copy(defaultKeyboardPos);
+        targetKeyboardScale = 0.50;
+        keyboard3D.position.copy(defaultKeyboardPos);
+        keyboard3D.scale.set(0.50, 0.50, 0.50);
       }
       if (pegHook3D) {
-        pegHook3D.position.set(240, 205, -346);
+        pegHook3D.position.set(245, 205, -346);
         pegHook3D.scale.set(0.62, 0.62, 0.62);
       }
       if (headphones3D && !isHeadphonesZoomed) {
         targetHeadphonesPos.copy(defaultHeadphonesPos);
-        targetHeadphonesScale = 0.65;
+        targetHeadphonesScale = 0.62;
         headphones3D.position.copy(defaultHeadphonesPos);
-        headphones3D.scale.set(0.65, 0.65, 0.65);
+        headphones3D.scale.set(0.62, 0.62, 0.62);
       }
       if (laptop3D && !isLaptopZoomed) {
         laptop3D.position.copy(defaultLaptopPos);
@@ -4348,6 +4372,43 @@ function initAboutThreeScene() {
 
   let mouseDownX = 0, mouseDownY = 0;
 
+  function playKeyboardClackSound() {
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      const actx = new AudioCtx();
+      const now = actx.currentTime;
+
+      // Click snap
+      const osc = actx.createOscillator();
+      const gain = actx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(820, now);
+      osc.frequency.exponentialRampToValueAtTime(140, now + 0.045);
+      gain.gain.setValueAtTime(0.2, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.045);
+      osc.connect(gain);
+      gain.connect(actx.destination);
+      osc.start(now);
+      osc.stop(now + 0.05);
+
+      // Thock bottom-out resonance
+      const osc2 = actx.createOscillator();
+      const gain2 = actx.createGain();
+      osc2.type = 'sine';
+      osc2.frequency.setValueAtTime(280, now + 0.01);
+      osc2.frequency.exponentialRampToValueAtTime(75, now + 0.06);
+      gain2.gain.setValueAtTime(0.16, now + 0.01);
+      gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+      osc2.connect(gain2);
+      gain2.connect(actx.destination);
+      osc2.start(now + 0.01);
+      osc2.stop(now + 0.07);
+    } catch (e) {
+      // Audio fallback
+    }
+  }
+
   canvasEl.addEventListener('mousemove', (e) => {
     const rect = canvasEl.getBoundingClientRect();
     mouseVec.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
@@ -4374,19 +4435,19 @@ function initAboutThreeScene() {
 
     // Hover state over 3D figurines
     const hits = raycaster.intersectObjects(interactiveFigurines, true);
-    const isMobileMode = window.innerWidth <= 768;
+    const isMobileMode = window.innerWidth <= 820 || (window.innerWidth / window.innerHeight < 1.05);
     const getBaseScale = (fig) => {
       if (isMobileMode) {
-        if (fig === greenBoard3D) return 0.35;
-        if (fig === headphones3D) return 0.38;
+        if (fig === greenBoard3D) return 0.28;
+        if (fig === headphones3D) return 0.33;
         if (fig === laptop3D) return 0.58;
-        if (fig === keyboard3D) return 0.30;
+        if (fig === keyboard3D) return 0.24;
         return 1.0;
       } else {
-        if (fig === greenBoard3D) return 0.60;
-        if (fig === headphones3D) return 0.65;
+        if (fig === greenBoard3D) return 0.58;
+        if (fig === headphones3D) return 0.62;
         if (fig === laptop3D) return 0.72;
-        if (fig === keyboard3D) return 0.55;
+        if (fig === keyboard3D) return 0.50;
         return 1.0;
       }
     };
@@ -4403,14 +4464,16 @@ function initAboutThreeScene() {
           if (
             (fig !== greenBoard3D || !isGreenBoardZoomed) &&
             (fig !== laptop3D || !isLaptopZoomed) &&
-            (fig !== headphones3D || !isHeadphonesZoomed)
+            (fig !== headphones3D || !isHeadphonesZoomed) &&
+            (fig !== keyboard3D || !isKeyboardZoomed)
           ) {
             fig.scale.set(baseS * 1.08, baseS * 1.08, baseS * 1.08);
           }
         } else if (
           (fig !== greenBoard3D || !isGreenBoardZoomed) &&
           (fig !== laptop3D || !isLaptopZoomed) &&
-          (fig !== headphones3D || !isHeadphonesZoomed)
+          (fig !== headphones3D || !isHeadphonesZoomed) &&
+          (fig !== keyboard3D || !isKeyboardZoomed)
         ) {
           fig.scale.set(baseS, baseS, baseS);
         }
@@ -4422,7 +4485,8 @@ function initAboutThreeScene() {
         if (
           (fig !== greenBoard3D || !isGreenBoardZoomed) &&
           (fig !== laptop3D || !isLaptopZoomed) &&
-          (fig !== headphones3D || !isHeadphonesZoomed)
+          (fig !== headphones3D || !isHeadphonesZoomed) &&
+          (fig !== keyboard3D || !isKeyboardZoomed)
         ) {
           fig.scale.set(baseS, baseS, baseS);
         }
@@ -4485,17 +4549,28 @@ function initAboutThreeScene() {
         if (isGreenBoardZoomed) {
           isLaptopZoomed = false;
           isHeadphonesZoomed = false;
+          isKeyboardZoomed = false;
+        }
+      } else if (parentObj.name === 'keyboard') {
+        isKeyboardZoomed = !isKeyboardZoomed;
+        if (isKeyboardZoomed) {
+          isGreenBoardZoomed = false;
+          isLaptopZoomed = false;
+          isHeadphonesZoomed = false;
+          playKeyboardClackSound();
         }
       } else if (parentObj.name === 'laptop') {
         isLaptopZoomed = !isLaptopZoomed;
         if (isLaptopZoomed) {
           isGreenBoardZoomed = false;
           isHeadphonesZoomed = false;
+          isKeyboardZoomed = false;
         }
       } else if (parentObj.name === 'headphones') {
         if (!isHeadphonesZoomed) {
           isGreenBoardZoomed = false;
           isLaptopZoomed = false;
+          isKeyboardZoomed = false;
           isHeadphonesZoomed = true;
           startHeadphonesAudio();
         } else {
@@ -4533,23 +4608,35 @@ function initAboutThreeScene() {
       } else {
         isGreenBoardZoomed = false;
         isLaptopZoomed = false;
+        isKeyboardZoomed = false;
         if (isHeadphonesZoomed) stopHeadphonesAudio();
         isHeadphonesZoomed = false;
       }
     } else {
       isGreenBoardZoomed = false;
       isLaptopZoomed = false;
+      isKeyboardZoomed = false;
       if (isHeadphonesZoomed) stopHeadphonesAudio();
       isHeadphonesZoomed = false;
     }
 
-    const isMobileAspect = window.innerWidth <= 768;
+    const isMobileAspect = window.innerWidth <= 820 || (window.innerWidth / window.innerHeight < 1.05);
     if (isGreenBoardZoomed) {
       targetGreenBoardPos.copy(isMobileAspect ? new THREE.Vector3(0, 40, 160) : new THREE.Vector3(0, 50, 140));
       targetGreenBoardScale = isMobileAspect ? 0.72 : 0.85;
     } else {
       targetGreenBoardPos.copy(defaultGreenBoardPos);
-      targetGreenBoardScale = isMobileAspect ? 0.35 : 0.60;
+      targetGreenBoardScale = isMobileAspect ? 0.28 : 0.58;
+    }
+
+    if (isKeyboardZoomed) {
+      targetKeyboardPos.copy(isMobileAspect ? new THREE.Vector3(0, 42, 165) : new THREE.Vector3(0, 45, 170));
+      targetKeyboardScale = isMobileAspect ? 0.65 : 0.78;
+      targetKeyboardRotX = 0.35;
+    } else {
+      targetKeyboardPos.copy(defaultKeyboardPos);
+      targetKeyboardScale = isMobileAspect ? 0.24 : 0.50;
+      targetKeyboardRotX = 0;
     }
 
     if (isHeadphonesZoomed) {
@@ -4557,17 +4644,23 @@ function initAboutThreeScene() {
       targetHeadphonesScale = isMobileAspect ? 0.68 : 0.75;
     } else {
       targetHeadphonesPos.copy(defaultHeadphonesPos);
-      targetHeadphonesScale = isMobileAspect ? 0.38 : 0.65;
+      targetHeadphonesScale = isMobileAspect ? 0.33 : 0.62;
     }
   });
 
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-      const isMobileAspect = window.innerWidth <= 768;
+      const isMobileAspect = window.innerWidth <= 820 || (window.innerWidth / window.innerHeight < 1.05);
       if (isGreenBoardZoomed) {
         isGreenBoardZoomed = false;
         targetGreenBoardPos.copy(defaultGreenBoardPos);
-        targetGreenBoardScale = isMobileAspect ? 0.35 : 0.60;
+        targetGreenBoardScale = isMobileAspect ? 0.28 : 0.58;
+      }
+      if (isKeyboardZoomed) {
+        isKeyboardZoomed = false;
+        targetKeyboardPos.copy(defaultKeyboardPos);
+        targetKeyboardScale = isMobileAspect ? 0.24 : 0.50;
+        targetKeyboardRotX = 0;
       }
       if (isLaptopZoomed) {
         isLaptopZoomed = false;
@@ -4576,7 +4669,7 @@ function initAboutThreeScene() {
         isHeadphonesZoomed = false;
         stopHeadphonesAudio();
         targetHeadphonesPos.copy(defaultHeadphonesPos);
-        targetHeadphonesScale = isMobileAspect ? 0.38 : 0.65;
+        targetHeadphonesScale = isMobileAspect ? 0.33 : 0.62;
       }
     }
   });
@@ -4676,14 +4769,23 @@ function initAboutThreeScene() {
         }
         if (parentObj.name === 'greenBoard') {
           isGreenBoardZoomed = !isGreenBoardZoomed;
-          if (isGreenBoardZoomed) { isLaptopZoomed = false; isHeadphonesZoomed = false; }
+          if (isGreenBoardZoomed) { isLaptopZoomed = false; isHeadphonesZoomed = false; isKeyboardZoomed = false; }
+        } else if (parentObj.name === 'keyboard') {
+          isKeyboardZoomed = !isKeyboardZoomed;
+          if (isKeyboardZoomed) {
+            isGreenBoardZoomed = false;
+            isLaptopZoomed = false;
+            isHeadphonesZoomed = false;
+            playKeyboardClackSound();
+          }
         } else if (parentObj.name === 'laptop') {
           isLaptopZoomed = !isLaptopZoomed;
-          if (isLaptopZoomed) { isGreenBoardZoomed = false; isHeadphonesZoomed = false; }
+          if (isLaptopZoomed) { isGreenBoardZoomed = false; isHeadphonesZoomed = false; isKeyboardZoomed = false; }
         } else if (parentObj.name === 'headphones') {
           if (!isHeadphonesZoomed) {
             isGreenBoardZoomed = false;
             isLaptopZoomed = false;
+            isKeyboardZoomed = false;
             isHeadphonesZoomed = true;
             startHeadphonesAudio();
           } else {
@@ -4719,30 +4821,43 @@ function initAboutThreeScene() {
         } else {
           isGreenBoardZoomed = false;
           isLaptopZoomed = false;
+          isKeyboardZoomed = false;
           if (isHeadphonesZoomed) stopHeadphonesAudio();
           isHeadphonesZoomed = false;
         }
       } else {
         isGreenBoardZoomed = false;
         isLaptopZoomed = false;
+        isKeyboardZoomed = false;
         if (isHeadphonesZoomed) stopHeadphonesAudio();
         isHeadphonesZoomed = false;
       }
 
-      const isMobileAspect = window.innerWidth <= 768;
+      const isMobileAspect = window.innerWidth <= 820 || (window.innerWidth / window.innerHeight < 1.05);
       if (isGreenBoardZoomed) {
         targetGreenBoardPos.copy(isMobileAspect ? new THREE.Vector3(0, 40, 160) : new THREE.Vector3(0, 50, 140));
         targetGreenBoardScale = isMobileAspect ? 0.72 : 0.85;
       } else {
         targetGreenBoardPos.copy(defaultGreenBoardPos);
-        targetGreenBoardScale = isMobileAspect ? 0.35 : 0.60;
+        targetGreenBoardScale = isMobileAspect ? 0.28 : 0.58;
       }
+
+      if (isKeyboardZoomed) {
+        targetKeyboardPos.copy(isMobileAspect ? new THREE.Vector3(0, 42, 165) : new THREE.Vector3(0, 45, 170));
+        targetKeyboardScale = isMobileAspect ? 0.65 : 0.78;
+        targetKeyboardRotX = 0.35;
+      } else {
+        targetKeyboardPos.copy(defaultKeyboardPos);
+        targetKeyboardScale = isMobileAspect ? 0.24 : 0.50;
+        targetKeyboardRotX = 0;
+      }
+
       if (isHeadphonesZoomed) {
         targetHeadphonesPos.copy(isMobileAspect ? new THREE.Vector3(0, 70, 180) : new THREE.Vector3(0, 75, 160));
         targetHeadphonesScale = isMobileAspect ? 0.68 : 0.75;
       } else {
         targetHeadphonesPos.copy(defaultHeadphonesPos);
-        targetHeadphonesScale = isMobileAspect ? 0.38 : 0.65;
+        targetHeadphonesScale = isMobileAspect ? 0.33 : 0.62;
       }
     }
   }, { passive: true });
@@ -4760,6 +4875,14 @@ function initAboutThreeScene() {
       const currentScale = greenBoard3D.scale.x;
       const nextScale = THREE.MathUtils.lerp(currentScale, targetGreenBoardScale, 0.08);
       greenBoard3D.scale.set(nextScale, nextScale, nextScale);
+    }
+
+    if (keyboard3D && (!isDraggingFigurine || selectedFigurine !== keyboard3D)) {
+      keyboard3D.position.lerp(targetKeyboardPos, 0.08);
+      const currentScale = keyboard3D.scale.x;
+      const nextScale = THREE.MathUtils.lerp(currentScale, targetKeyboardScale, 0.08);
+      keyboard3D.scale.set(nextScale, nextScale, nextScale);
+      keyboard3D.rotation.x = THREE.MathUtils.lerp(keyboard3D.rotation.x, targetKeyboardRotX, 0.08);
     }
 
     if (headphones3D && (!isDraggingFigurine || selectedFigurine !== headphones3D)) {
@@ -4787,7 +4910,7 @@ function initAboutThreeScene() {
       const targetLaptopLookAt = isMobileAspect ? new THREE.Vector3(0, -40, 85) : laptopScreenLookAt;
       aboutCamera.position.lerp(targetLaptopCamPos, 0.08);
       aboutCamera.lookAt(targetLaptopLookAt);
-    } else if (aboutCamera && !isDraggingFigurine && !isGreenBoardZoomed && !isHeadphonesZoomed) {
+    } else if (aboutCamera && !isDraggingFigurine && !isGreenBoardZoomed && !isHeadphonesZoomed && !isKeyboardZoomed) {
       // Normal overview camera with subtle mouse parallax
       const aspect = (aboutRenderer.domElement.clientWidth || window.innerWidth) / (aboutRenderer.domElement.clientHeight || window.innerHeight);
       const isPortrait = aspect < 1;

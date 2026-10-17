@@ -1763,7 +1763,7 @@ html, body {
   width: 100% !important;
   height: 100% !important;
   display: block;
-  filter: contrast(1.08) saturate(1.15);
+  filter: contrast(1.14) saturate(1.24);
   touch-action: pan-y;
 }
 

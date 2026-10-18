@@ -54,13 +54,14 @@
 #chess-modal-window *,
 .chess-header,
 .chess-logo-badge,
-.chess-hf-pill,
 .chess-player-strip,
 .chess-player-name,
 .chess-badge-bot,
 .chess-player-rating,
 .chess-clock,
 .chess-coord,
+.chess-eval-bar,
+.chess-eval-text,
 .chess-status-banner,
 .chess-status-headline,
 .chess-opening-badge,
@@ -127,20 +128,6 @@
   fill: #fff;
 }
 
-.chess-hf-pill {
-  background: #eddcc6;
-  border: 1.5px solid #8c5a36;
-  color: #502b11;
-  font-size: 0.72rem;
-  padding: 3px 9px;
-  border-radius: 0;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  text-transform: uppercase;
-  letter-spacing: 0.6px;
-}
-
 .chess-header-right {
   display: flex;
   align-items: center;
@@ -194,7 +181,7 @@
 
 .chess-player-strip {
   width: 100%;
-  max-width: 510px;
+  max-width: 546px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -329,8 +316,94 @@
   animation: chessPulse 0.5s infinite alternate;
 }
 
+/* ── Chess.com Style Board & Evaluation Bar Wrapper ── */
+.chess-board-wrapper {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 546px;
+  position: relative;
+}
+
+/* ── Evaluation Bar (Weightage Scale: White vs Brown Advantage) ── */
+.chess-eval-bar {
+  width: 24px;
+  background: #8c5a36; /* Brown portion */
+  border: 3px solid #703f1f;
+  border-radius: 0 !important;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(70, 38, 18, 0.22);
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.chess-eval-brown-zone {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  padding-top: 4px;
+  z-index: 2;
+}
+
+.chess-eval-white-zone {
+  width: 100%;
+  height: 50%;
+  background: #ffffff;
+  transition: height 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  position: relative;
+  border-top: 1px solid rgba(112, 63, 31, 0.35);
+}
+
+.chess-eval-bar.flipped {
+  background: #ffffff; /* White portion on top when flipped */
+}
+
+.chess-eval-bar.flipped .chess-eval-white-zone {
+  background: #8c5a36; /* Brown portion on bottom when flipped */
+  border-top: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.chess-eval-text {
+  font-family: 'Black Han Sans', sans-serif !important;
+  font-size: 10px;
+  letter-spacing: 0.2px;
+  line-height: 1;
+  pointer-events: none;
+  z-index: 5;
+  padding: 4px 1px;
+}
+
+.chess-eval-text.top {
+  color: #ffffff; /* White text on brown */
+}
+
+.chess-eval-text.bottom {
+  color: #3e2210; /* Brown text on white */
+}
+
+.chess-eval-bar.flipped .chess-eval-text.top {
+  color: #3e2210; /* Brown text on white */
+}
+
+.chess-eval-bar.flipped .chess-eval-text.bottom {
+  color: #ffffff; /* White text on brown */
+}
+
 /* ── 8x8 TOURNAMENT WOODEN CHESSBOARD (SHARP SQUARE BLOCKS — WHITE & BROWN) ── */
 .chess-board-frame {
+  flex: 1;
   width: 100%;
   max-width: 510px;
   aspect-ratio: 1 / 1;
@@ -883,12 +956,23 @@
   .chess-stage {
     padding: 8px 10px;
   }
+  .chess-board-wrapper {
+    max-width: min(92vw, 385px);
+    gap: 7px;
+  }
+  .chess-eval-bar {
+    width: 20px;
+    border-width: 2.5px;
+  }
+  .chess-eval-text {
+    font-size: 8.5px;
+  }
   .chess-board-frame {
-    max-width: min(88vw, 360px);
+    max-width: min(84vw, 355px);
     border-width: 7px;
   }
   .chess-player-strip {
-    max-width: min(88vw, 360px);
+    max-width: min(92vw, 385px);
   }
   .chess-avatar {
     width: 32px;
@@ -930,12 +1014,23 @@
   #chess-modal-window {
     max-height: 98vh;
   }
+  .chess-board-wrapper {
+    max-width: min(95vw, 345px);
+    gap: 5px;
+  }
+  .chess-eval-bar {
+    width: 17px;
+    border-width: 2px;
+  }
+  .chess-eval-text {
+    font-size: 7.5px;
+  }
   .chess-board-frame {
-    max-width: min(92vw, 320px);
+    max-width: min(86vw, 320px);
     border-width: 6px;
   }
   .chess-player-strip {
-    max-width: min(92vw, 320px);
+    max-width: min(95vw, 345px);
   }
   .chess-sidebar {
     max-height: 210px;

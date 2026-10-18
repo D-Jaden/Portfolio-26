@@ -219,13 +219,12 @@ html, body {
 }
 
 .drawer-header {
-  position: sticky;
-  top: 14px;
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 42px;
-  z-index: 60;
+  margin-bottom: 32px;
+  z-index: 10;
   background: transparent;
 }
 
@@ -2866,8 +2865,9 @@ html, body {
     box-sizing: border-box;
   }
   .drawer-header {
-    margin-bottom: 28px;
-    top: 8px;
+    position: relative;
+    top: auto;
+    margin-bottom: 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -3090,6 +3090,18 @@ html, body {
   .board-desc {
     font-size: 11px;
     line-height: 1.45;
+  }
+  .board-desc div[style*="text-align: right"],
+  .board-desc > div:last-child {
+    margin-top: 8px !important;
+  }
+  .view-btn {
+    font-size: 10px !important;
+    padding: 3px 10px !important;
+    border-width: 2px !important;
+    border-radius: 4px !important;
+    box-shadow: 2px 2px 0 rgba(0,0,0,0.2) !important;
+    gap: 3px !important;
   }
   .bus-figure {
     width: 190px;
@@ -3398,7 +3410,9 @@ html, body {
     margin-bottom: 16px;
   }
   .drawer-header {
-    margin-bottom: 24px;
+    position: relative;
+    top: auto;
+    margin-bottom: 20px;
   }
   .drawer-label {
     font-size: 13px;
@@ -3563,6 +3577,18 @@ html, body {
   .board-desc {
     font-size: 9.8px;
     line-height: 1.35;
+  }
+  .board-desc div[style*="text-align: right"],
+  .board-desc > div:last-child {
+    margin-top: 5px !important;
+  }
+  .view-btn {
+    font-size: 8.5px !important;
+    padding: 2px 8px !important;
+    border-width: 1.5px !important;
+    border-radius: 3px !important;
+    box-shadow: 1.5px 1.5px 0 rgba(0,0,0,0.2) !important;
+    gap: 2px !important;
   }
   .bus-figure {
     width: 170px;

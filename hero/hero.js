@@ -3054,11 +3054,11 @@ function createProceduralChessboardTexture() {
   canvas.height = 1024;
   const ctx = canvas.getContext('2d');
 
-  // 1. Rich Smoked Walnut Frame Base
+  // 1. Rich Warm Walnut Frame Base (White & Brown Palette)
   const frameGrad = ctx.createLinearGradient(0, 0, 1024, 1024);
-  frameGrad.addColorStop(0, '#26140b');
-  frameGrad.addColorStop(0.5, '#341c10');
-  frameGrad.addColorStop(1, '#1e0e07');
+  frameGrad.addColorStop(0, '#5e351a');
+  frameGrad.addColorStop(0.5, '#734222');
+  frameGrad.addColorStop(1, '#502c14');
   ctx.fillStyle = frameGrad;
   ctx.fillRect(0, 0, 1024, 1024);
 
@@ -3066,7 +3066,7 @@ function createProceduralChessboardTexture() {
   ctx.lineWidth = 2;
   for (let y = 0; y < 1024; y += 4) {
     const wave = Math.sin(y * 0.04) * 8 + Math.cos(y * 0.09) * 4;
-    ctx.strokeStyle = y % 12 === 0 ? 'rgba(210, 155, 95, 0.09)' : 'rgba(10, 5, 2, 0.22)';
+    ctx.strokeStyle = y % 12 === 0 ? 'rgba(235, 210, 180, 0.16)' : 'rgba(60, 30, 12, 0.22)';
     ctx.beginPath();
     ctx.moveTo(0, y + wave);
     ctx.bezierCurveTo(340, y + wave + 6, 680, y + wave - 6, 1024, y + wave);
@@ -3079,12 +3079,12 @@ function createProceduralChessboardTexture() {
 
   // 2. Inlaid Boxwood & Polished Brass Stringing Frame
   // Outer Inlaid Maple Stringing
-  ctx.strokeStyle = '#ecd7ba';
+  ctx.strokeStyle = '#f5e4cd';
   ctx.lineWidth = 2.5;
   ctx.strokeRect(margin - 12, margin - 12, innerSize + 24, innerSize + 24);
 
-  // Ebony Separator Line
-  ctx.strokeStyle = '#120a06';
+  // Warm Walnut Separator Line
+  ctx.strokeStyle = '#422410';
   ctx.lineWidth = 1.5;
   ctx.strokeRect(margin - 8.5, margin - 8.5, innerSize + 17, innerSize + 17);
 
@@ -3099,11 +3099,11 @@ function createProceduralChessboardTexture() {
   ctx.strokeRect(margin - 5, margin - 5, innerSize + 10, innerSize + 10);
 
   // Inner Dark Walnut Border Line
-  ctx.strokeStyle = '#1a0d06';
+  ctx.strokeStyle = '#502c14';
   ctx.lineWidth = 2;
   ctx.strokeRect(margin - 1, margin - 1, innerSize + 2, innerSize + 2);
 
-  // 3. 64 Precision-Inlaid Artisan Chess Squares
+  // 3. 64 Precision-Inlaid White & Brown Artisan Chess Squares
   const files = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
   const ranks = ['8', '7', '6', '5', '4', '3', '2', '1'];
 
@@ -3114,61 +3114,45 @@ function createProceduralChessboardTexture() {
       const y = margin + r * sqSize;
 
       if (isLight) {
-        // Natural Birdseye Maple / Italian Boxwood Light Square (Rich Saturated Honey Tone)
-        const lightGrad = ctx.createLinearGradient(x, y, x + sqSize, y + sqSize);
-        lightGrad.addColorStop(0, '#ebd4b0');
-        lightGrad.addColorStop(0.5, '#dfc194');
-        lightGrad.addColorStop(1, '#d2b07f');
-        ctx.fillStyle = lightGrad;
+        // Pure Brilliant Crisp White Light Square
+        ctx.fillStyle = '#ffffff';
         ctx.fillRect(x, y, sqSize, sqSize);
 
-        // Subtle fine vertical wood rays
-        ctx.fillStyle = 'rgba(165, 115, 65, 0.12)';
-        for (let gx = 3; gx < sqSize; gx += 4) {
-          ctx.fillRect(x + gx, y, 1.2, sqSize);
-        }
+        // Subtle warm ivory sheen
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+        ctx.fillRect(x + 1, y + 1, sqSize - 2, sqSize - 2);
 
-        // Faint wavy growth grain
-        ctx.strokeStyle = 'rgba(180, 130, 85, 0.16)';
-        ctx.lineWidth = 1;
-        for (let gy = 8; gy < sqSize; gy += 16) {
-          ctx.beginPath();
-          ctx.moveTo(x, y + gy + Math.sin(gy * 0.2) * 3);
-          ctx.lineTo(x + sqSize, y + gy + Math.cos(gy * 0.2) * 3);
-          ctx.stroke();
-        }
-
-        // Subtle bevel border giving individual tile inlay appearance
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+        // Clean subtle tile bevel
+        ctx.strokeStyle = 'rgba(220, 195, 160, 0.35)';
         ctx.lineWidth = 1;
         ctx.strokeRect(x + 0.5, y + 0.5, sqSize - 1, sqSize - 1);
       } else {
-        // Smoked Walnut / East Indian Rosewood Dark Square (Deep Espresso Obsidian)
+        // Rich Saturated Warm Walnut Wood Brown Dark Square (Vibrant Brown, ZERO Black)
         const darkGrad = ctx.createLinearGradient(x, y, x + sqSize, y + sqSize);
-        darkGrad.addColorStop(0, '#381c0c');
-        darkGrad.addColorStop(0.5, '#2c1407');
-        darkGrad.addColorStop(1, '#200d04');
+        darkGrad.addColorStop(0, '#ba7440');
+        darkGrad.addColorStop(0.5, '#aa6735');
+        darkGrad.addColorStop(1, '#98582a');
         ctx.fillStyle = darkGrad;
         ctx.fillRect(x, y, sqSize, sqSize);
 
-        // Rich curly walnut grain waves
-        ctx.strokeStyle = 'rgba(20, 10, 4, 0.26)';
-        ctx.lineWidth = 1.6;
+        // Warm wood grain ripples
+        ctx.strokeStyle = 'rgba(120, 65, 25, 0.22)';
+        ctx.lineWidth = 1.4;
         for (let gy = 6; gy < sqSize; gy += 10) {
           ctx.beginPath();
-          ctx.moveTo(x, y + gy + Math.sin((x + gy) * 0.1) * 4);
-          ctx.bezierCurveTo(x + sqSize * 0.4, y + gy + 5, x + sqSize * 0.7, y + gy - 4, x + sqSize, y + gy);
+          ctx.moveTo(x, y + gy + Math.sin((x + gy) * 0.1) * 3);
+          ctx.bezierCurveTo(x + sqSize * 0.4, y + gy + 4, x + sqSize * 0.7, y + gy - 3, x + sqSize, y + gy);
           ctx.stroke();
         }
 
-        // Amber pores
-        ctx.fillStyle = 'rgba(195, 115, 60, 0.10)';
+        // Golden amber wood grain flecks
+        ctx.fillStyle = 'rgba(235, 175, 105, 0.16)';
         for (let gx = 6; gx < sqSize; gx += 8) {
           ctx.fillRect(x + gx, y + 4, 1.2, sqSize - 8);
         }
 
-        // Inlay perimeter shadow
-        ctx.strokeStyle = 'rgba(0, 0, 0, 0.38)';
+        // Inlay perimeter border
+        ctx.strokeStyle = 'rgba(120, 65, 25, 0.22)';
         ctx.lineWidth = 1;
         ctx.strokeRect(x + 0.5, y + 0.5, sqSize - 1, sqSize - 1);
       }
@@ -3286,7 +3270,7 @@ function createHighQuality3DChessboard(sharedStudioEnvMap) {
   const basePlinthGeo = new THREE.BoxGeometry(216, 3.5, 216);
   const riserPlinthGeo = new THREE.BoxGeometry(208, 8.5, 208);
   const plinthMat = new THREE.MeshStandardMaterial({
-    color: 0x2e190e,
+    color: 0x6e3f1e,
     roughness: 0.32,
     metalness: 0.04,
     envMap: envMap,
@@ -3308,10 +3292,10 @@ function createHighQuality3DChessboard(sharedStudioEnvMap) {
   const topGeo = new THREE.PlaneGeometry(208, 208);
   const topMat = new THREE.MeshStandardMaterial({
     map: createProceduralChessboardTexture(),
-    roughness: 0.26,
-    metalness: 0.05,
+    roughness: 0.18,
+    metalness: 0.0,
     envMap: envMap,
-    envMapIntensity: 0.45
+    envMapIntensity: 0.25
   });
   const topMesh = new THREE.Mesh(topGeo, topMat);
   topMesh.rotation.x = -Math.PI / 2;
@@ -3319,9 +3303,14 @@ function createHighQuality3DChessboard(sharedStudioEnvMap) {
   topMesh.receiveShadow = true;
   group.add(topMesh);
 
+  // Dedicated warm studio key light right over the chessboard ensuring radiant white & warm brown visibility
+  const boardKeyLight = new THREE.PointLight(0xfff5ea, 0.65, 450);
+  boardKeyLight.position.set(0, 120, 0);
+  group.add(boardKeyLight);
+
   // 4. Routed Cove Molding Trim Frame Lip around border
   const trimMat = new THREE.MeshStandardMaterial({
-    color: 0x221108,
+    color: 0x5a3116,
     roughness: 0.28,
     metalness: 0.06,
     envMap: envMap,
@@ -3369,23 +3358,23 @@ function createHighQuality3DChessboard(sharedStudioEnvMap) {
     group.add(rSideZ);
   });
 
-  // 6. Luxury Hand-Polished Staunton Tournament Chess Pieces
-  // Natural Boxwood White Pieces (Warm Honey Boxwood)
+  // 6. Luxury Hand-Polished Staunton Tournament Chess Pieces (Pure White & Handcrafted Walnut Brown)
+  // Crisp Pure White Pieces
   const whiteMat = new THREE.MeshStandardMaterial({
-    color: 0xead4b4,
-    roughness: 0.18,
-    metalness: 0.04,
+    color: 0xffffff,
+    roughness: 0.15,
+    metalness: 0.02,
     envMap: envMap,
-    envMapIntensity: 0.65
+    envMapIntensity: 0.5
   });
 
-  // Smoked Rosewood / Ebony Black Pieces (Deep Obsidian Jet Ebony)
+  // Handcrafted Walnut Wood Brown Pieces (Rich Warm Amber Brown, ZERO Black)
   const blackMat = new THREE.MeshStandardMaterial({
-    color: 0x110c08,
-    roughness: 0.20,
-    metalness: 0.08,
+    color: 0xa06030,
+    roughness: 0.22,
+    metalness: 0.04,
     envMap: envMap,
-    envMapIntensity: 0.70
+    envMapIntensity: 0.5
   });
 
   // Green Billiard Felt Base Material
@@ -3929,6 +3918,7 @@ function initAboutThreeScene() {
   // 6. High-Quality Studio Props: Realistic Chessboard, Organic Bonsai Plant & Designer Stationery
   const chessboard3D = createHighQuality3DChessboard(sharedStudioEnvMap);
   chessboard3D.position.set(245, -115, 125);
+  chessboard3D.name = 'chessboard';
   aboutScene.add(chessboard3D);
 
   const plant3D = createNormalOrganicBonsaiPlant(sharedStudioEnvMap);
@@ -3960,7 +3950,7 @@ function initAboutThreeScene() {
   laptop3D.name = 'laptop';
   aboutScene.add(laptop3D);
 
-  // ── 7. HIGH-QUALITY INTERACTIVE STUDIO OBJECTS (GREEN BOARD, KEYBOARD, LAPTOP, HEADPHONES) ──
+  // ── 7. HIGH-QUALITY INTERACTIVE STUDIO OBJECTS (GREEN BOARD, KEYBOARD, LAPTOP, HEADPHONES, CHESSBOARD) ──
   interactiveFigurines = [];
 
   // 1. High-Quality 3D Framed Street-Art Sticker Board (Wall-Mounted to the Left)
@@ -3990,6 +3980,9 @@ function initAboutThreeScene() {
 
   // 4. Interactive Laptop
   interactiveFigurines.push(laptop3D);
+
+  // 5. Interactive Chessboard (Click to play chess against Hugging Face AI)
+  interactiveFigurines.push(chessboard3D);
 
   // ── 3D RAYCASTER & MOUSE DRAG CONTROLS FOR ALL FIGURINES ──
   const canvasEl = aboutRenderer.domElement;
@@ -4442,12 +4435,14 @@ function initAboutThreeScene() {
         if (fig === headphones3D) return 0.33;
         if (fig === laptop3D) return 0.58;
         if (fig === keyboard3D) return 0.24;
+        if (fig === chessboard3D) return 0.46;
         return 1.0;
       } else {
         if (fig === greenBoard3D) return 0.58;
         if (fig === headphones3D) return 0.62;
         if (fig === laptop3D) return 0.72;
         if (fig === keyboard3D) return 0.50;
+        if (fig === chessboard3D) return 0.68;
         return 1.0;
       }
     };
@@ -4604,6 +4599,10 @@ function initAboutThreeScene() {
             isHeadphonesZoomed = false;
             stopHeadphonesAudio();
           }
+        }
+      } else if (parentObj.name === 'chessboard') {
+        if (window.openChessModal) {
+          window.openChessModal();
         }
       } else {
         isGreenBoardZoomed = false;
@@ -4818,6 +4817,10 @@ function initAboutThreeScene() {
               stopHeadphonesAudio();
             }
           }
+        } else if (parentObj.name === 'chessboard') {
+          if (window.openChessModal) {
+            window.openChessModal();
+          }
         } else {
           isGreenBoardZoomed = false;
           isLaptopZoomed = false;
@@ -4934,9 +4937,40 @@ function initAboutThreeScene() {
         aboutCamera.lookAt(defaultCamLookAt);
       }
     }
+
+    // Update "PLAY ME!" comic comment box position above 3D chessboard
+    const playBubble = document.getElementById('chessPlayBubble');
+    if (playBubble && chessboard3D && aboutCamera) {
+      if (!window._chessBubbleVec) window._chessBubbleVec = new THREE.Vector3();
+      window._chessBubbleVec.setFromMatrixPosition(chessboard3D.matrixWorld);
+      window._chessBubbleVec.y += 62;
+      window._chessBubbleVec.project(aboutCamera);
+
+      const cw = container.offsetWidth || window.innerWidth;
+      const ch = container.offsetHeight || window.innerHeight;
+      const bx = (window._chessBubbleVec.x * 0.5 + 0.5) * cw;
+      const by = (-(window._chessBubbleVec.y * 0.5) + 0.5) * ch;
+
+      playBubble.style.left = `${bx}px`;
+      playBubble.style.top = `${by}px`;
+    }
+
     aboutRenderer.render(aboutScene, aboutCamera);
   }
   animateAboutScene();
+
+  const playBubbleEl = document.getElementById('chessPlayBubble');
+  if (playBubbleEl) {
+    playBubbleEl.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (window.openChessModal) window.openChessModal();
+    });
+    playBubbleEl.addEventListener('touchend', (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      if (window.openChessModal) window.openChessModal();
+    });
+  }
 
   window.addEventListener('resize', () => {
     if (!container || !aboutCamera || !aboutRenderer) return;

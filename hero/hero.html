@@ -7,7 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Black+Han+Sans&family=Permanent+Marker&family=Sedgwick+Ave&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="hero.css?v=45">
+<link rel="stylesheet" href="hero.css?v=46">
+<link rel="stylesheet" href="chess_game.css?v=3">
 </head>
 <body>
 <div class="page-sweep-out" id="page-sweep-out"></div>
@@ -588,6 +589,8 @@
 <section class="about-me" id="aboutSection">
   <div class="about-viewport">
 
+    <!-- Pop-up comic comment box over chessboard (Matches 'BOX BOX!' Bus Comment Box) -->
+    <div class="chess-comic-bubble" id="chessPlayBubble">PLAY ME!</div>
 
     <!-- 3D WebGL Three.js Canvas Container -->
     <div id="about-webgl-container"></div>
@@ -807,6 +810,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <!-- High-Res Studio WebGL Assets -->
 <script src="hero_assets.js"></script>
-<script src="hero.js?v=93"></script>
+<!-- Playable Chess (Chess.com Board + Hugging Face Model) -->
+<script src="chess.min.js"></script>
+<script src="chess_pieces.js?v=3"></script>
+<script src="chess_game.js?v=3"></script>
+<script src="hero.js?v=95"></script>
 </body>
 </html>
